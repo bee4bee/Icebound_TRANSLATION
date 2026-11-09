@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/snd-item (online-audio-converter.com).mp3-107f0071da255c3369a922312fc70d36.mp3str"
+
+[deps]
+
+source_file="res://sprites/buttons/snd-item (online-audio-converter.com).mp3"
+dest_files=[ "res://.import/snd-item (online-audio-converter.com).mp3-107f0071da255c3369a922312fc70d36.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

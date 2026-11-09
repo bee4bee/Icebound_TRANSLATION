@@ -1,0 +1,1128 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationMonoWebRegular-Z5oq.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://NameSelection/NameSelection.gd" type="Script" id=3]
+[ext_resource path="res://sprites/soul/spr_heartred_center_0.png" type="Texture" id=4]
+[ext_resource path="res://music/introstatic1.wav" type="AudioStream" id=5]
+[ext_resource path="res://music/soundFX/button_select.wav" type="AudioStream" id=6]
+[ext_resource path="res://music/soundFX/button_choice.wav" type="AudioStream" id=7]
+[ext_resource path="res://the cool/spice.webm" type="VideoStream" id=8]
+[ext_resource path="res://sprites/british people.png" type="Texture" id=9]
+[ext_resource path="res://sprites/obamna.png" type="Texture" id=10]
+[ext_resource path="res://the cool/eggy.webm" type="VideoStream" id=11]
+[ext_resource path="res://the cool/fire_aspect.webm" type="VideoStream" id=12]
+[ext_resource path="res://the cool/Skeleton With Guitar Riff.webm" type="VideoStream" id=13]
+[ext_resource path="res://music/MainMenuName.wav" type="AudioStream" id=14]
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=15]
+
+[sub_resource type="Shader" id=18]
+code = "shader_type canvas_item;
+
+//precision highp float;
+
+
+mat2 rot(float a) {
+    float c = cos(a), s = sin(a);
+    return mat2(vec2(c,s),vec2(-s,c));
+}
+
+const float pi = 3.14159265;
+const float pi2 = pi*2.0;
+
+vec2 pmod(vec2 p, float r) {
+    float a = atan(p.x, p.y) + pi/r;
+    float n = pi2 / r;
+    a = floor(a/n)*n;
+    return p*rot(-a);
+}
+
+float box( vec3 p, vec3 b ) {
+    vec3 d = abs(p) - b;
+    return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
+}
+
+float ifsBox(vec3 p) {
+    for (int i=0; i<5; i++) {
+        p = abs(p) - 1.0;
+        p.xy *= rot(TIME*0.3);
+        p.xz *= rot(TIME*0.1);
+    }
+    p.xz *= rot(TIME);
+    return box(p, vec3(0.4,0.8,0.3));
+}
+
+float map(vec3 p, vec3 cPos) {
+    vec3 p1 = p;
+    p1.x = mod(p1.x-5., 10.) - 5.;
+    p1.y = mod(p1.y-5., 10.) - 5.;
+    p1.z = mod(p1.z, 16.)-8.;
+    p1.xy = pmod(p1.xy, 5.0);
+    return ifsBox(p1);
+}
+
+void fragment() {
+    vec2 p = (FRAGCOORD.xy * 2.0 - (1.0 / SCREEN_PIXEL_SIZE).xy) / min((1.0 / SCREEN_PIXEL_SIZE).x, (1.0 / SCREEN_PIXEL_SIZE).y);
+
+    vec3 cPos = vec3(0.0,0.0, 0.3 * TIME);
+    // vec3 cPos = vec3(0.3*sin(iTime*0.8), 0.4*cos(iTime*0.3), -6.0 * iTime);
+    vec3 cDir = normalize(vec3(0.0, 0.0, -1.0));
+    vec3 cUp  = vec3(sin(TIME / 12.0), 1.0, 0.0);
+    vec3 cSide = cross(cDir, cUp);
+
+    vec3 ray = normalize(cSide * p.x + cUp * p.y + cDir);
+
+    // Phantom Mode https://www.shadertoy.com/view/MtScWW by aiekick
+    float acc = 0.0;
+    float acc2 = 0.0;
+    float t = 0.0;
+    for (int i = 0; i < 99; i++) {
+        vec3 pos = cPos + ray * t;
+        float dist = map(pos, cPos);
+        dist = max(abs(dist), 0.02);
+        float a = exp(-dist*3.0);
+        if (mod(length(pos)+3.0*TIME, 30.0) < 3.0) {
+            a *= 2.0;
+            acc2 += a;
+        }
+        acc += a;
+        t += dist * 0.5;
+    }
+
+    vec3 col = vec3(acc * 0.01, acc * 0.011 + acc2*0.002, acc * 0.012+ acc2*0.005);
+    COLOR = vec4(col, 1.0 - t * 0.03);
+}"
+
+[sub_resource type="ShaderMaterial" id=19]
+shader = SubResource( 18 )
+
+[sub_resource type="SpriteFrames" id=17]
+animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 10 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 1 )
+
+[sub_resource type="SpriteFrames" id=15]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=20]
+size = 32
+extra_spacing_char = 2
+font_data = ExtResource( 15 )
+
+[sub_resource type="DynamicFont" id=16]
+size = 32
+font_data = ExtResource( 1 )
+
+[sub_resource type="Shader" id=13]
+code = "/*
+Shader from Godot Shaders - the free shader library.
+godotshaders.com/shader/VHS-and-CRT-monitor-effect
+
+This shader is under CC0 license. Feel free to use, improve and 
+change this shader according to your needs and consider sharing 
+the modified result to godotshaders.com.
+*/
+
+shader_type canvas_item;
+
+//*** IMPORTANT! ***/ 
+// - If you are using this shader to affect the node it is applied to set 'overlay' to false (unchecked in the instepctor).
+// - If you are using this shader as an overlay, and want the shader to affect the nodes below in the Scene hierarchy,
+//   set 'overlay' to true (checked in the inspector).
+// On Mac there is potentially a bug causing this to not work properly. If that is the case and you want to use the shader as an overlay
+// change all \"overlay ? SCREEN_TEXTURE : TEXTURE\" to only \"SCREEN_TEXTURE\" on lines 129-140, and \"vec2 uv = overlay ? warp(SCREEN_UV) : warp(UV);\"
+// to \"vec2 uv = warp(SCREEN_UV);\" on line 98.
+uniform bool overlay = false;
+
+uniform float scanlines_opacity : hint_range(0.0, 1.0) = 0.4;
+uniform float scanlines_width : hint_range(0.0, 0.5) = 0.25;
+uniform float grille_opacity : hint_range(0.0, 1.0) = 0.3;
+uniform vec2 resolution = vec2(640.0, 480.0); // Set the number of rows and columns the texture will be divided in. Scanlines and grille will make a square based on these values
+
+uniform bool pixelate = true; // Fill each square (\"pixel\") with a sampled color, creating a pixel look and a more accurate representation of how a CRT monitor would work.
+
+uniform bool roll = true;
+uniform float roll_speed = 8.0; // Positive values are down, negative are up
+uniform float roll_size : hint_range(0.0, 100.0) = 15.0;
+uniform float roll_variation : hint_range(0.1, 5.0) = 1.8; // This valie is not an exact science. You have to play around with the value to find a look you like. How this works is explained in the code below.
+uniform float distort_intensity : hint_range(0.0, 0.2) = 0.05; // The distortion created by the rolling effect.
+
+uniform float noise_opacity : hint_range(0.0, 1.0) = 0.4;
+uniform float noise_speed = 5.0; // There is a movement in the noise pattern that can be hard to see first. This sets the speed of that movement.
+
+uniform float static_noise_intensity : hint_range(0.0, 1.0) = 0.06;
+
+uniform float aberration : hint_range(-1.0, 1.0) = 0.03; // Chromatic aberration, a distortion on each color channel.
+uniform float brightness = 1.4; // When adding scanline gaps and grille the image can get very dark. Brightness tries to compensate for that.
+uniform bool discolor = true; // Add a discolor effect simulating a VHS
+
+uniform float warp_amount :hint_range(0.0, 5.0) = 1.0; // Warp the texture edges simulating the curved glass of a CRT monitor or old TV.
+uniform bool clip_warp = false;
+
+uniform float vignette_intensity = 0.4; // Size of the vignette, how far towards the middle it should go.
+uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.5;
+
+// Used by the noise functin to generate a pseudo random value between 0.0 and 1.0
+vec2 random(vec2 uv){
+    uv = vec2( dot(uv, vec2(127.1,311.7) ),
+               dot(uv, vec2(269.5,183.3) ) );
+    return -1.0 + 2.0 * fract(sin(uv) * 43758.5453123);
+}
+
+// Generate a Perlin noise used by the distortion effects
+float noise(vec2 uv) {
+    vec2 uv_index = floor(uv);
+    vec2 uv_fract = fract(uv);
+
+    vec2 blur = smoothstep(0.0, 1.0, uv_fract);
+
+    return mix( mix( dot( random(uv_index + vec2(0.0,0.0) ), uv_fract - vec2(0.0,0.0) ),
+                     dot( random(uv_index + vec2(1.0,0.0) ), uv_fract - vec2(1.0,0.0) ), blur.x),
+                mix( dot( random(uv_index + vec2(0.0,1.0) ), uv_fract - vec2(0.0,1.0) ),
+                     dot( random(uv_index + vec2(1.0,1.0) ), uv_fract - vec2(1.0,1.0) ), blur.x), blur.y) * 0.5 + 0.5;
+}
+
+// Takes in the UV and warps the edges, creating the spherized effect
+vec2 warp(vec2 uv){
+	vec2 delta = uv - 0.5;
+	float delta2 = dot(delta.xy, delta.xy);
+	float delta4 = delta2 * delta2;
+	float delta_offset = delta4 * warp_amount;
+	
+	return uv + delta * delta_offset;
+}
+
+// Adds a black border to hide stretched pixel created by the warp effect
+float border (vec2 uv){
+	float radius = min(warp_amount, 0.08);
+	radius = max(min(min(abs(radius * 2.0), abs(1.0)), abs(1.0)), 1e-5);
+	vec2 abs_uv = abs(uv * 2.0 - 1.0) - vec2(1.0, 1.0) + radius;
+	float dist = length(max(vec2(0.0), abs_uv)) / radius;
+	float square = smoothstep(0.96, 1.0, dist);
+	return clamp(1.0 - square, 0.0, 1.0);
+}
+
+// Adds a vignette shadow to the edges of the image
+float vignette(vec2 uv){
+	uv *= 1.0 - uv.xy;
+	float vignette = uv.x * uv.y * 15.0;
+	return pow(vignette, vignette_intensity * vignette_opacity);
+}
+
+void fragment()
+{
+	vec2 uv = overlay ? warp(SCREEN_UV) : warp(UV); // Warp the uv. uv will be used in most cases instead of UV to keep the warping
+	vec2 text_uv = uv;
+	vec2 roll_uv = vec2(0.0);
+	float time = roll ? TIME : 0.0;
+	
+
+	// Pixelate the texture based on the given resolution.
+	if (pixelate)
+	{
+		text_uv = ceil(uv * resolution) / resolution;
+	}
+	
+	// Create the rolling effect. We need roll_line a bit later to make the noise effect.
+	// That is why this runs if roll is true OR noise_opacity is over 0.
+	float roll_line = 0.0;
+	if (roll || noise_opacity > 0.0)
+	{
+		// Create the areas/lines where the texture will be distorted.
+		roll_line = smoothstep(0.3, 0.9, sin(uv.y * roll_size - (time * roll_speed) ) );
+		// Create more lines of a different size and apply to the first set of lines. This creates a bit of variation.
+		roll_line *= roll_line * smoothstep(0.3, 0.9, sin(uv.y * roll_size * roll_variation - (time * roll_speed * roll_variation) ) );
+		// Distort the UV where where the lines are
+		roll_uv = vec2(( roll_line * distort_intensity * (1.-UV.x)), 0.0);
+	}
+	
+	vec4 text;
+	if (roll)
+	{
+		// If roll is true distort the texture with roll_uv. The texture is split up into RGB to 
+		// make some chromatic aberration. We apply the aberration to the red and green channels accorging to the aberration parameter
+		// and intensify it a bit in the roll distortion.
+		text.r = texture(SCREEN_TEXTURE, text_uv + roll_uv * 0.8 + vec2(aberration, 0.0) * .1).r;
+		text.g = texture(SCREEN_TEXTURE, text_uv + roll_uv * 1.2 - vec2(aberration, 0.0) * .1 ).g;
+		text.b = texture(SCREEN_TEXTURE, text_uv + roll_uv).b;
+		text.a = 1.0;
+	}
+	else
+	{
+		// If roll is false only apply the aberration without any distorion. The aberration values are very small so the .1 is only 
+		// to make the slider in the Inspector less sensitive.
+		text.r = texture(SCREEN_TEXTURE, text_uv + vec2(aberration, 0.0) * .1).r;
+		text.g = texture(SCREEN_TEXTURE, text_uv - vec2(aberration, 0.0) * .1).g;
+		text.b = texture(SCREEN_TEXTURE, text_uv).b;
+		text.a = 1.0;
+	}
+	
+	float r = text.r;
+	float g = text.g;
+	float b = text.b;
+	
+	uv = warp(UV);
+	
+	// CRT monitors don't have pixels but groups of red, green and blue dots or lines, called grille. We isolate the texture's color channels 
+	// and divide it up in 3 offsetted lines to show the red, green and blue colors next to each other, with a small black gap between.
+	if (grille_opacity > 0.0){
+		
+		float g_r = smoothstep(0.85, 0.95, abs(sin(uv.x * (resolution.x * 3.14159265))));
+		r = mix(r, r * g_r, grille_opacity);
+		
+		float g_g = smoothstep(0.85, 0.95, abs(sin(1.05 + uv.x * (resolution.x * 3.14159265))));
+		g = mix(g, g * g_g, grille_opacity);
+		
+		float b_b = smoothstep(0.85, 0.95, abs(sin(2.1 + uv.x * (resolution.x * 3.14159265))));
+		b = mix(b, b * b_b, grille_opacity);
+		
+	}
+	
+	// Apply the grille to the texture's color channels and apply Brightness. Since the grille and the scanlines (below) make the image very dark you
+	// can compensate by increasing the brightness.
+	text.r = clamp(r * brightness, 0.0, 1.0);
+	text.g = clamp(g * brightness, 0.0, 1.0);
+	text.b = clamp(b * brightness, 0.0, 1.0);
+	
+	// Scanlines are the horizontal lines that make up the image on a CRT monitor. 
+	// Here we are actual setting the black gap between each line, which I guess is not the right definition of the word, but you get the idea  
+	float scanlines = 0.5;
+	if (scanlines_opacity > 0.0)
+	{
+		// Same technique as above, create lines with sine and applying it to the texture. Smoothstep to allow setting the line size.
+		scanlines = smoothstep(scanlines_width, scanlines_width + 0.5, abs(sin(uv.y * (resolution.y * 3.14159265))));
+		text.rgb = mix(text.rgb, text.rgb * vec3(scanlines), scanlines_opacity);
+	}
+	
+	// Apply the banded noise.
+	if (noise_opacity > 0.0)
+	{
+		// Generate a noise pattern that is very stretched horizontally, and animate it with noise_speed
+		float noise = smoothstep(0.4, 0.5, noise(uv * vec2(2.0, 200.0) + vec2(10.0, (TIME * (noise_speed))) ) );
+		
+		// We use roll_line (set above) to define how big the noise should be vertically (multiplying cuts off all black parts).
+		// We also add in some basic noise with random() to break up the noise pattern above. The noise is sized according to 
+		// the resolution value set in the inspector. If you don't like this look you can 
+		// change \"ceil(uv * resolution) / resolution\" to only \"uv\" to make it less pixelated. Or multiply resolution with som value
+		// greater than 1.0 to make them smaller.
+		roll_line *= noise * scanlines * clamp(random((ceil(uv * resolution) / resolution) + vec2(TIME * 0.8, 0.0)).x + 0.8, 0.0, 1.0);
+		// Add it to the texture based on noise_opacity
+		text.rgb = clamp(mix(text.rgb, text.rgb + roll_line, noise_opacity), vec3(0.0), vec3(1.0));
+	}
+	
+	// Apply static noise by generating it over the whole screen in the same way as above
+	if (static_noise_intensity > 0.0)
+	{
+		text.rgb += clamp(random((ceil(uv * resolution) / resolution) + fract(TIME)).x, 0.0, 1.0) * static_noise_intensity;
+	}
+	
+	// Apply a black border to hide imperfections caused by the warping.
+	// Also apply the vignette
+	text.rgb *= border(uv);
+	text.rgb *= vignette(uv);
+	// Hides the black border and make that area transparent. Good if you want to add the the texture on top an image of a TV or monitor.
+	if (clip_warp)
+	{
+		text.a = border(uv);
+	}
+	
+	// Apply discoloration to get a VHS look (lower saturation and higher contrast)
+	// You can play with the values below or expose them in the Inspector.
+	float saturation = 0.5;
+	float contrast = 1.2;
+	if (discolor)
+	{
+		// Saturation
+		vec3 greyscale = vec3(text.r + text.g + text.b) / 3.;
+		text.rgb = mix(text.rgb, greyscale, saturation);
+		
+		// Contrast
+		float midpoint = pow(0.5, 2.2);
+		text.rgb = (text.rgb - vec3(midpoint)) * contrast + midpoint;
+	}
+	
+	COLOR = text;
+}"
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+shader_param/overlay = true
+shader_param/scanlines_opacity = 0.4
+shader_param/scanlines_width = 0.25
+shader_param/grille_opacity = 0.092
+shader_param/resolution = Vector2( 640, 480 )
+shader_param/pixelate = false
+shader_param/roll = true
+shader_param/roll_speed = 2.0
+shader_param/roll_size = 10.05
+shader_param/roll_variation = 2.771
+shader_param/distort_intensity = 0.018
+shader_param/noise_opacity = 0.08
+shader_param/noise_speed = 2.0
+shader_param/static_noise_intensity = 0.119
+shader_param/aberration = 0.0
+shader_param/brightness = 1.4
+shader_param/discolor = false
+shader_param/warp_amount = 1.461
+shader_param/clip_warp = true
+shader_param/vignette_intensity = 0.4
+shader_param/vignette_opacity = 0.438
+
+[node name="NameSelection" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+modulate = Color( 0.439216, 0.239216, 0.639216, 0.0901961 )
+material = SubResource( 19 )
+margin_left = -1042.0
+margin_top = -79.0
+margin_right = 1753.0
+margin_bottom = 631.0
+
+[node name="spices_dusttale" type="VideoPlayer" parent="."]
+visible = false
+margin_left = 119.0
+margin_top = 208.0
+margin_right = 486.0
+margin_bottom = 448.0
+stream = ExtResource( 8 )
+volume_db = 24.0
+
+[node name="eggy" type="VideoPlayer" parent="."]
+visible = false
+margin_left = 154.0
+margin_top = 156.0
+margin_right = 489.0
+margin_bottom = 463.0
+stream = ExtResource( 11 )
+
+[node name="eskull" type="VideoPlayer" parent="."]
+visible = false
+margin_left = 154.0
+margin_top = 156.0
+margin_right = 489.0
+margin_bottom = 463.0
+stream = ExtResource( 13 )
+
+[node name="mug" type="VideoPlayer" parent="."]
+visible = false
+margin_left = 97.0
+margin_top = 156.0
+margin_right = 560.0
+margin_bottom = 463.0
+stream = ExtResource( 12 )
+
+[node name="Images" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 323, 294 )
+scale = Vector2( 0.7, 0.7 )
+frames = SubResource( 17 )
+
+[node name="Keys" type="Node2D" parent="."]
+position = Vector2( 0, -33 )
+
+[node name="UpperCase1" type="Node2D" parent="Keys"]
+position = Vector2( 21, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="A" type="RichTextLabel" parent="Keys/UpperCase1"]
+margin_left = 125.0
+margin_top = 174.0
+margin_right = 150.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "A"
+text = "A"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Keys/UpperCase1"]
+margin_left = 180.0
+margin_top = 174.0
+margin_right = 205.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "B"
+text = "B"
+scroll_active = false
+
+[node name="B2" type="RichTextLabel" parent="Keys/UpperCase1"]
+margin_left = 235.0
+margin_top = 174.0
+margin_right = 260.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "C"
+text = "C"
+scroll_active = false
+
+[node name="B3" type="RichTextLabel" parent="Keys/UpperCase1"]
+margin_left = 290.0
+margin_top = 174.0
+margin_right = 315.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "D"
+text = "D"
+scroll_active = false
+
+[node name="B4" type="RichTextLabel" parent="Keys/UpperCase1"]
+margin_left = 345.0
+margin_top = 174.0
+margin_right = 370.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "E"
+text = "E"
+scroll_active = false
+
+[node name="B5" type="RichTextLabel" parent="Keys/UpperCase1"]
+margin_left = 400.0
+margin_top = 174.0
+margin_right = 425.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "F"
+text = "F"
+scroll_active = false
+
+[node name="B6" type="RichTextLabel" parent="Keys/UpperCase1"]
+margin_left = 455.0
+margin_top = 174.0
+margin_right = 480.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "G"
+text = "G"
+scroll_active = false
+
+[node name="UpperCase2" type="Node2D" parent="Keys"]
+position = Vector2( 21, 30 )
+
+[node name="A" type="RichTextLabel" parent="Keys/UpperCase2"]
+margin_left = 125.0
+margin_top = 174.0
+margin_right = 150.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "H"
+text = "H"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Keys/UpperCase2"]
+margin_left = 180.0
+margin_top = 174.0
+margin_right = 205.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "I"
+text = "I"
+scroll_active = false
+
+[node name="B2" type="RichTextLabel" parent="Keys/UpperCase2"]
+margin_left = 235.0
+margin_top = 174.0
+margin_right = 260.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "J"
+text = "J"
+scroll_active = false
+
+[node name="B3" type="RichTextLabel" parent="Keys/UpperCase2"]
+margin_left = 290.0
+margin_top = 174.0
+margin_right = 315.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "K"
+text = "K"
+scroll_active = false
+
+[node name="B4" type="RichTextLabel" parent="Keys/UpperCase2"]
+margin_left = 345.0
+margin_top = 174.0
+margin_right = 370.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "L"
+text = "L"
+scroll_active = false
+
+[node name="B5" type="RichTextLabel" parent="Keys/UpperCase2"]
+margin_left = 400.0
+margin_top = 174.0
+margin_right = 425.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "M"
+text = "M"
+scroll_active = false
+
+[node name="B6" type="RichTextLabel" parent="Keys/UpperCase2"]
+margin_left = 455.0
+margin_top = 174.0
+margin_right = 480.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "N"
+text = "N"
+scroll_active = false
+
+[node name="UpperCase3" type="Node2D" parent="Keys"]
+position = Vector2( 21, 60 )
+
+[node name="A" type="RichTextLabel" parent="Keys/UpperCase3"]
+margin_left = 125.0
+margin_top = 174.0
+margin_right = 150.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "O"
+text = "O"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Keys/UpperCase3"]
+margin_left = 180.0
+margin_top = 174.0
+margin_right = 205.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "P"
+text = "P"
+scroll_active = false
+
+[node name="B2" type="RichTextLabel" parent="Keys/UpperCase3"]
+margin_left = 235.0
+margin_top = 174.0
+margin_right = 260.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Q"
+text = "Q"
+scroll_active = false
+
+[node name="B3" type="RichTextLabel" parent="Keys/UpperCase3"]
+margin_left = 290.0
+margin_top = 174.0
+margin_right = 315.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "R"
+text = "R"
+scroll_active = false
+
+[node name="B4" type="RichTextLabel" parent="Keys/UpperCase3"]
+margin_left = 345.0
+margin_top = 174.0
+margin_right = 370.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "S"
+text = "S"
+scroll_active = false
+
+[node name="B5" type="RichTextLabel" parent="Keys/UpperCase3"]
+margin_left = 400.0
+margin_top = 174.0
+margin_right = 425.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "T"
+text = "T"
+scroll_active = false
+
+[node name="B6" type="RichTextLabel" parent="Keys/UpperCase3"]
+margin_left = 455.0
+margin_top = 174.0
+margin_right = 480.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "U"
+text = "U"
+scroll_active = false
+
+[node name="UpperCase4" type="Node2D" parent="Keys"]
+position = Vector2( 21, 90 )
+
+[node name="A" type="RichTextLabel" parent="Keys/UpperCase4"]
+margin_left = 125.0
+margin_top = 174.0
+margin_right = 150.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "V"
+text = "V"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Keys/UpperCase4"]
+margin_left = 180.0
+margin_top = 174.0
+margin_right = 205.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "W"
+text = "W"
+scroll_active = false
+
+[node name="B2" type="RichTextLabel" parent="Keys/UpperCase4"]
+margin_left = 235.0
+margin_top = 174.0
+margin_right = 260.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "X"
+text = "X"
+scroll_active = false
+
+[node name="B3" type="RichTextLabel" parent="Keys/UpperCase4"]
+margin_left = 290.0
+margin_top = 174.0
+margin_right = 315.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Y"
+text = "Y"
+scroll_active = false
+
+[node name="B4" type="RichTextLabel" parent="Keys/UpperCase4"]
+margin_left = 345.0
+margin_top = 174.0
+margin_right = 370.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Z"
+text = "Z"
+scroll_active = false
+
+[node name="LowerCase1" type="Node2D" parent="Keys"]
+position = Vector2( 21, 137 )
+
+[node name="A" type="RichTextLabel" parent="Keys/LowerCase1"]
+margin_left = 125.0
+margin_top = 174.0
+margin_right = 150.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "a"
+text = "a"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Keys/LowerCase1"]
+margin_left = 180.0
+margin_top = 174.0
+margin_right = 205.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "b"
+text = "b"
+scroll_active = false
+
+[node name="B2" type="RichTextLabel" parent="Keys/LowerCase1"]
+margin_left = 235.0
+margin_top = 174.0
+margin_right = 260.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "c"
+text = "c"
+scroll_active = false
+
+[node name="B3" type="RichTextLabel" parent="Keys/LowerCase1"]
+margin_left = 290.0
+margin_top = 174.0
+margin_right = 315.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "d"
+text = "d"
+scroll_active = false
+
+[node name="B4" type="RichTextLabel" parent="Keys/LowerCase1"]
+margin_left = 345.0
+margin_top = 174.0
+margin_right = 370.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "e"
+text = "e"
+scroll_active = false
+
+[node name="B5" type="RichTextLabel" parent="Keys/LowerCase1"]
+margin_left = 400.0
+margin_top = 174.0
+margin_right = 425.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "f"
+text = "f"
+scroll_active = false
+
+[node name="B6" type="RichTextLabel" parent="Keys/LowerCase1"]
+margin_left = 455.0
+margin_top = 174.0
+margin_right = 480.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "g"
+text = "g"
+scroll_active = false
+
+[node name="LowerCase2" type="Node2D" parent="Keys"]
+position = Vector2( 21, 166 )
+
+[node name="A" type="RichTextLabel" parent="Keys/LowerCase2"]
+margin_left = 125.0
+margin_top = 174.0
+margin_right = 150.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "h"
+text = "h"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Keys/LowerCase2"]
+margin_left = 180.0
+margin_top = 174.0
+margin_right = 205.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "i"
+text = "i"
+scroll_active = false
+
+[node name="B2" type="RichTextLabel" parent="Keys/LowerCase2"]
+margin_left = 235.0
+margin_top = 174.0
+margin_right = 260.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "j"
+text = "j"
+scroll_active = false
+
+[node name="B3" type="RichTextLabel" parent="Keys/LowerCase2"]
+margin_left = 290.0
+margin_top = 174.0
+margin_right = 315.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "k"
+text = "k"
+scroll_active = false
+
+[node name="B4" type="RichTextLabel" parent="Keys/LowerCase2"]
+margin_left = 345.0
+margin_top = 174.0
+margin_right = 370.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "l"
+text = "l"
+scroll_active = false
+
+[node name="B5" type="RichTextLabel" parent="Keys/LowerCase2"]
+margin_left = 400.0
+margin_top = 174.0
+margin_right = 425.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "m"
+text = "m"
+scroll_active = false
+
+[node name="B6" type="RichTextLabel" parent="Keys/LowerCase2"]
+margin_left = 455.0
+margin_top = 174.0
+margin_right = 480.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "n"
+text = "n"
+scroll_active = false
+
+[node name="LowerCase3" type="Node2D" parent="Keys"]
+position = Vector2( 21, 196 )
+
+[node name="A" type="RichTextLabel" parent="Keys/LowerCase3"]
+margin_left = 125.0
+margin_top = 174.0
+margin_right = 150.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "o"
+text = "o"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Keys/LowerCase3"]
+margin_left = 180.0
+margin_top = 174.0
+margin_right = 205.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "p"
+text = "p"
+scroll_active = false
+
+[node name="B2" type="RichTextLabel" parent="Keys/LowerCase3"]
+margin_left = 235.0
+margin_top = 174.0
+margin_right = 260.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "q"
+text = "q"
+scroll_active = false
+
+[node name="B3" type="RichTextLabel" parent="Keys/LowerCase3"]
+margin_left = 290.0
+margin_top = 174.0
+margin_right = 315.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "r"
+text = "r"
+scroll_active = false
+
+[node name="B4" type="RichTextLabel" parent="Keys/LowerCase3"]
+margin_left = 345.0
+margin_top = 174.0
+margin_right = 370.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "s"
+text = "s"
+scroll_active = false
+
+[node name="B5" type="RichTextLabel" parent="Keys/LowerCase3"]
+margin_left = 400.0
+margin_top = 174.0
+margin_right = 425.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "t"
+text = "t"
+scroll_active = false
+
+[node name="B6" type="RichTextLabel" parent="Keys/LowerCase3"]
+margin_left = 455.0
+margin_top = 174.0
+margin_right = 480.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "u"
+text = "u"
+scroll_active = false
+
+[node name="LowerCase4" type="Node2D" parent="Keys"]
+position = Vector2( 21, 226 )
+
+[node name="A" type="RichTextLabel" parent="Keys/LowerCase4"]
+margin_left = 125.0
+margin_top = 174.0
+margin_right = 150.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "v"
+text = "v"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Keys/LowerCase4"]
+margin_left = 180.0
+margin_top = 174.0
+margin_right = 205.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "w"
+text = "w"
+scroll_active = false
+
+[node name="B2" type="RichTextLabel" parent="Keys/LowerCase4"]
+margin_left = 235.0
+margin_top = 174.0
+margin_right = 260.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "x"
+text = "x"
+scroll_active = false
+
+[node name="B3" type="RichTextLabel" parent="Keys/LowerCase4"]
+margin_left = 290.0
+margin_top = 174.0
+margin_right = 315.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "y"
+text = "y"
+scroll_active = false
+
+[node name="B4" type="RichTextLabel" parent="Keys/LowerCase4"]
+margin_left = 345.0
+margin_top = 174.0
+margin_right = 370.0
+margin_bottom = 208.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "z"
+text = "z"
+scroll_active = false
+
+[node name="Options" type="Node2D" parent="Keys"]
+
+[node name="Backspace" type="RichTextLabel" parent="Keys/Options"]
+margin_left = 120.0
+margin_top = 453.0
+margin_right = 286.0
+margin_bottom = 529.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = " Стереть"
+text = " Стереть"
+scroll_active = false
+
+[node name="Select" type="RichTextLabel" parent="Keys/Options"]
+margin_left = 422.0
+margin_top = 453.0
+margin_right = 588.0
+margin_bottom = 529.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = " Готово"
+text = " Готово"
+scroll_active = false
+
+[node name="Soul" type="AnimatedSprite" parent="."]
+frames = SubResource( 15 )
+
+[node name="vorprize" type="RichTextLabel" parent="."]
+visible = false
+modulate = Color( 0.121569, 0.133333, 0.176471, 1 )
+margin_left = -30.0
+margin_top = -26.0
+margin_right = 716.0
+margin_bottom = 560.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Посмотрите на них, они приходят сюда, зная, что нечисты. Тенно используют ключи, но они всего лишь нарушители. Только я, Вор, знаю истинную силу Пустоты. Меня разрезали пополам, уничтожили, но через свой Ключ Януса Пустота призвала меня. Она привела меня сюда, и здесь я возродился. Мы не можем винить этих существ, ими руководит лжепророк, самозванец, не знающий секретов Пустоты. Вот Тенно, пришедшие, чтобы осквернить и осквернить это священное царство. Братья мои, разве я не говорил об этом дне? Разве я не предсказывал этот момент? Теперь я остановлю их. Теперь я изменился, возродился благодаря энергии Ключа Януса. Навечно связан с Пустотой. Пусть все знают, если Тенно хотят истинного спасения, они сложат оружие и будут ждать крещения моим Ключом Януса. Пришло время. Я научу этих нарушителей искупительной силе моего Ключа Януса. Они поймут эту простую истину. Тенно заблудились, и они будут сопротивляться. Но я, Вор, очистлю это место от их нечистоты."
+text = "Посмотрите на них, они приходят сюда, зная, что нечисты. Тенно используют ключи, но они всего лишь нарушители. Только я, Вор, знаю истинную силу Пустоты. Меня разрезали пополам, уничтожили, но через свой Ключ Януса Пустота призвала меня. Она привела меня сюда, и здесь я возродился. Мы не можем винить этих существ, ими руководит лжепророк, самозванец, не знающий секретов Пустоты. Вот Тенно, пришедшие, чтобы осквернить и осквернить это священное царство. Братья мои, разве я не говорил об этом дне? Разве я не предсказывал этот момент? Теперь я остановлю их. Теперь я изменился, возродился благодаря энергии Ключа Януса. Навечно связан с Пустотой. Пусть все знают, если Тенно хотят истинного спасения, они сложат оружие и будут ждать крещения моим Ключом Януса. Пришло время. Я научу этих нарушителей искупительной силе моего Ключа Януса. Они поймут эту простую истину. Тенно заблудились, и они будут сопротивляться. Но я, Вор, очистлю это место от их нечистоты.."
+scroll_active = false
+
+[node name="Title" type="Label" parent="."]
+margin_left = 140.0
+margin_top = 18.0
+margin_right = 493.0
+margin_bottom = 155.0
+size_flags_horizontal = 0
+custom_fonts/font = SubResource( 20 )
+text = "Предложите ей имя."
+align = 1
+autowrap = true
+
+[node name="Name" type="Label" parent="."]
+margin_left = 268.0
+margin_top = 89.0
+margin_right = 368.0
+margin_bottom = 125.0
+rect_pivot_offset = Vector2( 51, 0 )
+custom_fonts/font = SubResource( 16 )
+
+[node name="shader" type="ColorRect" parent="."]
+material = SubResource( 14 )
+margin_left = -127.0
+margin_top = -62.0
+margin_right = 767.0
+margin_bottom = 595.0
+
+[node name="Camera" parent="." instance=ExtResource( 2 )]
+
+[node name="static" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -80.0
+bus = "Music"
+
+[node name="movement" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+bus = "Effects"
+
+[node name="select" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+bus = "Effects"
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+volume_db = -80.0
+pitch_scale = 0.6
+bus = "Music"
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0.639216, 0.6, 0.827451, 1 )
+
+[editable path="Camera"]

@@ -1,0 +1,436 @@
+[gd_scene load_steps=37 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://sprites/misc/icons/syl.png" type="Texture" id=2]
+[ext_resource path="res://sprites/misc/icons/eggy.png" type="Texture" id=3]
+[ext_resource path="res://sprites/misc/icons/xeron.png" type="Texture" id=4]
+[ext_resource path="res://sprites/misc/icons/blith.png" type="Texture" id=5]
+[ext_resource path="res://sprites/misc/icons/__b.png" type="Texture" id=6]
+[ext_resource path="res://sprites/misc/icons/lucana2.png" type="Texture" id=7]
+[ext_resource path="res://sprites/misc/icons/spice.png" type="Texture" id=8]
+[ext_resource path="res://sprites/misc/icons/dreamthedev.png" type="Texture" id=9]
+[ext_resource path="res://sprites/misc/icons/epic.png" type="Texture" id=10]
+[ext_resource path="res://sprites/misc/icons/kirb.png" type="Texture" id=11]
+[ext_resource path="res://sprites/misc/icons/zal.png" type="Texture" id=12]
+[ext_resource path="res://sprites/misc/icons/synthmints.png" type="Texture" id=13]
+[ext_resource path="res://sprites/misc/icons/jack.png" type="Texture" id=14]
+[ext_resource path="res://sprites/misc/icons/dingy.png" type="Texture" id=15]
+[ext_resource path="res://sprites/misc/icons/apricoska.png" type="Texture" id=16]
+[ext_resource path="res://sprites/misc/icons/agu.png" type="Texture" id=17]
+[ext_resource path="res://sprites/misc/icons/mugger.png" type="Texture" id=18]
+[ext_resource path="res://sprites/misc/icons/bloodmourn.png" type="Texture" id=19]
+[ext_resource path="res://sprites/misc/icons/okiwillusemyrealname.png" type="Texture" id=20]
+[ext_resource path="res://sprites/misc/icons/kekuus.png" type="Texture" id=21]
+[ext_resource path="res://sprites/misc/icons/piesprite.png" type="Texture" id=22]
+[ext_resource path="res://sprites/misc/icons/akalixhotcake.png" type="Texture" id=23]
+[ext_resource path="res://sprites/misc/icons/wrath.png" type="Texture" id=24]
+[ext_resource path="res://music/soundFX/snd_switchpull_n.wav" type="AudioStream" id=25]
+[ext_resource path="res://music/credits.mp3" type="AudioStream" id=26]
+[ext_resource path="res://Cutscenes/Credits.gd" type="Script" id=27]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=28]
+[ext_resource path="res://sprites/main_screen/Undertale_IceBound_logo.png" type="Texture" id=29]
+[ext_resource path="res://sprites/misc/icons/comic.png" type="Texture" id=30]
+[ext_resource path="res://sprites/misc/icons/yunee.png" type="Texture" id=31]
+[ext_resource path="res://sprites/misc/icons/shimmer.png" type="Texture" id=32]
+
+[sub_resource type="DynamicFont" id=1]
+extra_spacing_bottom = 4
+font_data = ExtResource( 1 )
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 1 ), 0.0, -2.20245, 0, 0, Vector2( 1, 0 ), -2.70434, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 2
+emission_box_extents = Vector3( 450, 1, 1 )
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 2, 5, 0 )
+angular_velocity = 175.29
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 2.0
+radial_accel_random = 1.0
+tangential_accel_random = 1.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 3 )
+hue_variation = 0.03
+hue_variation_random = 1.0
+
+[node name="Credits" type="Node2D"]
+script = ExtResource( 27 )
+
+[node name="All" type="Node2D" parent="."]
+position = Vector2( 69, 436 )
+scale = Vector2( 0.8, 0.8 )
+
+[node name="Names" type="Node2D" parent="All"]
+
+[node name="TeamName" type="Label" parent="All/Names"]
+margin_top = 60.0
+margin_right = 350.0
+margin_bottom = 80.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Игра создана Team Icebox"
+align = 1
+
+[node name="TeamCredits" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.784314, 0.596078, 1 )
+margin_top = 209.0
+margin_right = 350.0
+margin_bottom = 230.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "---- Благодарности ----"
+align = 1
+
+[node name="Directed" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.952941, 0.745098, 1 )
+margin_top = 260.0
+margin_right = 350.0
+margin_bottom = 281.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "- Директора -"
+align = 1
+
+[node name="Directed2" type="Label" parent="All/Names"]
+margin_top = 307.0
+margin_right = 350.0
+margin_bottom = 336.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Lucana
+__b"
+align = 1
+
+[node name="Writing" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.952941, 0.745098, 1 )
+margin_top = 453.75
+margin_right = 350.0
+margin_bottom = 480.75
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "- Писатели -"
+align = 1
+
+[node name="Writing2" type="Label" parent="All/Names"]
+margin_top = 494.75
+margin_right = 350.0
+margin_bottom = 587.75
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Lucana
+Spice
+comic
+TheBlithroth
+TyVanBuskirk"
+align = 1
+
+[node name="Art" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.952941, 0.745098, 1 )
+margin_top = 785.0
+margin_right = 350.0
+margin_bottom = 827.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "- Художники -"
+align = 1
+
+[node name="Art2" type="Label" parent="All/Names"]
+margin_top = 826.0
+margin_right = 350.0
+margin_bottom = 967.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "__b
+Epic
+apricoska
+Kekuus
+ShimmyTheGuardian
+Xeron"
+align = 1
+
+[node name="Music" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.952941, 0.745098, 1 )
+margin_top = 1175.0
+margin_right = 350.0
+margin_bottom = 1217.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "- Музыка -"
+align = 1
+
+[node name="Music2" type="Label" parent="All/Names"]
+margin_top = 1220.0
+margin_right = 350.0
+margin_bottom = 1337.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Mugger
+Synth Mints/Snowy
+Epic
+hotcake
+Yunee"
+align = 1
+
+[node name="Spriting" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.952941, 0.745098, 1 )
+margin_top = 1513.75
+margin_right = 350.0
+margin_bottom = 1555.75
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "- Спрайтеры -"
+align = 1
+
+[node name="Spriting2" type="Label" parent="All/Names"]
+margin_top = 1556.75
+margin_right = 350.0
+margin_bottom = 1745.75
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Kekuus
+Piesprite
+apricoska
+Bloodmourn
+zalcuzidk
+__b
+AGoodUsername
+okiwillusemyrealname"
+align = 1
+
+[node name="Coding" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.952941, 0.745098, 1 )
+margin_left = 1.0
+margin_top = 2023.75
+margin_right = 351.0
+margin_bottom = 2065.75
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "- Кодеры -"
+align = 1
+
+[node name="Coding2" type="Label" parent="All/Names"]
+margin_top = 2068.75
+margin_right = 350.0
+margin_bottom = 2113.75
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "__b
+dingyspy/rai_nd"
+align = 1
+
+[node name="Translation" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.952941, 0.745098, 1 )
+margin_top = 2220.0
+margin_right = 350.0
+margin_bottom = 2262.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "- Переводчик -"
+align = 1
+
+[node name="Translation2" type="Label" parent="All/Names"]
+margin_top = 2265.0
+margin_right = 350.0
+margin_bottom = 2286.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Code4ge Studio"
+align = 1
+
+[node name="SpecialThanks" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.784314, 0.596078, 1 )
+margin_top = 2431.25
+margin_right = 350.0
+margin_bottom = 2452.25
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "---- Авторы ----"
+align = 1
+
+[node name="SpecialThanks2" type="Label" parent="All/Names"]
+margin_top = 2476.25
+margin_right = 350.0
+margin_bottom = 2569.25
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "kirb - Early spriter
+Jackass - Early spriter
+JreemTheDev - Early coder + additional help"
+align = 1
+
+[node name="SpecialThanksOther" type="Label" parent="All/Names"]
+modulate = Color( 1, 0.784314, 0.596078, 1 )
+margin_top = 2791.25
+margin_right = 350.0
+margin_bottom = 2812.25
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "---- Особые благодарности ----"
+align = 1
+
+[node name="SpecialThanksOther2" type="Label" parent="All/Names"]
+margin_top = 2836.25
+margin_right = 350.0
+margin_bottom = 2953.25
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "Fusionflare/Eggy
+Syl
+Wrath
+... и тебе, игрок."
+align = 1
+
+[node name="Icons" type="Node2D" parent="All"]
+position = Vector2( 0, 27 )
+scale = Vector2( 1.8, 1.8 )
+
+[node name="xeron" type="Sprite" parent="All/Icons"]
+position = Vector2( 231.111, 586.389 )
+texture = ExtResource( 4 )
+
+[node name="eggy" type="Sprite" parent="All/Icons"]
+position = Vector2( 285.778, 1569.36 )
+texture = ExtResource( 3 )
+
+[node name="syl" type="Sprite" parent="All/Icons"]
+position = Vector2( 220.111, 1595.7 )
+texture = ExtResource( 2 )
+
+[node name="blith" type="Sprite" parent="All/Icons"]
+position = Vector2( 263.333, 346.722 )
+texture = ExtResource( 5 )
+
+[node name="__b" type="Sprite" parent="All/Icons"]
+position = Vector2( 222.222, 191.944 )
+texture = ExtResource( 6 )
+
+[node name="lucana" type="Sprite" parent="All/Icons"]
+position = Vector2( 236.667, 165.75 )
+texture = ExtResource( 7 )
+
+[node name="spice" type="Sprite" parent="All/Icons"]
+position = Vector2( 229.444, 293.333 )
+texture = ExtResource( 8 )
+
+[node name="epic" type="Sprite" parent="All/Icons"]
+position = Vector2( 228.333, 479.333 )
+texture = ExtResource( 10 )
+
+[node name="apricoska" type="Sprite" parent="All/Icons"]
+position = Vector2( 248.333, 507.111 )
+texture = ExtResource( 16 )
+
+[node name="kekuus" type="Sprite" parent="All/Icons"]
+position = Vector2( 238.889, 533.222 )
+texture = ExtResource( 21 )
+
+[node name="shimmer" type="Sprite" parent="All/Icons"]
+position = Vector2( 290.278, 554.444 )
+texture = ExtResource( 32 )
+
+[node name="mugger" type="Sprite" parent="All/Icons"]
+position = Vector2( 237.222, 666.582 )
+texture = ExtResource( 18 )
+
+[node name="synthmints" type="Sprite" parent="All/Icons"]
+position = Vector2( 282.222, 700.471 )
+texture = ExtResource( 13 )
+
+[node name="hotcake" type="Sprite" parent="All/Icons"]
+position = Vector2( 238.889, 753.249 )
+texture = ExtResource( 23 )
+
+[node name="yunee" type="Sprite" parent="All/Icons"]
+position = Vector2( 233.333, 778.749 )
+texture = ExtResource( 31 )
+
+[node name="piesprite" type="Sprite" parent="All/Icons"]
+position = Vector2( 250, 884.193 )
+texture = ExtResource( 22 )
+
+[node name="bloodmourn" type="Sprite" parent="All/Icons"]
+position = Vector2( 253.889, 936.972 )
+texture = ExtResource( 19 )
+
+[node name="zal" type="Sprite" parent="All/Icons"]
+position = Vector2( 246.667, 964.193 )
+texture = ExtResource( 12 )
+
+[node name="agu" type="Sprite" parent="All/Icons"]
+position = Vector2( 260, 1018.08 )
+texture = ExtResource( 17 )
+
+[node name="dingy" type="Sprite" parent="All/Icons"]
+position = Vector2( 276.111, 1169.72 )
+texture = ExtResource( 15 )
+
+[node name="kirb" type="Sprite" parent="All/Icons"]
+position = Vector2( 300.444, 1370.3 )
+texture = ExtResource( 11 )
+
+[node name="jack" type="Sprite" parent="All/Icons"]
+position = Vector2( 310.556, 1395.29 )
+texture = ExtResource( 14 )
+
+[node name="dreamthedev" type="Sprite" parent="All/Icons"]
+position = Vector2( 400.333, 1423.07 )
+texture = ExtResource( 9 )
+
+[node name="okiwillusemyrealname" type="Sprite" parent="All/Icons"]
+position = Vector2( 298.056, 1040.5 )
+texture = ExtResource( 20 )
+
+[node name="wrath" type="Sprite" parent="All/Icons"]
+position = Vector2( 238.889, 1623.58 )
+texture = ExtResource( 24 )
+
+[node name="comic" type="Sprite" parent="All/Icons"]
+position = Vector2( 230.556, 325.278 )
+texture = ExtResource( 30 )
+
+[node name="end" type="Label" parent="."]
+margin_left = 37.0
+margin_top = 516.0
+margin_right = 387.0
+margin_bottom = 609.0
+rect_scale = Vector2( 1.8, 1.8 )
+custom_fonts/font = SubResource( 1 )
+text = "Конец демо-версии
+-
+Спасибо тебе за игру!"
+align = 1
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 26 )
+bus = "Music"
+
+[node name="lightsturnon" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 25 )
+bus = "Effects"
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0.796078, 0.709804, 1, 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 316, -48 )
+amount = 100
+lifetime = 12.0
+visibility_rect = Rect2( -100, -100, 800, 500 )
+process_material = SubResource( 4 )
+
+[node name="Camera" parent="." instance=ExtResource( 28 )]
+position = Vector2( 350, 240 )
+
+[node name="Title" type="Sprite" parent="."]
+position = Vector2( 350, -99.9999 )
+scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 29 )

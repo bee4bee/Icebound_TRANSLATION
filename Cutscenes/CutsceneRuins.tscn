@@ -1,0 +1,233 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://music/chatter/SND_TXT2.wav" type="AudioStream" id=2]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://sprites/Cutscenes/Ruins/chioner.png" type="Texture" id=4]
+[ext_resource path="res://sprites/Cutscenes/Ruins/toriel.png" type="Texture" id=5]
+[ext_resource path="res://sprites/Cutscenes/Ruins/torielbg.png" type="Texture" id=6]
+[ext_resource path="res://sprites/Cutscenes/Ruins/snowdinbg.png" type="Texture" id=7]
+[ext_resource path="res://sprites/Cutscenes/Ruins/chionesn.png" type="Texture" id=8]
+[ext_resource path="res://sprites/Cutscenes/Ruins/frisk.png" type="Texture" id=9]
+[ext_resource path="res://sprites/Cutscenes/Ruins/papyrus.png" type="Texture" id=10]
+[ext_resource path="res://music/IntermissionCalm.wav" type="AudioStream" id=11]
+[ext_resource path="res://Singletons/Pause.tscn" type="PackedScene" id=12]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+onready var blitter = $Blitter
+onready var cam = $Camera
+
+var tween = Tween.new()
+var tw = Tween.new()
+
+var index = 0.0
+var canSkip = true
+
+var dialogue = [
+	\"Человек бродил среди унылых остатков того, что когда-то называлось «Руинами». Теперь это место окончательно превратилось в пустырь.\",
+	\"Она встретила бывшую королеву Ториэль, которая и близко не похожа на прежнюю себя. Бледная, холодная и безнадёжная. Она гниёт в разрушенном доме.\",
+	\"После схватки Ториэль сдалась, позволив Человеку выйти из прогнившего дома. Сама Ториэль отказалась идти вместе с ней.\",
+	\"Снаружи её встретил яркий розовый цвет цветущей сакуры, превративший некогда пустую Арктику в удивительное место.\",
+	\"Она встретила Папируса, который преобразовал Заснежье в убежище для выживших монстров.\",
+	\"Затем Фриска, который спрятался здесь после того, как ему не удалось уйти.\",
+	\"И вместе они решают отправиться в путешествие, полное давно утраченной надежды, возрождённой благодаря новому путнику.\"
+]
+
+func _ready():
+	add_child(tween)
+	add_child(tw)
+	_scene_set()
+	$music.play()
+
+
+func _process(delta):
+	#if Input.is_action_just_pressed(\"ui_accept\"): _scene_set()
+	if tween.is_active():
+		var pos = blitter.get_visible_characters()
+		
+		var getchar = blitter.text[blitter.visible_characters]
+		if getchar != ' ' or getchar != '.' or getchar != ',':
+			$chatter_fx.play()
+
+
+func _input(event):
+	if Input.is_action_just_pressed(\"cutsceneskip\"): 
+		set_process(false)
+		_skip()
+
+func _scene_set():
+	_create_text(dialogue[0])
+	_scene_0_2()
+	yield(get_tree().create_timer(9.0, false),\"timeout\")
+	_create_text(dialogue[1])
+	yield(get_tree().create_timer(11.0, false),\"timeout\")
+	_create_text(dialogue[2])
+	yield(get_tree().create_timer(8.0, false),\"timeout\")
+	_fade_scene($Panel1_3)
+	yield(get_tree().create_timer(2.0, false),\"timeout\")
+	_scene_3_6()
+	_create_text(dialogue[3])
+	yield(get_tree().create_timer(10.5, false),\"timeout\")
+	_create_text(dialogue[4])
+	yield(get_tree().create_timer(8.0, false),\"timeout\")
+	_create_text(dialogue[5])
+	yield(get_tree().create_timer(7.0, false),\"timeout\")
+	_create_text(dialogue[6])
+	yield(get_tree().create_timer(10.0, false),\"timeout\")
+	_skip()
+
+	
+func _create_text(text):
+	blitter.text = text
+	blitter.percent_visible = 0.0
+	blitter.modulate.a = 1.0
+	tween.interpolate_property(
+		blitter, \"percent_visible\",
+		0.0, 1.0, len(text) * 0.06,
+		Tween.TRANS_LINEAR, Tween.EASE_OUT
+	)
+	tween.start()
+
+func _fade_scene(node):
+	tw.interpolate_property(
+		blitter, \"modulate:a\",
+		1.0, 0.0, 1.0,
+		Tween.TRANS_LINEAR, Tween.EASE_IN
+	)
+	tw.interpolate_property(
+		node, \"modulate:a\",
+		node.modulate.a, 0.0, 1.2,
+		Tween.TRANS_LINEAR, Tween.EASE_IN
+	)
+	tw.start()
+
+func _scene_0_2():
+	var bg = $Panel1_3/bg
+	var toriel = $Panel1_3/toriel
+	var chione = $Panel1_3/chione
+	tw.interpolate_property(bg, \"modulate:a\", 0.0, 1.0, 4.0, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(bg, \"position:x\", bg.position.x - 50, bg.position.x, 3.0, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(2.5, false),\"timeout\")
+	tw.interpolate_property(chione, \"modulate:a\", 0.0, 1.0, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(chione, \"position:x\", chione.position.x - 35, chione.position.x, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(6.5, false),\"timeout\")
+	tw.interpolate_property(toriel, \"modulate:a\", 0.0, 1.0, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(toriel, \"position:x\", toriel.position.x + 20, toriel.position.x, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(11.5, false),\"timeout\")
+	tw.interpolate_property($Panel1_3, \"modulate:a\", 1.0, 0.0, 4.5, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+	tw.start()
+
+func _scene_3_6():
+	var bg = $Panel4_7/bg
+	var chione = $Panel4_7/chione
+	var papyrus = $Panel4_7/papyrus
+	var frisk = $Panel4_7/frisk
+	tw.interpolate_property(bg, \"modulate:a\", 0.0, 1.0, 3.0, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(bg, \"position:x\", bg.position.x - 40, bg.position.x, 2.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(1.5, false),\"timeout\")
+	tw.interpolate_property(chione, \"modulate:a\", 0.0, 1.0, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(chione, \"position:x\", chione.position.x - 30, chione.position.x, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(9.5, false),\"timeout\")
+	tw.interpolate_property(papyrus, \"modulate:a\", 0.0, 1.0, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(papyrus, \"position:x\", papyrus.position.x - 30, papyrus.position.x, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(8.0, false),\"timeout\")
+	tw.interpolate_property(frisk, \"modulate:a\", 0.0, 1.0, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(frisk, \"position:x\", frisk.position.x - 30, frisk.position.x, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(6.0, false),\"timeout\")
+	tw.interpolate_property($Panel4_7, \"modulate:a\", 1.0, 0.0, 5.0, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+	tw.start()
+
+func _skip():
+	$Camera.darken_with_set_values(0.0, 1.0, 2.0)
+	tw.interpolate_property($chatter_fx, \"volume_db\", 0.0, -80.0, 2.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tw.interpolate_property($music, \"volume_db\", 0.0, -80.0, 2.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(2.6, false),\"timeout\")
+	get_tree().change_scene(\"res://Overworld/Rooms/Snowdin.tscn\")
+"
+
+[sub_resource type="DynamicFont" id=2]
+size = 28
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[node name="CutsceneRuins" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="chatter_fx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -12.0
+bus = "Effects"
+
+[node name="Panel1_3" type="Node2D" parent="."]
+
+[node name="bg" type="Sprite" parent="Panel1_3"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2.2, 2.2 )
+texture = ExtResource( 6 )
+
+[node name="toriel" type="Sprite" parent="Panel1_3"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+
+[node name="chione" type="Sprite" parent="Panel1_3"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+
+[node name="Panel4_7" type="Node2D" parent="."]
+
+[node name="bg" type="Sprite" parent="Panel4_7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2.4, 2.4 )
+texture = ExtResource( 7 )
+
+[node name="chione" type="Sprite" parent="Panel4_7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 265 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 8 )
+
+[node name="papyrus" type="Sprite" parent="Panel4_7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 265 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 10 )
+
+[node name="frisk" type="Sprite" parent="Panel4_7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 265 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 9 )
+
+[node name="Blitter" type="Label" parent="."]
+margin_left = 30.0
+margin_top = 20.0
+margin_right = 670.0
+margin_bottom = 160.0
+custom_fonts/font = SubResource( 2 )
+autowrap = true
+
+[node name="Camera" parent="." instance=ExtResource( 3 )]
+position = Vector2( 350, 240 )
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+bus = "Music"
+
+[node name="Pause" parent="." instance=ExtResource( 12 )]

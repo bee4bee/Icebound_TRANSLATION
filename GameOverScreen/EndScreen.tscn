@@ -1,0 +1,465 @@
+[gd_scene load_steps=64 format=2]
+
+[ext_resource path="res://GameOverScreen/Chione.tscn" type="PackedScene" id=1]
+[ext_resource path="res://music/Game Over.wav" type="AudioStream" id=2]
+[ext_resource path="res://music/soundFX/Deltarune Intro noise.wav" type="AudioStream" id=3]
+[ext_resource path="res://sprites/gameover_screen/background/ground.png" type="Texture" id=4]
+[ext_resource path="res://sprites/gameover_screen/background/bench.png" type="Texture" id=5]
+[ext_resource path="res://sprites/gameover_screen/background/treeleaf.png" type="Texture" id=6]
+[ext_resource path="res://sprites/gameover_screen/background/treeback2.png" type="Texture" id=7]
+[ext_resource path="res://sprites/gameover_screen/background/treeback1.png" type="Texture" id=8]
+[ext_resource path="res://GameOverScreen/EndScreen.gd" type="Script" id=9]
+[ext_resource path="res://sprites/misc/spotlight.png" type="Texture" id=10]
+[ext_resource path="res://sprites/misc/petal.png" type="Texture" id=11]
+[ext_resource path="res://sprites/soul/spr_heartred_center_0.png" type="Texture" id=12]
+[ext_resource path="res://sprites/gameover_screen/background/tree.png" type="Texture" id=13]
+[ext_resource path="res://sprites/gameover_screen/game_text.png" type="Texture" id=14]
+[ext_resource path="res://sprites/gameover_screen/game_text2.png" type="Texture" id=15]
+[ext_resource path="res://sprites/gameover_screen/game_text1.png" type="Texture" id=16]
+[ext_resource path="res://sprites/gameover_screen/over_text3.png" type="Texture" id=17]
+[ext_resource path="res://sprites/gameover_screen/over_text2.png" type="Texture" id=18]
+[ext_resource path="res://sprites/gameover_screen/game_text3.png" type="Texture" id=19]
+[ext_resource path="res://sprites/gameover_screen/over_text1.png" type="Texture" id=20]
+[ext_resource path="res://sprites/gameover_screen/over_text.png" type="Texture" id=21]
+[ext_resource path="res://sprites/gameover_screen/elsav2soul.png" type="Texture" id=22]
+[ext_resource path="res://music/soundFX/snd_grab.wav" type="AudioStream" id=23]
+[ext_resource path="res://music/soundFX/sparkle.wav" type="AudioStream" id=24]
+[ext_resource path="res://sprites/soul/spr_heartshards_1.png" type="Texture" id=25]
+[ext_resource path="res://determination-mono-web-font/Mars_Needs_Cunnilingus.ttf" type="DynamicFontData" id=26]
+[ext_resource path="res://sprites/soul/spr_heartbreak_0.png" type="Texture" id=28]
+[ext_resource path="res://music/soundFX/soul_snap.wav" type="AudioStream" id=29]
+[ext_resource path="res://determination-mono-web-font/papyrus.ttf" type="DynamicFontData" id=32]
+[ext_resource path="res://music/chatter/voice_Papyrus.wav" type="AudioStream" id=33]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=34]
+[ext_resource path="res://Player_Soul.tscn" type="PackedScene" id=36]
+[ext_resource path="res://sprites/gameover_screen/gaster/body.png" type="Texture" id=37]
+[ext_resource path="res://sprites/gameover_screen/gaster/head.png" type="Texture" id=38]
+[ext_resource path="res://sprites/misc/light.png" type="Texture" id=39]
+
+[sub_resource type="Gradient" id=51]
+colors = PoolColorArray( 0.138855, 0, 0.253906, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture2D" id=52]
+gradient = SubResource( 51 )
+fill_to = Vector2( 0, 1 )
+
+[sub_resource type="Curve" id=53]
+_data = [ Vector2( 0, 0 ), 0.0, 5.18037, 0, 0, Vector2( 0.276498, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.00862074 ), -4.13521, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=54]
+curve = SubResource( 53 )
+
+[sub_resource type="ParticlesMaterial" id=55]
+emission_shape = 1
+emission_sphere_radius = 400.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 17.1
+initial_velocity_random = 0.8
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 3.17
+damping_random = 1.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 54 )
+
+[sub_resource type="Curve" id=34]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.0190678 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=50]
+curve = SubResource( 34 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+emission_shape = 2
+emission_box_extents = Vector3( 80, 1, 1 )
+flag_disable_z = true
+spread = 158.06
+gravity = Vector3( 2, 6, 0 )
+initial_velocity = 20.0
+initial_velocity_random = 1.0
+angular_velocity = 86.74
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+tangential_accel = -6.61
+tangential_accel_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 50 )
+hue_variation = 0.04
+hue_variation_random = 1.0
+
+[sub_resource type="AnimatedTexture" id=7]
+fps = 0.6
+frame_0/texture = ExtResource( 11 )
+
+[sub_resource type="Shader" id=56]
+code = "shader_type canvas_item;
+
+// naming in UV system _x_y
+uniform vec2 offset_0_0 = vec2(0.0, 0.0);
+uniform vec2 offset_0_1 = vec2(0.0, 0.0);
+uniform vec2 offset_1_0 = vec2(0.0, 0.0);
+uniform vec2 offset_1_1 = vec2(0.0, 0.0);
+
+vec2 sample_point(vec2 point) {
+    // Corners for UV.y == 0
+    vec2 p_0_0 = vec2(0,0) - offset_0_0;
+    vec2 p_1_0 = vec2(1,0) - offset_1_0;
+    // Get point along line UV.y == 0
+    vec2 d_x_0 = p_0_0 + (p_1_0 - p_0_0) * point.x;
+
+    // Corners for UV.y == 1.0
+    vec2 p_0_1 = vec2(0, 1) - offset_0_1;
+    vec2 p_1_1 = vec2(1, 1) - offset_1_1;
+    // Get point along line UV.y == 1
+    vec2 d_x_1 = p_0_1 + (p_1_1 - p_0_1) * point.x;
+    // Get point for given UV.y
+    return d_x_0 + (d_x_1 - d_x_0) * point.y;
+}
+
+void fragment() {
+    //COLOR = vec4(UV.x, UV.y, .0, 1.0);
+    //COLOR = texture(TEXTURE, UV);
+    //COLOR = texture(TEXTURE, sample_point(UV));
+}
+
+uniform float speed = 5.0;
+uniform float frequency_y = 1.0;
+uniform float frequency_x = 0.4;
+uniform float amplitude_y = 15.0;
+uniform float amplitude_x = 3.0;
+uniform float inclination = 10.0;
+
+void vertex() {
+	VERTEX.y -= sin((UV.x - TIME * speed) * frequency_y) * amplitude_y;
+	VERTEX.x += cos((UV.y - TIME * speed) * frequency_x) * amplitude_x;
+	VERTEX.x -= UV.y * inclination;
+	VERTEX += sample_point(UV);
+}"
+
+[sub_resource type="ShaderMaterial" id=57]
+shader = SubResource( 56 )
+shader_param/offset_0_0 = Vector2( 0, 0 )
+shader_param/offset_0_1 = Vector2( 0, 0 )
+shader_param/offset_1_0 = Vector2( 0, 0 )
+shader_param/offset_1_1 = Vector2( 0, 0 )
+shader_param/speed = 0.5
+shader_param/frequency_y = 1.0
+shader_param/frequency_x = 2.0
+shader_param/amplitude_y = 0.0
+shader_param/amplitude_x = 2.0
+shader_param/inclination = -5.0
+
+[sub_resource type="Shader" id=12]
+code = "shader_type canvas_item;
+
+uniform float height = 2.4;
+uniform float speed = 1.5
+;
+uniform float frequency = 8.0;
+
+void vertex() {
+	VERTEX.y += sin((frequency * UV.x) + (TIME * speed)) * height;
+}"
+
+[sub_resource type="ShaderMaterial" id=13]
+shader = SubResource( 12 )
+shader_param/height = 2.4
+shader_param/speed = 1.5
+shader_param/frequency = 8.0
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ ExtResource( 14 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 19 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Shader" id=14]
+code = "shader_type canvas_item;
+
+uniform float height = 2.4;
+uniform float speed = 1.5;
+uniform float frequency = 8.0;
+
+void vertex() {
+	VERTEX.y -= sin((frequency * UV.x) + (TIME * speed)) * height;
+}"
+
+[sub_resource type="ShaderMaterial" id=15]
+shader = SubResource( 14 )
+shader_param/height = 2.4
+shader_param/speed = 1.5
+shader_param/frequency = 8.0
+
+[sub_resource type="SpriteFrames" id=10]
+animations = [ {
+"frames": [ ExtResource( 21 ), ExtResource( 20 ), ExtResource( 18 ), ExtResource( 17 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Shader" id=46]
+
+[sub_resource type="ShaderMaterial" id=47]
+shader = SubResource( 46 )
+
+[sub_resource type="Shader" id=44]
+
+[sub_resource type="ShaderMaterial" id=45]
+shader = SubResource( 44 )
+
+[sub_resource type="DynamicFont" id=61]
+size = 22
+outline_size = 5
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+font_data = ExtResource( 32 )
+
+[sub_resource type="SpriteFrames" id=11]
+animations = [ {
+"frames": [ ExtResource( 22 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=23]
+font_data = ExtResource( 26 )
+
+[sub_resource type="SpriteFrames" id=25]
+animations = [ {
+"frames": [ ExtResource( 12 ), ExtResource( 28 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Curve" id=58]
+_data = [ Vector2( 0, 0.996591 ), 0.0, -0.165967, 0, 0, Vector2( 1, 0 ), -1.71625, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=59]
+curve = SubResource( 58 )
+
+[sub_resource type="ParticlesMaterial" id=60]
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 90, 0 )
+initial_velocity = 69.31
+angular_velocity = 57.35
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 70.29
+damping_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale_random = 1.0
+scale_curve = SubResource( 59 )
+color = Color( 1, 0, 0.211765, 1 )
+
+[node name="EndScreen" type="Node2D"]
+script = ExtResource( 9 )
+
+[node name="Background" type="Node2D" parent="."]
+position = Vector2( 0, -20 )
+
+[node name="grad" type="Sprite" parent="Background"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 345, 196 )
+scale = Vector2( 11.7813, 6.53125 )
+texture = SubResource( 52 )
+
+[node name="Particles2D" type="Particles2D" parent="Background"]
+position = Vector2( 350, 260 )
+emitting = false
+amount = 100
+lifetime = 6.0
+process_material = SubResource( 55 )
+
+[node name="Treesright" type="Sprite" parent="Background"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 312, 240 )
+scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 7 )
+
+[node name="Treesleft" type="Sprite" parent="Background"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 306, 245 )
+scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 8 )
+
+[node name="Path" type="Sprite" parent="Background"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 307, 242 )
+scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 4 )
+
+[node name="tree" type="Sprite" parent="Background"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 312, 245 )
+scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 13 )
+
+[node name="Particles2D" type="Particles2D" parent="Background/tree"]
+modulate = Color( 1, 1, 1, 0.486275 )
+position = Vector2( -41.1111, -56.6667 )
+scale = Vector2( 0.555556, 0.555556 )
+amount = 40
+lifetime = 14.0
+visibility_rect = Rect2( -100, -100, 230, 200 )
+local_coords = false
+process_material = SubResource( 6 )
+texture = SubResource( 7 )
+
+[node name="leaf" type="Sprite" parent="Background/tree"]
+material = SubResource( 57 )
+texture = ExtResource( 6 )
+
+[node name="bench" type="Sprite" parent="Background"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 293, 239 )
+scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 5 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 311.5, 176.5 )
+scale = Vector2( 0.678333, 0.798333 )
+texture = ExtResource( 10 )
+color = Color( 1, 0.584314, 0.964706, 1 )
+energy = 0.75
+shadow_color = Color( 1, 1, 1, 1 )
+
+[node name="Game_Over_Text" type="Node2D" parent="."]
+
+[node name="game" type="AnimatedSprite" parent="Game_Over_Text"]
+material = SubResource( 13 )
+position = Vector2( -256, -141 )
+scale = Vector2( 2.2, 2.2 )
+frames = SubResource( 9 )
+offset = Vector2( 0.909088, 0 )
+
+[node name="over" type="AnimatedSprite" parent="Game_Over_Text"]
+material = SubResource( 15 )
+position = Vector2( -252, -79 )
+scale = Vector2( 2.2, 2.2 )
+frames = SubResource( 10 )
+
+[node name="Gaster" type="Node2D" parent="."]
+material = SubResource( 47 )
+position = Vector2( -12, 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Body" type="Sprite" parent="Gaster"]
+material = SubResource( 45 )
+position = Vector2( 435, 383 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 37 )
+offset = Vector2( 1.25003, -41.875 )
+
+[node name="Face" type="Sprite" parent="Gaster"]
+position = Vector2( 416, 234 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 38 )
+
+[node name="Chione" parent="." instance=ExtResource( 1 )]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Blitter" type="Label" parent="."]
+margin_left = 60.0
+margin_top = 405.0
+margin_right = 580.0
+margin_bottom = 487.0
+custom_fonts/font = SubResource( 61 )
+text = "NOT YET"
+autowrap = true
+
+[node name="SoulFrozen" type="AnimatedSprite" parent="."]
+position = Vector2( 250, 0 )
+scale = Vector2( 1.4, 1.4 )
+frames = SubResource( 11 )
+
+[node name="Light2D" type="Light2D" parent="SoulFrozen"]
+position = Vector2( 2.07424e-05, -0.500002 )
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 39 )
+color = Color( 1, 0.658824, 0.788235, 1 )
+
+[node name="swipe_fx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 23 )
+volume_db = -10.0
+bus = "Effects"
+
+[node name="soul_fx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 24 )
+volume_db = -10.0
+bus = "Effects"
+
+[node name="soulbreak_1_fx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 29 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="chatter_fx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 33 )
+volume_db = -4.0
+bus = "Effects"
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+bus = "Music"
+
+[node name="Credits" type="RichTextLabel" parent="."]
+visible = false
+modulate = Color( 0.341176, 0.341176, 0.341176, 1 )
+margin_right = 242.0
+margin_bottom = 23.0
+custom_fonts/normal_font = SubResource( 23 )
+bbcode_enabled = true
+bbcode_text = "sprite by Kekuus"
+text = "sprite by Kekuus"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="SoulBreaks" type="AnimatedSprite" parent="."]
+frames = SubResource( 25 )
+
+[node name="Particles2D" type="Particles2D" parent="SoulBreaks"]
+emitting = false
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+local_coords = false
+process_material = SubResource( 60 )
+texture = ExtResource( 25 )
+
+[node name="Player_Soul" parent="." instance=ExtResource( 36 )]
+visible = false
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0.486275, 0.301961, 0.65098, 1 )
+
+[node name="Camera" parent="." instance=ExtResource( 34 )]
+
+[node name="fuseSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -6.0
+bus = "Effects"
+
+[editable path="Camera"]

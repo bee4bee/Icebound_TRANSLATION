@@ -1,0 +1,125 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Bullets/Flytrap/flytrap0.png" type="Texture" id=1]
+[ext_resource path="res://Bullets/Flytrap/flytrap2.png" type="Texture" id=2]
+[ext_resource path="res://music/soundFX/snd_chain_extend_ch1.wav" type="AudioStream" id=3]
+[ext_resource path="res://music/soundFX/landpw.wav" type="AudioStream" id=4]
+[ext_resource path="res://music/soundFX/snd_screenshake_ch1.wav" type="AudioStream" id=5]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Node2D
+
+var tw = Tween.new()
+
+func _ready():
+	add_child(tw)
+
+onready var main = get_node(\"/root/Battle_Engine\")
+var fly = preload(\"res://Bullets/Flytrap/FlyBox.tscn\")
+
+func _cast(pos, time):
+	position.y = pos.y + 100
+	position.x = pos.x
+	tw.interpolate_property(self, \"position:y\", position.y, pos.y - 60, 1.0, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	
+	$chainpull.play()
+	
+	yield(get_tree().create_timer(0.8, false), \"timeout\")
+	
+	
+	tw.remove_all()
+	tw.interpolate_property(self, \"position:y\", position.y, pos.y, 0.7, Tween.TRANS_QUINT, Tween.EASE_IN)
+	tw.start()
+	
+	yield(get_tree().create_timer(0.7, false), \"timeout\")
+	$AnimatedSprite.playing = true
+	PlayerData._shakeobj(self)
+	
+	$chainpull.playing = false
+	$land.play()
+	
+	for i in time / 0.4:
+		_spawning()
+		yield(get_tree().create_timer(0.4, false), \"timeout\")
+	
+	yield(get_tree().create_timer(2.6, false), \"timeout\")
+	$AnimatedSprite.playing = false
+	$AnimatedSprite.frame = 2
+	$close.play()
+	PlayerData._shakeobj(self)
+	yield(get_tree().create_timer(0.8, false), \"timeout\")
+	_burst()
+	PlayerData._shakeobj(self)
+	$AnimatedSprite.frame = 0
+	tw.interpolate_property(self, \"position:y\", position.y, position.y + 100, 5.0, Tween.TRANS_QUINT, Tween.EASE_IN)
+	tw.start()
+	
+
+func _spawning():
+	var b = fly.instance()
+	main.add_child(b)
+	
+	b.endpos = 420.0
+	b.position = Vector2(320 + rand_range(-200, 200), 100 + rand_range(-30, 30))
+	
+	tw.interpolate_property(b, \"position\", b.position, b.position + Vector2(rand_range(-40, 40), rand_range(-40, 40)), 0.6, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	
+	yield(get_tree().create_timer(0.6, false), \"timeout\")
+	b.canSway = true
+	tw.interpolate_property(b, \"position\", b.position, Vector2(320, 420), 2.3, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tw.start()
+
+func _burst():
+	for i in 16:
+		var b = fly.instance()
+		main.add_child(b)
+		b.position = Vector2(320, 420)
+		b.endpos = 700
+		b.canSway = true
+		b.rot = rand_range(PI/2 - PI/5, PI/2 + PI/5) + PI/2
+		b.canmovedir = true
+		yield(get_tree().create_timer(0.15, false), \"timeout\")
+"
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 1 ), ExtResource( 2 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 6.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 20, 9 )
+
+[node name="FlytrapBox" type="Node2D"]
+scale = Vector2( 2, 2 )
+script = SubResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 1.5, 16 )
+frames = SubResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 1.5, 16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( -1.5, -27 )
+shape = SubResource( 2 )
+
+[node name="chainpull" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -8.0
+bus = "Effects"
+
+[node name="land" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="close" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -6.0
+bus = "Effects"

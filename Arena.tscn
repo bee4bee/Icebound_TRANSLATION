@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=2]
+
+[sub_resource type="CanvasItemMaterial" id=3]
+
+[sub_resource type="Theme" id=4]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 1.5, 60 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 1.5, 60 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 125, 1.5 )
+
+[node name="Arena" type="Node2D"]
+material = SubResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+margin_right = 640.0
+margin_bottom = 480.0
+theme = SubResource( 4 )
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource( 1 )
+margin_left = 202.0
+margin_top = 312.0
+margin_right = 452.0
+margin_bottom = 432.0
+rect_pivot_offset = Vector2( 125, 60 )
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Panel"]
+
+[node name="barrier_right" type="CollisionShape2D" parent="Panel/StaticBody2D"]
+position = Vector2( 248.5, 60 )
+shape = SubResource( 7 )
+
+[node name="barrier_left" type="CollisionShape2D" parent="Panel/StaticBody2D"]
+position = Vector2( 1.5, 60 )
+shape = SubResource( 5 )
+
+[node name="barrier_top" type="CollisionShape2D" parent="Panel/StaticBody2D"]
+position = Vector2( 125, 1.5 )
+shape = SubResource( 6 )

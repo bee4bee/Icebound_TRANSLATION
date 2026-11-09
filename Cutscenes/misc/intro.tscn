@@ -1,0 +1,108 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://sprites/Cutscenes/additionalIntro/panel0.png" type="Texture" id=1]
+[ext_resource path="res://sprites/Cutscenes/additionalIntro/panel1.png" type="Texture" id=2]
+[ext_resource path="res://sprites/Cutscenes/additionalIntro/panel2.png" type="Texture" id=3]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=4]
+[ext_resource path="res://sprites/Cutscenes/additionalIntro/panel6.png" type="Texture" id=5]
+[ext_resource path="res://sprites/Cutscenes/additionalIntro/panel3.png" type="Texture" id=6]
+[ext_resource path="res://sprites/Cutscenes/additionalIntro/panel5.png" type="Texture" id=7]
+[ext_resource path="res://sprites/Cutscenes/additionalIntro/panelsoul.png" type="Texture" id=8]
+[ext_resource path="res://sprites/Cutscenes/panelintro_rp2/rp1.png" type="Texture" id=9]
+[ext_resource path="res://sprites/Cutscenes/additionalIntro/panel4.png" type="Texture" id=10]
+[ext_resource path="res://music/soundFX/glitch.wav" type="AudioStream" id=11]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node2D
+
+onready var tw = $Tween
+onready var panel = $panels
+onready var cam = $Camera
+
+var cintro = preload(\"res://Cutscenes/CutsceneIntro.tscn\")
+
+func _ready():
+	pass
+
+func _process(delta):
+	if Input.is_action_just_pressed(\"ui_accept\"): _panelswitch()
+
+func _panelswitch():
+	tw.interpolate_property(panel, \"scale\", Vector2(4, 4), Vector2(2, 2), 18.0, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	cam.darken_with_set_values(1.0, 0.0, 3.0)
+	cam._blur(5.0, 1.0, 9.5)
+	for i in 8:
+		var time
+		match i:
+			0: time = 2.4
+			1: time = 1.5
+			2: time = 0.8
+			3: time = 1.6
+			4: time = 1.0
+			5: time = 0.6
+			6: time = 1.6
+			7: time = 0.7
+			8: time = 1.5
+		yield(get_tree().create_timer(time), \"timeout\")
+		_switch(1)
+	yield(get_tree().create_timer(1.5), \"timeout\")
+	tw.interpolate_property(panel, \"position:y\", 240, -300, 1.5, Tween.TRANS_QUINT, Tween.EASE_IN)
+	tw.interpolate_property(panel, \"scale\", panel.scale, Vector2(1.6, 1.6), 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(panel, \"modulate:a\", 1.0, 0.0, 1.5, Tween.TRANS_QUINT, Tween.EASE_IN)
+	yield(get_tree().create_timer(3.5), \"timeout\")
+	var intro = cintro.instance()
+	add_child(intro)
+	yield(get_tree().create_timer(4.0), \"timeout\")
+	cam.current = true
+	tw.interpolate_property(cam, \"position:y\", 240, 300, 3.5, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+	tw.interpolate_property(cam, \"zoom\", cam.zoom, Vector2(0.5, 0.5), 3.5, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+	cam.darken_with_set_values(0.0, 1.0, 1.2)
+	tw.start()
+	yield(get_tree().create_timer(4.0), \"timeout\")
+	remove_child(intro)
+
+func _switch(time):
+	cam._glitch(1.0, 1.0, 0.2)
+	$gl.play()
+	yield(get_tree().create_timer(0.1), \"timeout\")
+	panel.frame += 1
+"
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 8 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 10 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Node2D" type="Node2D"]
+script = SubResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -150.0
+margin_top = -74.0
+margin_right = 845.0
+margin_bottom = 599.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="panels" type="AnimatedSprite" parent="."]
+modulate = Color( 0.647059, 0.611765, 0.67451, 1 )
+position = Vector2( 320, 240 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 1 )
+
+[node name="Camera" parent="." instance=ExtResource( 4 )]
+
+[node name="ColorRect" parent="Camera" index="2"]
+modulate = Color( 1, 1, 1, 1 )
+color = Color( 0, 0, 0, 1 )
+
+[node name="gl" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = -80.0
+
+[node name="Tween" type="Tween" parent="."]
+
+[editable path="Camera"]

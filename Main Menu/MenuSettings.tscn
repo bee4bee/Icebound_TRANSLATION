@@ -1,0 +1,251 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Main Menu/MenuSettings.gd" type="Script" id=2]
+[ext_resource path="res://music/soundFX/button_choice.wav" type="AudioStream" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size=13
+use_mipmaps = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="CanvasItemMaterial" id=2]
+
+[sub_resource type="DynamicFont" id=3]
+size=13
+font_data = ExtResource( 1 )
+
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0.00757576, 0.386364 )
+colors = PoolColorArray( 0.071701, 0.0406494, 0.289063, 1, 0.801666, 0.621094, 1, 1 )
+
+[sub_resource type="GradientTexture2D" id=5]
+gradient = SubResource( 4 )
+fill_from = Vector2( 1, 1 )
+
+[node name="MenuSettings" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Sound" type="RichTextLabel" parent="."]
+margin_left = 142.0
+margin_top = 33.0
+margin_right = 293.0
+margin_bottom = 66.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Музыка:"
+text = "Музыка:"
+scroll_active = false
+
+[node name="volNum" type="RichTextLabel" parent="Sound"]
+margin_left = 57.0
+margin_right = 208.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "100"
+text = "100"
+scroll_active = false
+
+[node name="percent" type="RichTextLabel" parent="Sound"]
+margin_left = 82.0
+margin_right = 240.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "%"
+text = "%"
+scroll_active = false
+
+[node name="SoundFX" type="RichTextLabel" parent="."]
+margin_left = 142.0
+margin_top = 66.0
+margin_right = 293.0
+margin_bottom = 99.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Эффекты:"
+text = "Эффекты:"
+scroll_active = false
+
+[node name="volNum" type="RichTextLabel" parent="SoundFX"]
+margin_left = 70.0
+margin_right = 221.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "100"
+text = "100"
+scroll_active = false
+
+[node name="percent" type="RichTextLabel" parent="SoundFX"]
+margin_left = 95.0
+margin_right = 241.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "%"
+text = "%"
+scroll_active = false
+
+[node name="Borders" type="RichTextLabel" parent="."]
+material = SubResource( 2 )
+margin_left = 142.0
+margin_top = 143.0
+margin_right = 293.0
+margin_bottom = 176.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/normal_font = SubResource( 3 )
+bbcode_enabled = true
+bbcode_text = "Рамка игры:"
+text = "Рамка игры:"
+scroll_active = false
+
+[node name="on" type="RichTextLabel" parent="Borders"]
+use_parent_material = true
+margin_left = 80.0
+margin_right = 231.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Off"
+text = "Off"
+scroll_active = false
+
+[node name="Light2D" type="Light2D" parent="Borders"]
+visible = false
+position = Vector2( 52.75, 4.75 )
+scale = Vector2( 1.74219, 0.367188 )
+texture = SubResource( 5 )
+
+[node name="Resizeable" type="RichTextLabel" parent="."]
+margin_left = 142.0
+margin_top = 176.0
+margin_right = 293.0
+margin_bottom = 209.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Рамка окна:"
+text = "Рамка окна:"
+scroll_active = false
+
+[node name="on" type="RichTextLabel" parent="Resizeable"]
+margin_left = 78.0
+margin_right = 239.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "On"
+text = "On"
+scroll_active = false
+
+[node name="Multiplier" type="RichTextLabel" parent="."]
+margin_left = 142.0
+margin_top = 209.0
+margin_right = 293.0
+margin_bottom = 242.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Масштаб окна:"
+text = "Масштаб окна:"
+scroll_active = false
+
+[node name="on" type="RichTextLabel" parent="Multiplier"]
+margin_left = 98.0
+margin_right = 249.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "x1"
+text = "x1"
+scroll_active = false
+
+[node name="lights" type="RichTextLabel" parent="."]
+margin_left = 142.0
+margin_top = 260.0
+margin_right = 293.0
+margin_bottom = 293.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Доп. освещение: "
+text = "Доп. освещение: "
+scroll_active = false
+
+[node name="on" type="RichTextLabel" parent="lights"]
+margin_left = 110.0
+margin_right = 261.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "On"
+text = "On"
+scroll_active = false
+
+[node name="particles" type="RichTextLabel" parent="."]
+margin_left = 142.0
+margin_top = 325.0
+margin_right = 343.0
+margin_bottom = 358.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Доп. частицы:"
+text = "Доп. частицы:"
+scroll_active = false
+
+[node name="on" type="RichTextLabel" parent="particles"]
+margin_left = 93.0
+margin_right = 244.0
+margin_bottom = 33.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "On"
+text = "On"
+scroll_active = false
+
+[node name="on3" type="RichTextLabel" parent="."]
+modulate = Color( 0.796078, 0.788235, 0.890196, 1 )
+margin_left = 142.0
+margin_top = 360.0
+margin_right = 474.0
+margin_bottom = 393.0
+rect_scale = Vector2( 1.4, 1.4 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Выкл -> Меньше частиц."
+text = "Выкл -> Меньше частиц."
+scroll_active = false
+
+[node name="on4" type="RichTextLabel" parent="."]
+modulate = Color( 0.796078, 0.788235, 0.890196, 1 )
+margin_left = 142.0
+margin_top = 294.0
+margin_right = 474.0
+margin_bottom = 327.0
+rect_scale = Vector2( 1.4, 1.4 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Выкл -> Отключает освещение."
+text = "Выкл -> Отключает освещение."
+scroll_active = false
+
+[node name="on2" type="RichTextLabel" parent="."]
+modulate = Color( 0.796078, 0.788235, 0.890196, 1 )
+margin_left = 73.5
+margin_top = 412.0
+margin_right = 405.5
+margin_bottom = 445.0
+rect_scale = Vector2( 1.4, 1.4 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Используйте стрелки влево/вправо!"
+text = "Используйте стрелки влево/вправо!"
+scroll_active = false
+
+[node name="switch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )

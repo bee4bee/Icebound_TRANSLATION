@@ -1,0 +1,293 @@
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationMonoWebRegular-Z5oq.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://sprites/buttons/fightnew0.png" type="Texture" id=2]
+[ext_resource path="res://sprites/buttons/actnew0.png" type="Texture" id=3]
+[ext_resource path="res://sprites/buttons/fightnew1.png" type="Texture" id=4]
+[ext_resource path="res://sprites/buttons/actnew1.png" type="Texture" id=5]
+[ext_resource path="res://sprites/buttons/mercynew0.png" type="Texture" id=6]
+[ext_resource path="res://sprites/buttons/itemnew1.png" type="Texture" id=7]
+[ext_resource path="res://sprites/buttons/itemnew0.png" type="Texture" id=8]
+[ext_resource path="res://sprites/buttons/mercynew1.png" type="Texture" id=9]
+[ext_resource path="res://music/soundFX/button_select.wav" type="AudioStream" id=10]
+[ext_resource path="res://music/soundFX/button_choice.wav" type="AudioStream" id=11]
+[ext_resource path="res://sprites/soul/spr_heartred_center_0.png" type="Texture" id=12]
+[ext_resource path="res://Encounters/Papyrus_Snowdin/Menu.gd" type="Script" id=13]
+[ext_resource path="res://music/soundFX/heal.wav" type="AudioStream" id=14]
+
+[sub_resource type="SpriteFrames" id=23]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=24]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=25]
+animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=26]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CanvasItemMaterial" id=27]
+light_mode = 1
+
+[sub_resource type="DynamicFont" id=17]
+size = 32
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=18]
+size = 32
+font_data = ExtResource( 1 )
+
+[sub_resource type="SpriteFrames" id=19]
+animations = [ {
+"frames": [ ExtResource( 12 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Gradient" id=20]
+offsets = PoolRealArray( 0, 0.989011, 1 )
+colors = PoolColorArray( 0.85098, 0.85098, 0.85098, 0.258824, 1, 1, 1, 0, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=28]
+gradient = SubResource( 20 )
+
+[sub_resource type="Curve" id=21]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=29]
+curve = SubResource( 21 )
+
+[sub_resource type="ParticlesMaterial" id=22]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 29 )
+color_ramp = SubResource( 28 )
+
+[node name="Menu" type="Node2D"]
+script = ExtResource( 13 )
+
+[node name="Fight" type="AnimatedSprite" parent="."]
+position = Vector2( 60, 424 )
+scale = Vector2( 1.4, 1.4 )
+frames = SubResource( 23 )
+
+[node name="Act" type="AnimatedSprite" parent="."]
+position = Vector2( 170, 437 )
+scale = Vector2( 1.4, 1.4 )
+frames = SubResource( 24 )
+
+[node name="Item" type="AnimatedSprite" parent="."]
+position = Vector2( 470, 437 )
+scale = Vector2( 1.4, 1.4 )
+frames = SubResource( 25 )
+
+[node name="Mercy" type="AnimatedSprite" parent="."]
+position = Vector2( 580, 424 )
+scale = Vector2( 1.4, 1.4 )
+frames = SubResource( 26 )
+
+[node name="Fight_Options" type="HBoxContainer" parent="."]
+margin_left = 80.0
+margin_top = 252.0
+margin_right = 564.0
+margin_bottom = 292.0
+rect_min_size = Vector2( 480, 40 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="First" type="RichTextLabel" parent="Fight_Options"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_right = 240.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_right = NodePath("../Second")
+custom_fonts/normal_font = SubResource( 17 )
+
+[node name="Second" type="RichTextLabel" parent="Fight_Options"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_left = 244.0
+margin_right = 484.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_left = NodePath("../First")
+custom_fonts/normal_font = SubResource( 18 )
+scroll_active = false
+
+[node name="Act_Options" type="HBoxContainer" parent="."]
+margin_left = 80.0
+margin_top = 252.0
+margin_right = 564.0
+margin_bottom = 292.0
+rect_min_size = Vector2( 480, 40 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="First" type="RichTextLabel" parent="Act_Options"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_right = 240.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_right = NodePath("../Second")
+custom_fonts/normal_font = SubResource( 17 )
+
+[node name="Second" type="RichTextLabel" parent="Act_Options"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_left = 244.0
+margin_right = 484.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_left = NodePath("../First")
+custom_fonts/normal_font = SubResource( 18 )
+scroll_active = false
+
+[node name="Item_Options" type="VBoxContainer" parent="."]
+margin_left = 80.0
+margin_top = 252.0
+margin_right = 564.0
+margin_bottom = 336.0
+rect_min_size = Vector2( 480, 40 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Row_1" type="HBoxContainer" parent="Item_Options"]
+margin_right = 484.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 480, 40 )
+
+[node name="First" type="RichTextLabel" parent="Item_Options/Row_1"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_right = 240.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_right = NodePath("../Second")
+focus_neighbour_bottom = NodePath("../../Row_2/Third")
+custom_fonts/normal_font = SubResource( 17 )
+
+[node name="Second" type="RichTextLabel" parent="Item_Options/Row_1"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_left = 244.0
+margin_right = 484.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_left = NodePath("../First")
+focus_neighbour_bottom = NodePath("../../Row_2/Fourth")
+custom_fonts/normal_font = SubResource( 18 )
+scroll_active = false
+
+[node name="Row_2" type="HBoxContainer" parent="Item_Options"]
+margin_top = 44.0
+margin_right = 484.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 480, 40 )
+
+[node name="Third" type="RichTextLabel" parent="Item_Options/Row_2"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_right = 240.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_top = NodePath("../../Row_1/First")
+focus_neighbour_right = NodePath("../Fourth")
+custom_fonts/normal_font = SubResource( 17 )
+
+[node name="Fourth" type="RichTextLabel" parent="Item_Options/Row_2"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_left = 244.0
+margin_right = 484.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_left = NodePath("../Third")
+focus_neighbour_top = NodePath("../../Row_1/Second")
+custom_fonts/normal_font = SubResource( 18 )
+
+[node name="Mercy_Options" type="HBoxContainer" parent="."]
+margin_left = 80.0
+margin_top = 252.0
+margin_right = 564.0
+margin_bottom = 292.0
+rect_min_size = Vector2( 480, 40 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="First" type="RichTextLabel" parent="Mercy_Options"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_right = 240.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_right = NodePath("../Second")
+custom_fonts/normal_font = SubResource( 17 )
+
+[node name="Second" type="RichTextLabel" parent="Mercy_Options"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 27 )
+margin_left = 244.0
+margin_right = 484.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 240, 0 )
+focus_neighbour_left = NodePath("../First")
+custom_fonts/normal_font = SubResource( 18 )
+scroll_active = false
+
+[node name="Soul" type="AnimatedSprite" parent="."]
+position = Vector2( 384, 177 )
+frames = SubResource( 19 )
+
+[node name="Trail" type="Particles2D" parent="Soul"]
+show_behind_parent = true
+local_coords = false
+process_material = SubResource( 22 )
+texture = ExtResource( 12 )
+
+[node name="Option_Movement" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+bus = "Effects"
+
+[node name="Option_Select" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+bus = "Effects"
+
+[node name="Heal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+bus = "Effects"
+
+[node name="Resize" type="Tween" parent="."]
+
+[node name="MoveSoul" type="Tween" parent="."]

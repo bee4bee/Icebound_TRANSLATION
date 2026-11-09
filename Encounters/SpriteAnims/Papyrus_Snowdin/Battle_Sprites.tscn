@@ -1,0 +1,408 @@
+[gd_scene load_steps=48 format=2]
+
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/legs.png" type="Texture" id=1]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/head4.png" type="Texture" id=2]
+[ext_resource path="res://music/soundFX/snd_sparkle1.wav" type="AudioStream" id=3]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/hand.png" type="Texture" id=4]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/armbase.png" type="Texture" id=5]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/legs.png" type="Texture" id=6]
+[ext_resource path="res://Encounters/SpriteAnims/Papyrus_Snowdin/Battle_Sprites.gd" type="Script" id=7]
+[ext_resource path="res://sprites/misc/snowflake_1.png" type="Texture" id=8]
+[ext_resource path="res://sprites/misc/snowflake_2.png" type="Texture" id=9]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/head1.png" type="Texture" id=10]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/head3.png" type="Texture" id=11]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/head2.png" type="Texture" id=12]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/head.png" type="Texture" id=13]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/head.png" type="Texture" id=14]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/armleft.png" type="Texture" id=15]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/cape.png" type="Texture" id=16]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/torso.png" type="Texture" id=17]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/torso.png" type="Texture" id=18]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/axe.png" type="Texture" id=19]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/cape.png" type="Texture" id=20]
+[ext_resource path="res://sprites/Sprites_Battle/papyrus/pap2/idle/armright.png" type="Texture" id=21]
+[ext_resource path="res://Encounters/SpriteAnims/Papyrus_Snowdin/Idle.gd" type="Script" id=23]
+[ext_resource path="res://Encounters/SpriteAnims/Papyrus_Snowdin/Battle.gd" type="Script" id=24]
+[ext_resource path="res://shaders/skewpoints.tres" type="Material" id=25]
+
+[sub_resource type="Shader" id=7]
+code = "shader_type canvas_item;
+
+// naming in UV system _x_y
+uniform vec2 offset_0_0 = vec2(0.0, 0.0);
+uniform vec2 offset_0_1 = vec2(0.0, 0.0);
+uniform vec2 offset_1_0 = vec2(0.0, 0.0);
+uniform vec2 offset_1_1 = vec2(0.0, 0.0);
+
+vec2 sample_point(vec2 point) {
+    // Corners for UV.y == 0
+    vec2 p_0_0 = vec2(0,0) - offset_0_0;
+    vec2 p_1_0 = vec2(1,0) - offset_1_0;
+    // Get point along line UV.y == 0
+    vec2 d_x_0 = p_0_0 + (p_1_0 - p_0_0) * point.x;
+
+    // Corners for UV.y == 1.0
+    vec2 p_0_1 = vec2(0, 1) - offset_0_1;
+    vec2 p_1_1 = vec2(1, 1) - offset_1_1;
+    // Get point along line UV.y == 1
+    vec2 d_x_1 = p_0_1 + (p_1_1 - p_0_1) * point.x;
+    // Get point for given UV.y
+    return d_x_0 + (d_x_1 - d_x_0) * point.y;
+}
+
+void fragment() {
+    //COLOR = vec4(UV.x, UV.y, .0, 1.0);
+    //COLOR = texture(TEXTURE, UV);
+    //COLOR = texture(TEXTURE, sample_point(UV));
+}
+
+uniform float speed = 5.0;
+uniform float frequency_y = 1.0;
+uniform float frequency_x = 0.4;
+uniform float amplitude_y = 2.0;
+uniform float amplitude_x = 0.7;
+uniform float inclination = 8.0;
+
+void vertex() {
+	VERTEX.y -= sin((UV.x - TIME * speed) * frequency_y) * amplitude_y * UV.y;
+	VERTEX.x += cos((UV.y - TIME * speed) * frequency_x) * amplitude_x;
+	VERTEX.x -= UV.y * inclination;
+	VERTEX += sample_point(UV);
+}"
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
+shader_param/offset_0_0 = Vector2( 0, 0 )
+shader_param/offset_0_1 = Vector2( 0, 0 )
+shader_param/offset_1_0 = Vector2( 0, 0 )
+shader_param/offset_1_1 = Vector2( -20, 0 )
+shader_param/speed = 1.3
+shader_param/frequency_y = 0.0
+shader_param/frequency_x = -2.0
+shader_param/amplitude_y = 2.0
+shader_param/amplitude_x = -5.0
+shader_param/inclination = 0.0
+
+[sub_resource type="SpriteFrames" id=18]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=19]
+animations = [ {
+"frames": [ ExtResource( 18 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=20]
+animations = [ {
+"frames": [ ExtResource( 15 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=21]
+animations = [ {
+"frames": [ ExtResource( 13 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Shader" id=29]
+code = "shader_type canvas_item;
+
+// naming in UV system _x_y
+uniform vec2 offset_0_0 = vec2(0.0, 0.0);
+uniform vec2 offset_0_1 = vec2(0.0, 0.0);
+uniform vec2 offset_1_0 = vec2(0.0, 0.0);
+uniform vec2 offset_1_1 = vec2(0.0, 0.0);
+
+vec2 sample_point(vec2 point) {
+    // Corners for UV.y == 0
+    vec2 p_0_0 = vec2(0,0) - offset_0_0;
+    vec2 p_1_0 = vec2(1,0) - offset_1_0;
+    // Get point along line UV.y == 0
+    vec2 d_x_0 = p_0_0 + (p_1_0 - p_0_0) * point.x;
+
+    // Corners for UV.y == 1.0
+    vec2 p_0_1 = vec2(0, 1) - offset_0_1;
+    vec2 p_1_1 = vec2(1, 1) - offset_1_1;
+    // Get point along line UV.y == 1
+    vec2 d_x_1 = p_0_1 + (p_1_1 - p_0_1) * point.x;
+    // Get point for given UV.y
+    return d_x_0 + (d_x_1 - d_x_0) * point.y;
+}
+
+void fragment() {
+    //COLOR = vec4(UV.x, UV.y, .0, 1.0);
+    //COLOR = texture(TEXTURE, UV);
+    //COLOR = texture(TEXTURE, sample_point(UV));
+}
+
+void vertex() {
+    VERTEX += sample_point(UV);
+}"
+
+[sub_resource type="ShaderMaterial" id=30]
+shader = SubResource( 29 )
+shader_param/offset_0_0 = Vector2( 0, 0 )
+shader_param/offset_0_1 = Vector2( 0, 0 )
+shader_param/offset_1_0 = Vector2( 0, 0 )
+shader_param/offset_1_1 = Vector2( 0, 0 )
+
+[sub_resource type="SpriteFrames" id=27]
+animations = [ {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=24]
+animations = [ {
+"frames": [ ExtResource( 19 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Curve" id=15]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=16]
+curve = SubResource( 15 )
+
+[sub_resource type="ParticlesMaterial" id=17]
+emission_shape = 5
+emission_ring_radius = 20.0
+emission_ring_inner_radius = 0.0
+emission_ring_height = 1.0
+emission_ring_axis = Vector3( 0, 0, 1 )
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = -30.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 3.0
+scale_curve = SubResource( 16 )
+color = Color( 0.85098, 0.878431, 1, 1 )
+
+[sub_resource type="SpriteFrames" id=25]
+animations = [ {
+"frames": [ ExtResource( 17 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=26]
+animations = [ {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Curve" id=12]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+emission_shape = 5
+emission_ring_radius = 14.0
+emission_ring_inner_radius = 0.0
+emission_ring_height = 1.0
+emission_ring_axis = Vector3( 0, 0, 1 )
+flag_disable_z = true
+gravity = Vector3( 0, -25, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 13 )
+color = Color( 0.772549, 0.968627, 1, 1 )
+
+[sub_resource type="AnimatedTexture" id=14]
+frames = 2
+fps = 1.0
+frame_0/texture = ExtResource( 8 )
+frame_1/texture = ExtResource( 9 )
+frame_1/delay_sec = 0.0
+
+[sub_resource type="SpriteFrames" id=28]
+animations = [ {
+"frames": [ ExtResource( 14 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Curve" id=31]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.03202, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=34]
+curve = SubResource( 31 )
+
+[sub_resource type="ParticlesMaterial" id=33]
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 65.04
+gravity = Vector3( 0, 60, 0 )
+initial_velocity = 252.1
+initial_velocity_random = 1.0
+angular_velocity = 720.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = -40.46
+radial_accel_random = 1.0
+tangential_accel_random = 1.0
+damping = 45.38
+damping_random = 1.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 34 )
+color = Color( 0.745098, 0.411765, 1, 1 )
+hue_variation = 0.27
+hue_variation_random = 1.0
+
+[node name="papyrus" type="Node2D"]
+position = Vector2( 333, 213 )
+scale = Vector2( 1.75, 1.75 )
+script = ExtResource( 7 )
+
+[node name="Idle" type="Node2D" parent="."]
+visible = false
+position = Vector2( -6.28572, 24 )
+script = ExtResource( 23 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Cape" type="Polygon2D" parent="Idle"]
+material = SubResource( 8 )
+position = Vector2( -20, -78 )
+scale = Vector2( 0.860312, 1.02497 )
+texture = ExtResource( 16 )
+polygon = PoolVector2Array( 1.99265, 29.8267, 1.32843, 15.3315, 1.32843, -0.836258, 5.31597, -0.542022, 43.0076, -0.527634, 72.7859, -0.542022, 77.7127, -0.836258, 77.7127, 18.6765, 77.7127, 38.7468, 77.7127, 60.4896, 68.4137, 61.6046, 41.1811, 61.6046, 3.32106, 62.1621, 1.99265, 54.9145 )
+
+[node name="Sprite" type="Sprite" parent="Idle"]
+show_behind_parent = true
+position = Vector2( -22.2857, -78 )
+texture = ExtResource( 21 )
+offset = Vector2( -8.88889, 16.6667 )
+
+[node name="Legs" type="AnimatedSprite" parent="Idle"]
+material = ExtResource( 25 )
+position = Vector2( -5.5, -55 )
+frames = SubResource( 18 )
+offset = Vector2( 5.5, 29 )
+
+[node name="Torso" type="AnimatedSprite" parent="Idle"]
+position = Vector2( -7.77779, -58 )
+frames = SubResource( 19 )
+offset = Vector2( 3.55556, -13.5556 )
+
+[node name="Arm" type="AnimatedSprite" parent="Idle"]
+position = Vector2( 11.4286, -77.4444 )
+frames = SubResource( 20 )
+offset = Vector2( 15.5, 22 )
+
+[node name="Head" type="AnimatedSprite" parent="Idle"]
+position = Vector2( -6.28571, -88 )
+frames = SubResource( 21 )
+frame = 1
+offset = Vector2( -3.5, -10 )
+
+[node name="Battle" type="Node2D" parent="."]
+position = Vector2( -0.571426, 29.7143 )
+script = ExtResource( 24 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Cape" type="Polygon2D" parent="Battle"]
+show_behind_parent = true
+material = SubResource( 8 )
+position = Vector2( -50.8571, -71.4286 )
+scale = Vector2( 0.86506, 1.02497 )
+texture = ExtResource( 20 )
+polygon = PoolVector2Array( 4.62396, 18.9552, 14.5324, 16.7252, 16.9705, 14.4389, 20.4775, 11.1501, 25.1877, 6.89087, 29.7254, 2.78753, 39.2185, 2.09684, 48.207, 1.44285, 58.4786, 0.695516, 68.0382, -1.52588e-05, 75.3044, -1.67253, 72.0016, 2.78753, 70.6805, 10.5926, 71.341, 16.7252, 71.5592, 23.9426, 72.0016, 30.6629, 73.5912, 42.737, 73.9833, 45.7156, 74.7128, 53.1038, 75.3044, 59.0958, 66.0565, 65.2284, 62.3486, 64.3939, 56.148, 62.9983, 52.1847, 55.1932, 47.9556, 54.524, 41.6156, 53.5207, 39.6947, 50.7415, 36.9916, 46.8306, 32.3677, 44.0431, 23.7803, 41.2555, 17.4905, 40.6855, 10.2063, 40.0252, 4.55698, 39.5132, 0, 29.5479, 0, 25.1794, 0, 19.5128 )
+
+[node name="Legs" type="AnimatedSprite" parent="Battle"]
+material = SubResource( 30 )
+position = Vector2( -5.5, -48 )
+frames = SubResource( 27 )
+offset = Vector2( 6.5, 30 )
+
+[node name="Body" type="Node2D" parent="Battle"]
+use_parent_material = true
+position = Vector2( -5.22223, -45.1429 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Axe" type="AnimatedSprite" parent="Battle/Body"]
+position = Vector2( -17.5, -18.9445 )
+frames = SubResource( 24 )
+offset = Vector2( -7.5, -34 )
+
+[node name="Particles2D" type="Particles2D" parent="Battle/Body/Axe"]
+show_behind_parent = true
+position = Vector2( 3.27777, -64.3889 )
+rotation = 0.66148
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 17 )
+
+[node name="Torso" type="AnimatedSprite" parent="Battle/Body"]
+position = Vector2( -3.5, 1.5 )
+frames = SubResource( 25 )
+offset = Vector2( 1.5, -17.5 )
+
+[node name="Arm" type="AnimatedSprite" parent="Battle/Body"]
+position = Vector2( 14, -26.5 )
+frames = SubResource( 26 )
+offset = Vector2( 9, 7 )
+
+[node name="Hand" type="Sprite" parent="Battle/Body/Arm"]
+position = Vector2( 13.5, 15 )
+texture = ExtResource( 4 )
+offset = Vector2( 19, 12.5 )
+
+[node name="Particles2D" type="Particles2D" parent="Battle/Body/Arm"]
+visible = false
+show_behind_parent = true
+position = Vector2( 22.5, -12.5 )
+amount = 7
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 11 )
+texture = SubResource( 14 )
+
+[node name="Head" type="AnimatedSprite" parent="Battle/Body"]
+use_parent_material = true
+position = Vector2( -4.06348, -21.7143 )
+frames = SubResource( 28 )
+offset = Vector2( -15.3254, -8.28572 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+show_behind_parent = true
+position = Vector2( 0, -44.5 )
+emitting = false
+amount = 200
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource( 33 )
+
+[node name="sparks" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "Effects"

@@ -1,0 +1,203 @@
+[gd_scene load_steps=34 format=2]
+
+[ext_resource path="res://sprites/soul/spr_heartred_center_0.png" type="Texture" id=1]
+[ext_resource path="res://Player_Soul.gd" type="Script" id=2]
+[ext_resource path="res://music/soundFX/player_damage.wav" type="AudioStream" id=3]
+[ext_resource path="res://sprites/soul/spr_heartshards_0.png" type="Texture" id=4]
+[ext_resource path="res://sprites/soul/spr_heartshards_2.png" type="Texture" id=5]
+[ext_resource path="res://sprites/soul/spr_heartshards_1.png" type="Texture" id=6]
+[ext_resource path="res://music/soundFX/impact_wallhit.wav" type="AudioStream" id=7]
+[ext_resource path="res://music/soundFX/soul_changemode.wav" type="AudioStream" id=8]
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://sprites/soul/soulCyan.png" type="Texture" id=10]
+[ext_resource path="res://music/soundFX/ticking.wav" type="AudioStream" id=11]
+[ext_resource path="res://sprites/soul/btredsoul.png" type="Texture" id=12]
+
+[sub_resource type="RectangleShape2D" id=23]
+extents = Vector2( 5.88233, 5.88236 )
+
+[sub_resource type="RectangleShape2D" id=41]
+extents = Vector2( 8, 8 )
+
+[sub_resource type="Gradient" id=24]
+offsets = PoolRealArray( 0.083871, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=20]
+gradient = SubResource( 24 )
+
+[sub_resource type="Curve" id=25]
+max_value = 4.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 4 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=22]
+curve = SubResource( 25 )
+
+[sub_resource type="ParticlesMaterial" id=26]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 22 )
+color_ramp = SubResource( 20 )
+
+[sub_resource type="Gradient" id=27]
+offsets = PoolRealArray( 0, 0.989011, 1 )
+colors = PoolColorArray( 0.85098, 0.85098, 0.85098, 0.258824, 1, 1, 1, 0, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=30]
+gradient = SubResource( 27 )
+
+[sub_resource type="Curve" id=28]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=31]
+curve = SubResource( 28 )
+
+[sub_resource type="ParticlesMaterial" id=29]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 31 )
+color_ramp = SubResource( 30 )
+
+[sub_resource type="CanvasItemMaterial" id=36]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Curve" id=34]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=35]
+curve = SubResource( 34 )
+
+[sub_resource type="ParticlesMaterial" id=32]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 194.03
+initial_velocity_random = 1.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle_random = 1.0
+scale = 0.8
+scale_random = 1.0
+scale_curve = SubResource( 35 )
+
+[sub_resource type="AnimatedTexture" id=33]
+frames = 3
+frame_0/texture = ExtResource( 4 )
+frame_1/texture = ExtResource( 6 )
+frame_1/delay_sec = 0.0
+frame_2/texture = ExtResource( 5 )
+frame_2/delay_sec = 0.0
+
+[sub_resource type="DynamicFont" id=37]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+font_data = ExtResource( 9 )
+
+[sub_resource type="Gradient" id=38]
+offsets = PoolRealArray( 0.364444, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=39]
+gradient = SubResource( 38 )
+
+[sub_resource type="ParticlesMaterial" id=40]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 39 )
+
+[node name="Player_Soul" type="KinematicBody2D" groups=["soul"]]
+position = Vector2( 309, 255 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+can_move = false
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 12 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Area2D" type="Area2D" parent="." groups=["soul"]]
+scale = Vector2( 0.85, 0.85 )
+
+[node name="Collision2" type="CollisionShape2D" parent="Area2D" groups=["soul"]]
+shape = SubResource( 23 )
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource( 41 )
+
+[node name="Trail2" type="Particles2D" parent="."]
+use_parent_material = true
+emitting = false
+amount = 1
+one_shot = true
+local_coords = false
+process_material = SubResource( 26 )
+texture = ExtResource( 1 )
+
+[node name="Trail" type="Particles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.72549 )
+show_behind_parent = true
+lifetime = 0.5
+local_coords = false
+process_material = SubResource( 29 )
+texture = ExtResource( 12 )
+
+[node name="Hurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "Effects"
+
+[node name="ChangeMode" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+bus = "Effects"
+
+[node name="Impact" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+bus = "Effects"
+
+[node name="Damage_Particle" type="Particles2D" parent="."]
+material = SubResource( 36 )
+emitting = false
+amount = 12
+local_coords = false
+process_material = SubResource( 32 )
+texture = SubResource( 33 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -6.0
+margin_top = -39.0
+margin_right = 34.0
+margin_bottom = -22.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 37 )
+
+[node name="Shade" type="Particles2D" parent="."]
+show_behind_parent = true
+emitting = false
+amount = 1
+lifetime = 2.5
+one_shot = true
+local_coords = false
+process_material = SubResource( 40 )
+texture = ExtResource( 10 )
+
+[node name="tick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = -4.0
+bus = "Effects"
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]

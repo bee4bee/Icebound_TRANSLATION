@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://shaders/skewpoints.gdshader" type="Shader" id=1]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/offset_0_0 = Vector2( 0, 0 )
+shader_param/offset_0_1 = Vector2( 0, 0 )
+shader_param/offset_1_0 = Vector2( 0, 0 )
+shader_param/offset_1_1 = Vector2( 0, 0 )

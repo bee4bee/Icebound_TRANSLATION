@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/glass-bottle-shatter-13847.mp3-7ce77098dbf725954e7b7ceb3761028d.mp3str"
+
+[deps]
+
+source_file="res://sprites/overworld/chione/glass-bottle-shatter-13847.mp3"
+dest_files=[ "res://.import/glass-bottle-shatter-13847.mp3-7ce77098dbf725954e7b7ceb3761028d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

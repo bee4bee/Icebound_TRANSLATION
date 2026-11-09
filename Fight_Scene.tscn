@@ -1,0 +1,167 @@
+[gd_scene load_steps=31 format=2]
+
+[ext_resource path="res://sprites/misc/bar_one.png" type="Texture" id=1]
+[ext_resource path="res://sprites/misc/bar_two.png" type="Texture" id=2]
+[ext_resource path="res://Fight_Scene.gd" type="Script" id=3]
+[ext_resource path="res://sprites/misc/meter1.png" type="Texture" id=4]
+[ext_resource path="res://music/soundFX/player_atk.wav" type="AudioStream" id=5]
+[ext_resource path="res://sprites/misc/slash/slashsheet.png" type="Texture" id=6]
+[ext_resource path="res://determination-mono-web-font/hachicro.TTF" type="DynamicFontData" id=7]
+[ext_resource path="res://music/soundFX/powerspawn_low.ogg" type="AudioStream" id=8]
+[ext_resource path="res://sprites/misc/slash/slashsheet_alt.png" type="Texture" id=9]
+
+[sub_resource type="CanvasItemMaterial" id=33]
+light_mode = 1
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 9 )
+region = Rect2( 80, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 9 )
+region = Rect2( 160, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 9 )
+region = Rect2( 240, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 9 )
+region = Rect2( 320, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 80, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 9 )
+region = Rect2( 80, 80, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=41]
+atlas = ExtResource( 9 )
+region = Rect2( 160, 80, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=24]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 6 )
+region = Rect2( 80, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 6 )
+region = Rect2( 160, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 6 )
+region = Rect2( 240, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 6 )
+region = Rect2( 320, 0, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 80, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 6 )
+region = Rect2( 80, 80, 80, 80 )
+
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 6 )
+region = Rect2( 160, 80, 80, 80 )
+
+[sub_resource type="SpriteFrames" id=23]
+animations = [ {
+"frames": [ SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ), SubResource( 41 ), null ],
+"loop": false,
+"name": "alt_outline",
+"speed": 16.0
+}, {
+"frames": [ SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), null ],
+"loop": false,
+"name": "default",
+"speed": 16.0
+} ]
+
+[sub_resource type="DynamicFont" id=42]
+size = 32
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 7 )
+
+[sub_resource type="SpriteFrames" id=21]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=22]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="Fight_Scene" type="Control"]
+script = ExtResource( 3 )
+
+[node name="Slash" type="AnimatedSprite" parent="."]
+material = SubResource( 33 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 23 )
+animation = "alt_outline"
+frame = 8
+
+[node name="slash_music" type="AudioStreamPlayer" parent="Slash"]
+stream = ExtResource( 5 )
+bus = "Effects"
+
+[node name="Hit" type="AudioStreamPlayer" parent="Slash"]
+stream = ExtResource( 8 )
+volume_db = -5.0
+bus = "Effects"
+
+[node name="Damage_Text" type="Label" parent="."]
+modulate = Color( 0.352941, 0.352941, 0.352941, 1 )
+anchor_right = 1.0
+margin_left = 169.0
+margin_top = 103.0
+margin_right = 303.0
+margin_bottom = 145.0
+rect_min_size = Vector2( 0, 40 )
+rect_pivot_offset = Vector2( 60, 20 )
+custom_fonts/font = SubResource( 42 )
+text = "МИМО"
+align = 1
+valign = 1
+
+[node name="DmgTween" type="Tween" parent="Damage_Text"]
+
+[node name="RotationTween" type="Tween" parent="Damage_Text"]
+
+[node name="Meter" type="AnimatedSprite" parent="."]
+position = Vector2( 380, 596 )
+scale = Vector2( 2, 1.5 )
+frames = SubResource( 21 )
+
+[node name="Bar" type="AnimatedSprite" parent="."]
+position = Vector2( -54, 353 )
+scale = Vector2( 0.8, 1 )
+frames = SubResource( 22 )
+speed_scale = 2.0
+
+[node name="Tween_Bar_1" type="Tween" parent="."]
+
+[node name="Tween_Bar_2" type="Tween" parent="."]
+
+[node name="Tween_Meter" type="Tween" parent="."]

@@ -1,0 +1,318 @@
+[gd_scene load_steps=37 format=2]
+
+[ext_resource path="res://Encounters/SpriteAnims/Papyrus_Snowdin/Battle_Sprites.tscn" type="PackedScene" id=1]
+[ext_resource path="res://BattleBox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=3]
+[ext_resource path="res://determination-mono-web-font/hachicro.TTF" type="DynamicFontData" id=4]
+[ext_resource path="res://music/Papyrus-Battle.wav" type="AudioStream" id=5]
+[ext_resource path="res://sprites/misc/slash/knife_2.png" type="Texture" id=6]
+[ext_resource path="res://sprites/misc/slash/knife_0.png" type="Texture" id=7]
+[ext_resource path="res://sprites/misc/slash/knife_3.png" type="Texture" id=8]
+[ext_resource path="res://sprites/misc/slash/knife_1.png" type="Texture" id=9]
+[ext_resource path="res://music/soundFX/player_atk.wav" type="AudioStream" id=10]
+[ext_resource path="res://sprites/misc/slash/knife_4.png" type="Texture" id=11]
+[ext_resource path="res://sprites/misc/slash/knife_5.png" type="Texture" id=12]
+[ext_resource path="res://Encounters/Papyrus_Snowdin/Dialogue_Manager.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Encounters/Papyrus_Snowdin/Menu.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Player_Soul.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Fight_Scene.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Encounters/Papyrus_Snowdin/SnowdinEncounter.gd" type="Script" id=18]
+[ext_resource path="res://sprites/backgrounds/snowdin.png" type="Texture" id=19]
+[ext_resource path="res://Bonus Assets/MovingWallStuff.tscn" type="PackedScene" id=20]
+[ext_resource path="res://sprites/misc/snowflake_1.png" type="Texture" id=21]
+[ext_resource path="res://sprites/misc/petal.png" type="Texture" id=22]
+[ext_resource path="res://Singletons/Pause.tscn" type="PackedScene" id=23]
+
+[sub_resource type="SpriteFrames" id=39]
+animations = [ {
+"frames": [ ExtResource( 19 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Curve" id=36]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.0190678 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=35]
+curve = SubResource( 36 )
+
+[sub_resource type="ParticlesMaterial" id=37]
+emission_shape = 2
+emission_box_extents = Vector3( 320, 1, 1 )
+flag_disable_z = true
+gravity = Vector3( 15, 50, 0 )
+initial_velocity = 44.12
+initial_velocity_random = 1.0
+angular_velocity = 69.9
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+tangential_accel_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 35 )
+hue_variation = 0.04
+hue_variation_random = 1.0
+
+[sub_resource type="AnimatedTexture" id=40]
+fps = 1.0
+frame_0/texture = ExtResource( 21 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ ExtResource( 7 ), ExtResource( 9 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 12 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=9]
+size = 32
+font_data = ExtResource( 4 )
+
+[sub_resource type="Curve" id=44]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.0190678 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=43]
+curve = SubResource( 44 )
+
+[sub_resource type="ParticlesMaterial" id=45]
+emission_shape = 2
+emission_box_extents = Vector3( 320, 1, 1 )
+flag_disable_z = true
+spread = 158.06
+gravity = Vector3( -3, 6, 0 )
+initial_velocity = 20.0
+initial_velocity_random = 1.0
+angular_velocity = 86.74
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+tangential_accel = -6.61
+tangential_accel_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale = 1.4
+scale_random = 1.0
+scale_curve = SubResource( 43 )
+
+[sub_resource type="AnimatedTexture" id=46]
+fps = 0.6
+frame_0/texture = ExtResource( 22 )
+
+[sub_resource type="Gradient" id=275]
+colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=276]
+gradient = SubResource( 275 )
+
+[node name="Battle_Engine" type="Node2D"]
+script = ExtResource( 18 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -189.0
+margin_top = -200.0
+margin_right = 567.0
+margin_bottom = 332.0
+rect_scale = Vector2( 1.36, 3.6 )
+color = Color( 0.0627451, 0.0235294, 0.180392, 1 )
+
+[node name="Background" type="AnimatedSprite" parent="."]
+position = Vector2( 320, 126 )
+scale = Vector2( 1.1, 1.1 )
+frames = SubResource( 39 )
+
+[node name="MovingWallStuff" parent="." instance=ExtResource( 20 )]
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 241, -66 )
+amount = 110
+lifetime = 5.0
+preprocess = 69.06
+visibility_rect = Rect2( -100, -100, 400, 800 )
+process_material = SubResource( 37 )
+texture = SubResource( 40 )
+
+[node name="papyrus" parent="." instance=ExtResource( 1 )]
+position = Vector2( 320, 178 )
+
+[node name="HUD" parent="." instance=ExtResource( 3 )]
+
+[node name="Stamina" parent="HUD" index="10"]
+visible = false
+
+[node name="BattleBox" parent="." instance=ExtResource( 2 )]
+margin_left = 250.0
+margin_top = 235.0
+margin_right = 250.0
+margin_bottom = 235.0
+
+[node name="Text" parent="BattleBox/ArenaContainer/TextContainer" index="0"]
+custom_effects = [ null ]
+
+[node name="VScrollBar2" type="VScrollBar" parent="BattleBox/ArenaContainer/TextContainer/Text" index="0"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+max_value = 34.0
+step = 1.0
+page = 134.0
+
+[node name="VScrollBar3" type="VScrollBar" parent="BattleBox/ArenaContainer/TextContainer/Text" index="1"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+step = 1.0
+
+[node name="VScrollBar4" type="VScrollBar" parent="BattleBox/ArenaContainer/TextContainer/Text" index="2"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+max_value = 34.0
+step = 1.0
+page = 134.0
+
+[node name="VScrollBar5" type="VScrollBar" parent="BattleBox/ArenaContainer/TextContainer/Text" index="3"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+step = 1.0
+
+[node name="VScrollBar2" type="VScrollBar" parent="BattleBox/Counter" index="0"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+step = 1.0
+
+[node name="VScrollBar3" type="VScrollBar" parent="BattleBox/Counter" index="1"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+step = 1.0
+
+[node name="VScrollBar4" type="VScrollBar" parent="BattleBox/Counter" index="2"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+step = 1.0
+
+[node name="VScrollBar5" type="VScrollBar" parent="BattleBox/Counter" index="3"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+step = 1.0
+
+[node name="Menu" parent="." instance=ExtResource( 14 )]
+
+[node name="Soul" parent="Menu" index="8"]
+position = Vector2( 29, 374 )
+
+[node name="Player_Soul" parent="." instance=ExtResource( 15 )]
+position = Vector2( 3, -34 )
+
+[node name="BonusAssets" type="Node2D" parent="."]
+visible = false
+
+[node name="Slash" type="AnimatedSprite" parent="BonusAssets"]
+visible = false
+position = Vector2( -177, 102 )
+scale = Vector2( 1.4, 1.4 )
+frames = SubResource( 8 )
+speed_scale = 3.5
+
+[node name="slash_music" type="AudioStreamPlayer2D" parent="BonusAssets/Slash"]
+position = Vector2( 0.000183105, -7.85716 )
+stream = ExtResource( 10 )
+bus = "Effects"
+
+[node name="Damage_Text" type="RichTextLabel" parent="BonusAssets"]
+modulate = Color( 0.351563, 0.351563, 0.351563, 1 )
+anchor_right = 1.0
+margin_left = 180.0
+margin_top = 105.0
+margin_right = 407.0
+margin_bottom = 147.0
+rect_min_size = Vector2( 0, 40 )
+rect_pivot_offset = Vector2( 60, 20 )
+custom_fonts/normal_font = SubResource( 9 )
+bbcode_enabled = true
+bbcode_text = "MISS"
+text = "MISS"
+scroll_active = false
+
+[node name="DmgTween" type="Tween" parent="BonusAssets/Damage_Text"]
+
+[node name="RotationTween" type="Tween" parent="BonusAssets/Damage_Text"]
+
+[node name="Fight_Scene" parent="." instance=ExtResource( 16 )]
+
+[node name="Slash" parent="Fight_Scene" index="0"]
+frame = 1
+
+[node name="Meter" parent="Fight_Scene" index="2"]
+position = Vector2( 1044, 539 )
+
+[node name="Bar" parent="Fight_Scene" index="3"]
+position = Vector2( 1120, 336 )
+
+[node name="Dialogue_Manager" parent="." instance=ExtResource( 13 )]
+margin_left = 434.0
+margin_top = 64.0
+margin_right = 434.0
+margin_bottom = 64.0
+
+[node name="Camera" parent="." instance=ExtResource( 17 )]
+rotating = true
+
+[node name="Glitch" parent="Camera" index="4"]
+visible = true
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+bus = "Music"
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0.615686, 0.580392, 0.827451, 1 )
+
+[node name="Blossom" type="Particles2D" parent="."]
+position = Vector2( 398, -28 )
+scale = Vector2( 1.5, 1.5 )
+emitting = false
+amount = 50
+lifetime = 14.0
+visibility_rect = Rect2( -100, -100, 230, 500 )
+process_material = SubResource( 45 )
+texture = SubResource( 46 )
+
+[node name="Light2D6" type="Light2D" parent="."]
+position = Vector2( 210, -132 )
+rotation = 1.34776
+scale = Vector2( 0.38078, 493.614 )
+texture = SubResource( 276 )
+color = Color( 0.901961, 0.592157, 1, 1 )
+energy = 1.4
+shadow_enabled = true
+shadow_color = Color( 0.145098, 0.0980392, 0.0980392, 0 )
+
+[node name="Pause" parent="." instance=ExtResource( 23 )]
+
+[connection signal="attack_reset" from="." to="Menu" method="_on_Battle_Engine_attack_reset"]
+[connection signal="enemy_turn_dialogue" from="." to="Dialogue_Manager" method="_on_Battle_Engine_enemy_turn_dialogue"]
+[connection signal="players_turn" from="." to="BattleBox" method="_on_Battle_Engine_players_turn"]
+[connection signal="player_is_attacking" from="Menu" to="." method="_on_Menu_player_is_attacking"]
+[connection signal="player_is_attacking" from="Menu" to="BattleBox" method="_on_Menu_player_is_attacking"]
+[connection signal="current_hp" from="Player_Soul" to="HUD" method="_on_Player_Soul_current_hp"]
+[connection signal="attack_is_casted" from="Fight_Scene" to="." method="_on_Fight_Scene_attack_is_casted"]
+[connection signal="enemy_turn_begin" from="Fight_Scene" to="." method="_on_Fight_Scene_enemy_turn_begin"]
+[connection signal="dialogue_finished" from="Dialogue_Manager" to="." method="_on_Dialogue_Manager_dialogue_finished"]
+
+[editable path="HUD"]
+[editable path="BattleBox"]
+[editable path="Menu"]
+[editable path="Player_Soul"]
+[editable path="Fight_Scene"]
+[editable path="Camera"]

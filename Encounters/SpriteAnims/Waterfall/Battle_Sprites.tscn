@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Encounters/SpriteAnims/Waterfall/Sans.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Encounters/SpriteAnims/Waterfall/Flowey.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Encounters/SpriteAnims/Waterfall/Battle_Sprites.gd" type="Script" id=8]
+
+[node name="Battle_Sprites" type="Node2D"]
+position = Vector2( -94, -6 )
+script = ExtResource( 8 )
+
+[node name="Sans" parent="." instance=ExtResource( 1 )]
+position = Vector2( 364, 246 )
+
+[node name="Flowey" parent="." instance=ExtResource( 2 )]
+position = Vector2( 499, 202 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[editable path="Flowey"]

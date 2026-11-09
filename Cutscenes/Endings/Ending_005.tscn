@@ -1,0 +1,78 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Cutscenes/Endings/Ending_005.gd" type="Script" id=2]
+[ext_resource path="res://music/chatter/SND_TXT2.wav" type="AudioStream" id=3]
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://sprites/Cutscenes/sasnEnding1.png" type="Texture" id=5]
+[ext_resource path="res://sprites/Cutscenes/sansEnding2_blood.png" type="Texture" id=6]
+[ext_resource path="res://sprites/Cutscenes/sansEnding2.png" type="Texture" id=7]
+[ext_resource path="res://music/soundFX/snd_damage.wav" type="AudioStream" id=8]
+[ext_resource path="res://shaders/glitch.gdshader" type="Shader" id=9]
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 7 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 4 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = ExtResource( 9 )
+shader_param/shake_power = 0.02
+shader_param/shake_rate = 0.07
+shader_param/shake_speed = 3.0
+shader_param/shake_block_size = 80.0
+shader_param/shake_color_rate = 0.01
+
+[node name="Ending_005" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 320, 152 )
+scale = Vector2( 1.2, 1.2 )
+frames = SubResource( 3 )
+
+[node name="Blitter" type="RichTextLabel" parent="."]
+margin_left = 100.0
+margin_top = 324.0
+margin_right = 540.0
+margin_bottom = 431.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+scroll_active = false
+
+[node name="Ending" type="RichTextLabel" parent="."]
+margin_left = 250.0
+margin_top = 298.0
+margin_right = 390.0
+margin_bottom = 351.0
+custom_fonts/normal_font = SubResource( 2 )
+bbcode_enabled = true
+bbcode_text = "Ending 005."
+text = "Ending 005."
+scroll_active = false
+
+[node name="snd" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="damage" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource( 5 )
+margin_left = -97.0
+margin_top = -74.0
+margin_right = 771.0
+margin_bottom = 569.0
+
+[node name="Camera" parent="." instance=ExtResource( 1 )]

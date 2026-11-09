@@ -1,0 +1,94 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Bullets/GigaVine/spr_gigavine_0.png" type="Texture" id=1]
+[ext_resource path="res://Bullets/GigaVine/GigaVine.gd" type="Script" id=2]
+[ext_resource path="res://music/soundFX/Flowey_bulletspawn.wav" type="AudioStream" id=4]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+// naming in UV system _x_y
+uniform vec2 offset_0_0 = vec2(0.0, 0.0);
+uniform vec2 offset_0_1 = vec2(0.0, 0.0);
+uniform vec2 offset_1_0 = vec2(0.0, 0.0);
+uniform vec2 offset_1_1 = vec2(0.0, 0.0);
+
+vec2 sample_point(vec2 point) {
+    // Corners for UV.y == 0
+    vec2 p_0_0 = vec2(0,0) - offset_0_0;
+    vec2 p_1_0 = vec2(1,0) - offset_1_0;
+    // Get point along line UV.y == 0
+    vec2 d_x_0 = p_0_0 + (p_1_0 - p_0_0) * point.x;
+
+    // Corners for UV.y == 1.0
+    vec2 p_0_1 = vec2(0, 1) - offset_0_1;
+    vec2 p_1_1 = vec2(1, 1) - offset_1_1;
+    // Get point along line UV.y == 1
+    vec2 d_x_1 = p_0_1 + (p_1_1 - p_0_1) * point.x;
+    // Get point for given UV.y
+    return d_x_0 + (d_x_1 - d_x_0) * point.y;
+}
+
+void fragment() {
+    //COLOR = vec4(UV.x, UV.y, .0, 1.0);
+    //COLOR = texture(TEXTURE, UV);
+    //COLOR = texture(TEXTURE, sample_point(UV));
+}
+
+uniform float speed = 5.0;
+uniform float frequency_y = 1.0;
+uniform float frequency_x = 0.4;
+uniform float amplitude_y = 2.0;
+uniform float amplitude_x = 0.7;
+uniform float inclination = 8.0;
+
+void vertex() {
+	VERTEX.y -= sin((UV.x - TIME * speed) * frequency_y) * amplitude_y;
+	VERTEX.x += cos((UV.y - TIME * speed) * frequency_x) * amplitude_x;
+	VERTEX.x -= UV.y * inclination;
+	VERTEX += sample_point(UV);
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/offset_0_0 = Vector2( 0, 0 )
+shader_param/offset_0_1 = Vector2( 0, 0 )
+shader_param/offset_1_0 = Vector2( 0, 0 )
+shader_param/offset_1_1 = Vector2( 0, 0 )
+shader_param/speed = 0.6
+shader_param/frequency_y = 5.0
+shader_param/frequency_x = 0.4
+shader_param/amplitude_y = 3.0
+shader_param/amplitude_x = 0.0
+shader_param/inclination = 0.0
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 218, 9 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 17.0
+
+[node name="GigaVine" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="NinePatchRect" type="Polygon2D" parent="."]
+material = SubResource( 4 )
+position = Vector2( -481, -19 )
+offset = Vector2( 257, 19 )
+texture = ExtResource( 1 )
+polygon = PoolVector2Array( -272, -19, -208.254, -19, -171, -13, -135, -18, -75, -17, -20, -19, 24, -17, 86, -14, 108.13, -19, 124.142, -19, 156, -14, 182, -14, 209, -19, 237, -19, 257, -19, 257, 20, 237, 20, 205.625, 20, 183, 17, 157, 17, 128, 17, 105, 19, 82, 18, 16, 14, -32, 9, -73, 16, -138, 20, -175, 18, -219, 15, -272, 20 )
+
+[node name="Area2D" type="Area2D" parent="NinePatchRect"]
+position = Vector2( 455, 17 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NinePatchRect/Area2D"]
+position = Vector2( -171, 0 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="NinePatchRect/Area2D"]
+position = Vector2( 26, 2 )
+shape = SubResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -4.0

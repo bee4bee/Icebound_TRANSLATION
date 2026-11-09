@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://sprites/main_screen/logo2.png" type="Texture" id=2]
+[ext_resource path="res://music/soundFX/mus_intronoise.ogg" type="AudioStream" id=3]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node2D
+
+
+var tw = Tween.new()
+onready var logo = $Sprite
+onready var text = $Label
+
+func _ready():
+	pass
+
+func _process(delta):
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		text.modulate.a = 0
+		add_child(tw)
+		tw.interpolate_property(logo, \"scale\", Vector2.ZERO, Vector2(2.5, 2.5), 1.0, Tween.TRANS_QUINT, Tween.EASE_OUT)
+		tw.start()
+		$AudioStreamPlayer.play()
+		yield(get_tree().create_timer(3.0), \"timeout\")
+		tw.interpolate_property(text, \"modulate:a\", 0, 1, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+		tw.start()
+		yield(get_tree().create_timer(3.0), \"timeout\")
+		tw.interpolate_property(self, \"modulate:a\", 1, 0, 1.5, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+		tw.start()
+"
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 1 )
+
+[node name="intro" type="Node2D"]
+script = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 350, 240 )
+scale = Vector2( 1e-05, 1e-05 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+modulate = Color( 0.439216, 0.431373, 0.466667, 0 )
+margin_left = 141.0
+margin_top = 321.0
+margin_right = 420.0
+margin_bottom = 347.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = SubResource( 1 )
+text = "я думаю демо-версия скоро выйдет"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -4.0

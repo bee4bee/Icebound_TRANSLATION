@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mus_sfx_a_bullet.wav-acb662736d7d3957a2befbf6a4ae61f8.sample"
+
+[deps]
+
+source_file="res://music/soundFX/mus_sfx_a_bullet.wav"
+dest_files=[ "res://.import/mus_sfx_a_bullet.wav-acb662736d7d3957a2befbf6a4ae61f8.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

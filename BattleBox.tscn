@@ -1,0 +1,149 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://BattleBox/BattleBox.gd" type="Script" id=1]
+[ext_resource path="res://sprites/misc/fancyBox.png" type="Texture" id=2]
+[ext_resource path="res://determination-mono-web-font/DeterminationMonoWebRegular-Z5oq.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://music/chatter/SND_TXT2.wav" type="AudioStream" id=4]
+[ext_resource path="res://determination-mono-web-font/Mars_Needs_Cunnilingus.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Arena.gd" type="Script" id=6]
+[ext_resource path="res://sprites/misc/fancybox_tr.png" type="Texture" id=7]
+[ext_resource path="res://music/soundFX/snd_damage_c.wav" type="AudioStream" id=8]
+
+[sub_resource type="CanvasItemMaterial" id=12]
+light_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id=9]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 200, 107.64 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 200, 176.216 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 206.053, 200 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 182.336, 200 )
+
+[sub_resource type="CanvasItemMaterial" id=11]
+light_mode = 1
+
+[sub_resource type="DynamicFont" id=7]
+size = 32
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_char = -1
+extra_spacing_space = -1
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 32
+font_data = ExtResource( 5 )
+
+[node name="BattleBox" type="Control"]
+modulate = Color( 0.882353, 0.882353, 0.964706, 1 )
+rect_pivot_offset = Vector2( 75, 75 )
+script = ExtResource( 1 )
+
+[node name="ArenaContainer" type="MarginContainer" parent="."]
+margin_right = 150.0
+margin_bottom = 150.0
+
+[node name="Arena" type="NinePatchRect" parent="ArenaContainer"]
+material = SubResource( 12 )
+margin_right = 150.0
+margin_bottom = 150.0
+rect_pivot_offset = Vector2( 75, 75 )
+rect_clip_content = true
+texture = ExtResource( 2 )
+patch_margin_left = 9
+patch_margin_top = 9
+patch_margin_right = 9
+patch_margin_bottom = 9
+script = ExtResource( 6 )
+
+[node name="Attacks" type="Control" parent="ArenaContainer/Arena"]
+use_parent_material = true
+
+[node name="Arena2" type="NinePatchRect" parent="ArenaContainer/Arena"]
+modulate = Color( 0.807843, 0.913725, 1, 1 )
+material = SubResource( 9 )
+margin_right = 150.0
+margin_bottom = 150.0
+rect_pivot_offset = Vector2( 75, 75 )
+texture = ExtResource( 7 )
+patch_margin_left = 9
+patch_margin_top = 9
+patch_margin_right = 9
+patch_margin_bottom = 9
+
+[node name="Collisions" type="StaticBody2D" parent="ArenaContainer/Arena"]
+
+[node name="barrier_right" type="CollisionShape2D" parent="ArenaContainer/Arena/Collisions"]
+position = Vector2( 345, 18.5 )
+scale = Vector2( 1, 2.225 )
+shape = SubResource( 3 )
+
+[node name="barrier_left" type="CollisionShape2D" parent="ArenaContainer/Arena/Collisions"]
+position = Vector2( -195, 98.5 )
+scale = Vector2( 1, 2.199 )
+shape = SubResource( 4 )
+
+[node name="barrier_bottom" type="CollisionShape2D" parent="ArenaContainer/Arena/Collisions"]
+position = Vector2( 85, 345 )
+scale = Vector2( 1.553, 1 )
+shape = SubResource( 5 )
+
+[node name="barrier_top" type="CollisionShape2D" parent="ArenaContainer/Arena/Collisions"]
+position = Vector2( 85, -195 )
+scale = Vector2( 1.755, 1 )
+shape = SubResource( 6 )
+
+[node name="Tween" type="Tween" parent="ArenaContainer/Arena"]
+
+[node name="ColorRect" type="ColorRect" parent="ArenaContainer/Arena"]
+margin_top = 1.0
+margin_right = 150.0
+margin_bottom = 150.0
+color = Color( 1, 1, 1, 0 )
+
+[node name="TextContainer" type="MarginContainer" parent="ArenaContainer"]
+margin_right = 150.0
+margin_bottom = 150.0
+custom_constants/margin_top = 16
+custom_constants/margin_left = 18
+
+[node name="Text" type="RichTextLabel" parent="ArenaContainer/TextContainer"]
+modulate = Color( 0.764706, 0.713726, 0.862745, 1 )
+material = SubResource( 11 )
+margin_left = 18.0
+margin_top = 16.0
+margin_right = 150.0
+margin_bottom = 150.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/normal_font = SubResource( 7 )
+scroll_active = false
+custom_effects = [ null ]
+
+[node name="Counter" type="RichTextLabel" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+custom_fonts/normal_font = SubResource( 10 )
+bbcode_enabled = true
+text = "4"
+
+[node name="Blitter_Sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+bus = "Effects"
+
+[node name="Resize" type="Tween" parent="."]
+
+[node name="Positioning" type="Tween" parent="."]
+
+[node name="TextTween" type="Tween" parent="."]
+
+[node name="FloweyHit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )

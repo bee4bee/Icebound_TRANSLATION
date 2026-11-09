@@ -1,0 +1,515 @@
+[gd_scene load_steps=44 format=2]
+
+[ext_resource path="res://Encounters/SpriteAnims/Waterfall/Battle_Sprites.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Cutscenes/Cutscene_BattleWaterfall.gd" type="Script" id=2]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://determination-mono-web-font/sans_font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://music/chatter/voice_Sans.wav" type="AudioStream" id=5]
+[ext_resource path="res://music/ffracture_start2.wav" type="AudioStream" id=6]
+[ext_resource path="res://sprites/backgrounds/waterfall.png" type="Texture" id=7]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans2/sit.png" type="Texture" id=8]
+[ext_resource path="res://Bonus Assets/Gradient.gd" type="Script" id=9]
+[ext_resource path="res://sprites/misc/snowflake_2.png" type="Texture" id=10]
+[ext_resource path="res://sprites/misc/snowflake_1.png" type="Texture" id=11]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans2/sitcape.png" type="Texture" id=12]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans2/sit1.png" type="Texture" id=13]
+[ext_resource path="res://Singletons/Pause.tscn" type="PackedScene" id=15]
+
+[sub_resource type="SpriteFrames" id=295]
+animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Shader" id=296]
+code = "shader_type canvas_item;
+
+// naming in UV system _x_y
+uniform vec2 offset_0_0 = vec2(0.0, 0.0);
+uniform vec2 offset_0_1 = vec2(0.0, 0.0);
+uniform vec2 offset_1_0 = vec2(0.0, 0.0);
+uniform vec2 offset_1_1 = vec2(0.0, 0.0);
+
+vec2 sample_point(vec2 point) {
+    // Corners for UV.y == 0
+    vec2 p_0_0 = vec2(0,0) - offset_0_0;
+    vec2 p_1_0 = vec2(1,0) - offset_1_0;
+    // Get point along line UV.y == 0
+    vec2 d_x_0 = p_0_0 + (p_1_0 - p_0_0) * point.x;
+
+    // Corners for UV.y == 1.0
+    vec2 p_0_1 = vec2(0, 1) - offset_0_1;
+    vec2 p_1_1 = vec2(1, 1) - offset_1_1;
+    // Get point along line UV.y == 1
+    vec2 d_x_1 = p_0_1 + (p_1_1 - p_0_1) * point.x;
+    // Get point for given UV.y
+    return d_x_0 + (d_x_1 - d_x_0) * point.y;
+}
+
+void fragment() {
+    //COLOR = vec4(UV.x, UV.y, .0, 1.0);
+    //COLOR = texture(TEXTURE, UV);
+    //COLOR = texture(TEXTURE, sample_point(UV));
+}
+
+uniform float speed = 5.0;
+uniform float frequency_y = 1.0;
+uniform float frequency_x = 0.4;
+uniform float amplitude_y = 15.0;
+uniform float amplitude_x = 3.0;
+uniform float inclination = 10.0;
+
+void vertex() {
+	VERTEX.y -= sin((UV.x - TIME * speed) * frequency_y) * amplitude_y;
+	VERTEX.x += cos((UV.y - TIME * speed) * frequency_x) * amplitude_x;
+	VERTEX.x -= UV.y * inclination;
+	VERTEX += sample_point(UV);
+}"
+
+[sub_resource type="ShaderMaterial" id=297]
+shader = SubResource( 296 )
+shader_param/offset_0_0 = Vector2( 0, 0 )
+shader_param/offset_0_1 = Vector2( 0, 0 )
+shader_param/offset_1_0 = Vector2( 0, 0 )
+shader_param/offset_1_1 = Vector2( 0, 0 )
+shader_param/speed = 1.0
+shader_param/frequency_y = 1.0
+shader_param/frequency_x = 1.0
+shader_param/amplitude_y = 0.0
+shader_param/amplitude_x = 6.0
+shader_param/inclination = 0.0
+
+[sub_resource type="CanvasItemMaterial" id=298]
+light_mode = 1
+
+[sub_resource type="Curve" id=285]
+min_value = -200.0
+max_value = 200.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, -200 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=286]
+curve = SubResource( 285 )
+
+[sub_resource type="Curve" id=282]
+_data = [ Vector2( 0, 1 ), 0.0, -0.274536, 0, 0, Vector2( 1, 0 ), 0.0961336, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=283]
+curve = SubResource( 282 )
+
+[sub_resource type="Curve" id=287]
+min_value = -200.0
+max_value = 200.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=288]
+curve = SubResource( 287 )
+
+[sub_resource type="ParticlesMaterial" id=284]
+emission_shape = 2
+emission_box_extents = Vector3( 320, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 0, -20, 0 )
+gravity = Vector3( 0, -30, 0 )
+initial_velocity = 280.0
+initial_velocity_random = 1.0
+angular_velocity = 200.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 57.0
+linear_accel_random = 1.0
+linear_accel_curve = SubResource( 286 )
+tangential_accel = 85.43
+tangential_accel_random = 1.0
+tangential_accel_curve = SubResource( 288 )
+damping = 100.0
+damping_random = 0.24
+angle = 127.0
+angle_random = 1.0
+scale = 6.0
+scale_random = 1.0
+scale_curve = SubResource( 283 )
+color = Color( 0.317647, 0.984314, 1, 1 )
+hue_variation = 0.04
+hue_variation_random = 1.0
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+
+uniform float speed = 2.0;
+uniform float frequency_y = 5.0;
+uniform float frequency_x = 5.0;
+uniform float amplitude_y = 50.0;
+uniform float amplitude_x = 25.0;
+uniform float inclination = 50.0;
+
+void vertex() {
+	//VERTEX.y += sin((UV.x - TIME * speed) * frequency_y) * amplitude_y * UV.x;
+	VERTEX.x += cos((UV.y - TIME * speed) * frequency_x) * amplitude_x * UV.x;
+	VERTEX.x -= UV.y * inclination;
+}"
+
+[sub_resource type="ShaderMaterial" id=278]
+shader = SubResource( 13 )
+shader_param/speed = 0.5
+shader_param/frequency_y = 5.0
+shader_param/frequency_x = 6.0
+shader_param/amplitude_y = 50.0
+shader_param/amplitude_x = 110.0
+shader_param/inclination = 0.0
+
+[sub_resource type="Gradient" id=12]
+offsets = PoolRealArray( 0, 0.513228, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.823529, 1, 1, 0, 0.258824, 0.490196, 0.470588, 0 )
+
+[sub_resource type="GradientTexture" id=279]
+gradient = SubResource( 12 )
+
+[sub_resource type="Gradient" id=16]
+colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture2D" id=280]
+gradient = SubResource( 16 )
+fill_to = Vector2( 0, 1 )
+
+[sub_resource type="Gradient" id=277]
+colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=281]
+gradient = SubResource( 277 )
+
+[sub_resource type="Shader" id=299]
+code = "/*
+Shader from Godot Shaders - the free shader library.
+godotshaders.com/shader/god-rays
+
+Feel free to use, improve and change this shader according to your needs
+and consider sharing the modified result on godotshaders.com.
+*/
+
+shader_type canvas_item;
+
+uniform float angle = -0.3;
+uniform float position = -0.2;
+uniform float spread : hint_range(0.0, 1.0) = 0.5;
+uniform float cutoff : hint_range(-1.0, 1.0) = 0.1;
+uniform float falloff : hint_range(0.0, 1.0) = 0.2;
+uniform float edge_fade : hint_range(0.0, 1.0) = 0.15;
+
+uniform float speed = 1.0;
+uniform float ray1_density = 8.0;
+uniform float ray2_density = 30.0;
+uniform float ray2_intensity : hint_range(0.0, 1.0) = 0.3;
+
+uniform vec4 color : hint_color = vec4(1.0, 0.9, 0.65, 0.8);
+
+uniform bool hdr = false;
+uniform float seed = 5.0;
+
+// Random and noise functions from Book of Shader's chapter on Noise.
+float random(vec2 _uv) {
+    return fract(sin(dot(_uv.xy,
+                         vec2(12.9898, 78.233))) *
+        43758.5453123);
+}
+
+float noise (in vec2 uv) {
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
+
+    // Four corners in 2D of a tile
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+
+    // Smooth Interpolation
+
+    // Cubic Hermine Curve. Same as SmoothStep()
+    vec2 u = f * f * (3.0-2.0 * f);
+
+    // Mix 4 coorners percentages
+    return mix(a, b, u.x) +
+            (c - a)* u.y * (1.0 - u.x) +
+            (d - b) * u.x * u.y;
+}
+
+mat2 rotate(float _angle){
+    return mat2(vec2(cos(_angle), -sin(_angle)),
+                vec2(sin(_angle), cos(_angle)));
+}
+
+vec4 screen(vec4 base, vec4 blend){
+	return 1.0 - (1.0 - base) * (1.0 - blend);
+}
+
+vec4 soft_light(vec4 base, vec4 blend){
+	vec4 limit = step(0.5, blend);
+	return mix(2.0 * base * blend + base * base * (1.0 - 2.0 * blend), sqrt(base) * (2.0 * blend - 1.0) + (2.0 * base) * (1.0 - blend), limit);
+}
+
+void fragment()
+{
+	
+	// Rotate, skew and move the UVs
+	vec2 transformed_uv = ( rotate(angle) * (UV - position) )  / ( (UV.y + spread) - (UV.y * spread) );
+	
+	// Animate the ray according the the new transformed UVs
+	vec2 ray1 = vec2(transformed_uv.x * ray1_density + sin(TIME * 0.1 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	vec2 ray2 = vec2(transformed_uv.x * ray2_density + sin(TIME * 0.2 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	
+	// Cut off the ray's edges
+	float cut = step(cutoff, transformed_uv.x) * step(cutoff, 1.0 - transformed_uv.x);
+	ray1 *= cut;
+	ray2 *= cut;
+	
+	// Apply the noise pattern (i.e. create the rays)
+	float rays;
+	
+	if (hdr){
+		// This is not really HDR, but check this to not clamp the two merged rays making 
+		// their values go over 1.0. Can make for some nice effect
+		rays = noise(ray1) + (noise(ray2) * ray2_intensity);
+	}
+	else{
+		 rays = clamp(noise(ray1) + (noise(ray2) * ray2_intensity), 0., 1.);
+	}
+	
+	// Fade out edges
+	rays *= smoothstep(0.0, falloff, (1.0 - UV.y)); // Bottom
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, transformed_uv.x); // Left
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, 1.0 - transformed_uv.x); // Right
+	
+	// Color to the rays
+	vec3 shine = vec3(rays) * color.rgb;
+
+	// Try different blending modes for a nicer effect. \"Screen\" is included in the code,
+	// but take a look at https://godotshaders.com/snippet/blending-modes/ for more.
+	// With \"Screen\" blend mode:
+	shine = screen(texture(SCREEN_TEXTURE, SCREEN_UV), vec4(color)).rgb;
+	
+	COLOR = vec4(shine, rays * color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id=300]
+shader = SubResource( 299 )
+shader_param/angle = -0.3
+shader_param/position = -0.2
+shader_param/spread = 0.571
+shader_param/cutoff = 0.1
+shader_param/falloff = 0.319
+shader_param/edge_fade = 0.304
+shader_param/speed = 1.0
+shader_param/ray1_density = 15.0
+shader_param/ray2_density = 50.0
+shader_param/ray2_intensity = 1.0
+shader_param/color = Color( 0.729412, 0.407843, 1, 0.666667 )
+shader_param/hdr = false
+shader_param/seed = 5.0
+
+[sub_resource type="Curve" id=301]
+min_value = -360.0
+max_value = 360.0
+_data = [ Vector2( 0, 360 ), 0.0, 0.0, 0, 0, Vector2( 1, -5.33899 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=37]
+curve = SubResource( 301 )
+
+[sub_resource type="Curve" id=302]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=38]
+curve = SubResource( 302 )
+
+[sub_resource type="Curve" id=303]
+_data = [ Vector2( 0, 0 ), 0.0, 3.10933, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=39]
+curve = SubResource( 303 )
+
+[sub_resource type="ParticlesMaterial" id=304]
+emission_shape = 2
+emission_box_extents = Vector3( 480, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 1, 1, 0 )
+spread = 0.0
+gravity = Vector3( 15, 50, 0 )
+initial_velocity = 242.79
+initial_velocity_random = 1.0
+angular_velocity = -153.63
+angular_velocity_random = 1.0
+angular_velocity_curve = SubResource( 37 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = -3.47
+linear_accel_random = 1.0
+tangential_accel = -75.81
+tangential_accel_random = 1.0
+tangential_accel_curve = SubResource( 39 )
+damping = 17.82
+damping_random = 1.0
+scale = 0.7
+scale_random = 1.0
+scale_curve = SubResource( 38 )
+hue_variation = 0.04
+hue_variation_random = 1.0
+
+[sub_resource type="AnimatedTexture" id=305]
+resource_local_to_scene = true
+frames = 2
+fps = 1.8
+frame_0/texture = ExtResource( 11 )
+frame_1/texture = ExtResource( 10 )
+frame_1/delay_sec = 0.0
+
+[node name="Cutscene_BattleWaterfall" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.172549 )
+position = Vector2( 307, 185 )
+scale = Vector2( 1.4, 1.4 )
+texture = ExtResource( 7 )
+
+[node name="Battle_Sprites" parent="." instance=ExtResource( 1 )]
+position = Vector2( -68, 196 )
+script = null
+
+[node name="Sans" parent="Battle_Sprites" index="0"]
+position = Vector2( 384, 175 )
+
+[node name="Flowey" parent="Battle_Sprites" index="1"]
+visible = false
+
+[node name="Sans_sit" type="AnimatedSprite" parent="."]
+position = Vector2( 333, 405 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 295 )
+frame = 1
+offset = Vector2( 0.5, -40.5 )
+
+[node name="Sprite" type="Polygon2D" parent="Sans_sit"]
+show_behind_parent = true
+material = SubResource( 297 )
+position = Vector2( 2.5, -52 )
+texture = ExtResource( 12 )
+polygon = PoolVector2Array( 0.555557, 0, 6.11111, 0.555557, 13.8889, 2.22221, 49.4444, 36.6667, -2.77777, 35.5556, -1.66666, 22.2222 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+modulate = Color( 0.831373, 0.760784, 0.898039, 1 )
+light_mask = 2
+material = SubResource( 298 )
+margin_left = 100.0
+margin_top = 40.0
+margin_right = 540.0
+margin_bottom = 140.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+scroll_active = false
+
+[node name="voice" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+position = Vector2( 317, 167 )
+scale = Vector2( 14.3984, 11.1094 )
+color = Color( 0.466667, 0.4, 0.529412, 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 318, 499 )
+emitting = false
+amount = 85
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+visibility_rect = Rect2( -350, -400, 700, 800 )
+local_coords = false
+process_material = SubResource( 284 )
+
+[node name="Gradient" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0.533333 )
+script = ExtResource( 9 )
+
+[node name="Gradient2" type="Polygon2D" parent="Gradient"]
+visible = false
+modulate = Color( 0.588235, 0.960784, 1, 1 )
+self_modulate = Color( 1, 1, 1, 0.639216 )
+material = SubResource( 278 )
+position = Vector2( -32, 726 )
+rotation = -1.5708
+scale = Vector2( 0.5, 712.5 )
+color = Color( 0.658824, 0.968627, 1, 1 )
+texture = SubResource( 279 )
+polygon = PoolVector2Array( 0, 0, 0, 0.0491701, 0, 0.1, 0, 0.150398, 0, 0.2, -3.05176e-05, 0.250634, 0, 0.3, -3.05176e-05, 0.35335, 0, 0.4, 0, 0.448288, 0, 0.5, 0, 0.550328, 0, 0.6, 0, 0.655652, 0, 0.7, 1.52588e-05, 0.754199, 0, 0.8, 0, 0.848971, 0, 0.9, 0, 0.951456, 0, 1, 473.992, 1.52421, 1000, 1, 1000, 0.949679, 1000, 0.9, 1000, 0.84823, 1000, 0.8, 1000, 0.75228, 1000, 0.7, 1000, 0.652816, 1000, 0.6, 1000, 0.552768, 1000, 0.5, 1000, 0.447957, 1000, 0.4, 1000, 0.349941, 1000, 0.3, 1000, 0.251194, 1000, 0.2, 1000, 0.150462, 1000, 0.1, 1000, 0.0482416, 1000, 0, 524.003, -0.475788 )
+
+[node name="Light2D" type="Light2D" parent="Gradient"]
+position = Vector2( 310, 102 )
+scale = Vector2( 12.4219, 8.6875 )
+texture = SubResource( 280 )
+color = Color( 0.74902, 0.576471, 1, 1 )
+energy = 2.17
+
+[node name="Light2D2" type="Light2D" parent="Gradient"]
+position = Vector2( 325, 395.069 )
+rotation = 3.14159
+scale = Vector2( 12.4219, 3.9666 )
+texture = SubResource( 280 )
+color = Color( 0.388235, 1, 0.886275, 0 )
+energy = 2.55
+
+[node name="Light2D6" type="Light2D" parent="Gradient"]
+position = Vector2( 177, -60 )
+rotation = 1.34776
+scale = Vector2( 0.450009, 215.337 )
+texture = SubResource( 281 )
+color = Color( 0.901961, 0.592157, 1, 1 )
+energy = 2.0
+shadow_enabled = true
+shadow_color = Color( 0.145098, 0.0980392, 0.0980392, 0 )
+
+[node name="Light2D7" type="Light2D" parent="Gradient"]
+position = Vector2( 380, -109 )
+rotation = 1.34776
+scale = Vector2( 0.450009, 109.555 )
+texture = SubResource( 281 )
+color = Color( 0.690196, 0.592157, 1, 1 )
+energy = 2.0
+shadow_enabled = true
+shadow_color = Color( 0.145098, 0.0980392, 0.0980392, 0 )
+
+[node name="ColorRect" type="ColorRect" parent="Gradient"]
+visible = false
+modulate = Color( 1, 1, 1, 0.141176 )
+material = SubResource( 300 )
+margin_left = 58.0
+margin_top = -526.0
+margin_right = 572.0
+margin_bottom = 290.0
+rect_rotation = 19.7216
+rect_scale = Vector2( 1.68786, 0.810179 )
+rect_clip_content = true
+
+[node name="Rain2" type="Particles2D" parent="."]
+position = Vector2( -40, -231 )
+amount = 200
+lifetime = 4.0
+preprocess = 30.0
+visibility_rect = Rect2( -100, 400, 400, 400 )
+process_material = SubResource( 304 )
+texture = SubResource( 305 )
+
+[node name="Camera" parent="." instance=ExtResource( 3 )]
+rotating = true
+
+[node name="Pause" parent="." instance=ExtResource( 15 )]
+
+[editable path="Battle_Sprites"]
+[editable path="Battle_Sprites/Sans"]
+[editable path="Battle_Sprites/Flowey"]
+[editable path="Camera"]

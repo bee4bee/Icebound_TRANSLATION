@@ -1,0 +1,88 @@
+GDRE Tools v2.4.0
+Windows 10.0.26100, NVIDIA GeForce RTX 3060, vulkan
+Opening file: C:/Users/nefte/OneDrive/Рабочий стол/Under❤️tale x Delta❤️Rune/Undertale - Icebound/Icebound.pck
+Bytecode test for 4.0-dev2 (f3f05dc) failed on line 10: Function declaration error: TK_PR_FUNCTION TK_IDENTIFIER TK_COMMA (expected TK_PR_FUNCTION <identifier> TK_PARENTHESIS_OPEN)
+	 Test failed on file res://Act_Selector.gdc
+Bytecode test for 4.0-dev1 (506df14) failed on line 199: Built-in call 'funcref' error, incorrect number of arguments 1 (min: 2, max 2)
+	 Test failed on file res://Attacks/Papyrus_Attack/Papyrus_Attack.gdc
+Bytecode test for 3.5.0-stable (a7aad78) failed on line 30: Static declaration error, next token isn't function or var: TK_PERIOD
+	 Test failed on file res://NameSelection/NameSelection.gdc
+Bytecode test for 3.2.0-stable (5565f55) failed on line 30: Static declaration error, next token isn't function or var: TK_PERIOD
+	 Test failed on file res://NameSelection/NameSelection.gdc
+Bytecode test for 3.2-dev5 (6694c11) failed on line 57: Built-in call 'load' error, incorrect number of arguments 2 (min: 1, max 1)
+	 Test failed on file res://Attacks/Waterfall/Attack4/Attack_4.gdc
+Bytecode test for 3.2-dev4 (a60f242) failed on line 199: Built-in call 'funcref' error, incorrect number of arguments 1 (min: 2, max 2)
+	 Test failed on file res://Attacks/Papyrus_Attack/Papyrus_Attack.gdc
+Bytecode test for 3.2-dev3 (c00427a) failed on line 199: Built-in call 'convert' error, incorrect number of arguments 1 (min: 2, max 2)
+	 Test failed on file res://Attacks/Papyrus_Attack/Papyrus_Attack.gdc
+Bytecode test for 3.2-dev2 (620ec47) failed on line 1572: Built-in call 'deg2rad' error, incorrect number of arguments 2 (min: 1, max 1)
+	 Test failed on file res://Attacks/Papyrus_Attack/Papyrus_Attack.gdc
+Bytecode test for 3.2-dev1 (7f7d97f) failed on line 1572: Built-in call 'rad2deg' error, incorrect number of arguments 2 (min: 1, max 1)
+	 Test failed on file res://Attacks/Papyrus_Attack/Papyrus_Attack.gdc
+Bytecode test for 3.1.1-stable (514a3fb) failed on line 1572: Built-in call 'db2linear' error, incorrect number of arguments 2 (min: 1, max 1)
+	 Test failed on file res://Attacks/Papyrus_Attack/Papyrus_Attack.gdc
+Bytecode test for 3.1.0-stable (1a36141) failed on line 57: Built-in call 'Color8' error, incorrect number of arguments 2 (min: 3, max 4)
+	 Test failed on file res://Attacks/Waterfall/Attack4/Attack_4.gdc
+Bytecode test for 3.1-beta1 (1ca61a3) failed on line 1: Function declaration error: TK_PR_FUNCTION TK_IDENTIFIER TK_COLON (expected TK_PR_FUNCTION <identifier> TK_PARENTHESIS_OPEN)
+	 Test failed on file res://Act_Selector.gdc
+Bytecode test for 3.1-dev7 (d6b31da) failed on line 1: Function declaration error: TK_PR_FUNCTION TK_IDENTIFIER TK_COLON (expected TK_PR_FUNCTION <identifier> TK_PARENTHESIS_OPEN)
+	 Test failed on file res://Act_Selector.gdc
+Bytecode test for 3.1-dev6 (8aab9a0) failed on line 1: Function declaration error: TK_PR_FUNCTION TK_IDENTIFIER TK_DOLLAR (expected TK_PR_FUNCTION <identifier> TK_PARENTHESIS_OPEN)
+	 Test failed on file res://Act_Selector.gdc
+Bytecode test for 3.1-dev5 (a3f1ee5) failed on line 1: Function declaration error: TK_PR_FUNCTION TK_IDENTIFIER TK_CONST_PI (expected TK_PR_FUNCTION <identifier> TK_PARENTHESIS_OPEN)
+	 Test failed on file res://Act_Selector.gdc
+ERROR: Failed to detect GDScript revision for bytecode version 13, engine version 3.5, please report this issue on GitHub.
+   at: BytecodeTester::generic_test (modules\gdsdecomp\bytecode\bytecode_tester.cpp:205)
+Guessing bytecode revision from engine version: 3.5.2 (rev 0xa7aad78)
+Loaded 844 imported files
+Detected Engine Version: 3.5.2
+Detected Bytecode Revision: 3.5.0-stable (a7aad78)
+Verified 1867 files, no errors detected!
+Extracted 1867 files, no errors detected!
+Recreating plugin configs...
+No plugin download url found for plugin discord_game_sdk, hashes: 00aa7a9832b2c2c55417ce1df21b2cca
+Saved project config.
+
+
+********************************EXPORT REPORT********************************
+
+Totals:                                 
+Decompiled scripts:                     125
+Failed scripts:                         0
+Imported resources for export session:  844
+Successfully converted:                 844
+Lossy:                                  0
+Rewrote metadata:                       0
+Non-importable conversions:             0
+Not converted:                          0
+Failed conversions:                     0
+-------------
+
+------
+
+The following plugins failed to have their plugin.cfg regenerated:
+wakatime
+
+
+
+---------------------------------IMPORTANT NOTES----------------------------------
+
+
+Incomplete Plugin Export:
+The following addons failed to have their plugin.cfg regenerated
+You may encounter editor errors due to this.
+Tip: Try finding the plugin in the Godot Asset Library or Github.
+
+ - wakatime
+
+
+
+------------------------------------------------------------------------------------
+
+Use Godot editor version 3.5.2 to edit the project.
+Note: the project may be using a custom version of Godot. Detection for this has not been implemented yet.
+If you find that you have many non-import errors upon opening the project 
+(i.e. scripts or shaders have many errors), use the original game's binary as the export template.
+
+*******************************************************************************
+

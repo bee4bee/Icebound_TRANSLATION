@@ -1,0 +1,86 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Bonus Assets/Gradient.gd" type="Script" id=1]
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+
+uniform float speed = 2.0;
+uniform float frequency_y = 5.0;
+uniform float frequency_x = 5.0;
+uniform float amplitude_y = 50.0;
+uniform float amplitude_x = 25.0;
+uniform float inclination = 50.0;
+
+void vertex() {
+	//VERTEX.y += sin((UV.x - TIME * speed) * frequency_y) * amplitude_y * UV.x;
+	VERTEX.x += cos((UV.y - TIME * speed) * frequency_x) * amplitude_x * UV.x;
+	VERTEX.x -= UV.y * inclination;
+}"
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+shader_param/speed = 0.5
+shader_param/frequency_y = 5.0
+shader_param/frequency_x = 6.0
+shader_param/amplitude_y = 50.0
+shader_param/amplitude_x = 110.0
+shader_param/inclination = 0.0
+
+[sub_resource type="Gradient" id=12]
+offsets = PoolRealArray( 0, 0.513228, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.823529, 1, 1, 0, 0.258824, 0.490196, 0.470588, 0 )
+
+[sub_resource type="GradientTexture" id=15]
+gradient = SubResource( 12 )
+
+[sub_resource type="Gradient" id=16]
+colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture2D" id=17]
+gradient = SubResource( 16 )
+fill_to = Vector2( 0, 1 )
+
+[sub_resource type="Gradient" id=18]
+offsets = PoolRealArray( 0, 0.307263, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 0, 0, 0, 0.960894, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture2D" id=19]
+gradient = SubResource( 18 )
+fill_from = Vector2( 0, 1 )
+fill_to = Vector2( 0, 0 )
+
+[node name="Gradient" type="Node2D"]
+modulate = Color( 1, 1, 1, 0.533333 )
+script = ExtResource( 1 )
+
+[node name="Gradient2" type="Polygon2D" parent="."]
+visible = false
+modulate = Color( 0.588235, 0.960784, 1, 1 )
+self_modulate = Color( 1, 1, 1, 0.639216 )
+material = SubResource( 14 )
+position = Vector2( -32, 726 )
+rotation = -1.5708
+scale = Vector2( 0.5, 712.5 )
+color = Color( 0.658824, 0.968627, 1, 1 )
+texture = SubResource( 15 )
+polygon = PoolVector2Array( 0, 0, 0, 0.0491701, 0, 0.1, 0, 0.150398, 0, 0.2, -3.05176e-05, 0.250634, 0, 0.3, -3.05176e-05, 0.35335, 0, 0.4, 0, 0.448288, 0, 0.5, 0, 0.550328, 0, 0.6, 0, 0.655652, 0, 0.7, 1.52588e-05, 0.754199, 0, 0.8, 0, 0.848971, 0, 0.9, 0, 0.951456, 0, 1, 473.992, 1.52421, 1000, 1, 1000, 0.949679, 1000, 0.9, 1000, 0.84823, 1000, 0.8, 1000, 0.75228, 1000, 0.7, 1000, 0.652816, 1000, 0.6, 1000, 0.552768, 1000, 0.5, 1000, 0.447957, 1000, 0.4, 1000, 0.349941, 1000, 0.3, 1000, 0.251194, 1000, 0.2, 1000, 0.150462, 1000, 0.1, 1000, 0.0482416, 1000, 0, 524.003, -0.475788 )
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 314, 73 )
+scale = Vector2( 12.4219, 8.6875 )
+texture = SubResource( 17 )
+color = Color( 0.847059, 0.827451, 1, 1 )
+energy = 1.57
+
+[node name="Light2D2" type="Light2D" parent="."]
+position = Vector2( 326, 537 )
+scale = Vector2( 12.4219, 8.6875 )
+texture = SubResource( 17 )
+color = Color( 0.611765, 1, 1, 1 )
+energy = 1.57
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 352, 384 )
+scale = Vector2( 13.7344, 5.875 )
+texture = SubResource( 19 )

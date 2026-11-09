@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+var ch = preload(\"res://Overworld/Characters/ChionePlayer.tscn\")
+
+var pack = PackedScene.new()
+
+func _ready():
+	var n = ch.instance()
+	add_child(n)
+	yield(get_tree().create_timer(2.0), \"timeout\")
+	var res = ScenePacker.create_package(n)
+	yield(get_tree().create_timer(3.0), \"timeout\")
+	n.queue_free()
+	n = res.instance()
+	add_child(n)
+	
+	
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[node name="Node2D" type="Node2D"]
+script = SubResource( 1 )

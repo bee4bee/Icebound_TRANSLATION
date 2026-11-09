@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/tapeinsert.mp3-018d8bee2680e2e97bd38f11b70b742c.mp3str"
+
+[deps]
+
+source_file="res://music/soundFX/tapeinsert.mp3"
+dest_files=[ "res://.import/tapeinsert.mp3-018d8bee2680e2e97bd38f11b70b742c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/voice_Sans.wav-280c23cce4cfa54e7160f21f6b21b89e.sample"
+
+[deps]
+
+source_file="res://music/chatter/voice_Sans.wav"
+dest_files=[ "res://.import/voice_Sans.wav-280c23cce4cfa54e7160f21f6b21b89e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

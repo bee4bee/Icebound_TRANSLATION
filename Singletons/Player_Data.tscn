@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Singletons/Player_Data.gd" type="Script" id=1]
+
+[node name="Player_Data" type="Node" groups=["PlayerSave"]]
+pause_mode = 2
+script = ExtResource( 1 )

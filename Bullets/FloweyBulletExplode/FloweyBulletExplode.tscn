@@ -1,0 +1,263 @@
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://Bullets/FloweyBulletExplode/explodes.png" type="Texture" id=1]
+[ext_resource path="res://Bullets/FloweyBulletExplode/sheet1.png" type="Texture" id=2]
+[ext_resource path="res://sprites/misc/circle.png" type="Texture" id=3]
+[ext_resource path="res://Bullets/FloweyBulletExplode/cone.png" type="Texture" id=4]
+[ext_resource path="res://Bullets/FloweyBulletExplode/sheet1 (2).png" type="Texture" id=5]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+onready var sprite = $AnimatedSprite
+onready var cone = $AnimatedSprite/Cone
+onready var pointed = $AnimatedSprite/Cone/refpose
+onready var circle = $AnimatedSprite/Circle
+onready var area = $area
+var pellet = preload(\"res://Bullets/Pellet/Pellet.tscn\")
+var thorn = preload(\"res://Bullets/Thorn/Thorn.tscn\")
+
+onready var main = get_node(\"/root/Battle_Engine\")
+
+var b
+
+var tw = Tween.new()
+
+func _ready():
+	add_child(tw)
+
+func _spawn(pos1, pos2, type, num):
+	tw.interpolate_property(self, \"modulate:a\", 0, 1, 0.6, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	position = pos1
+	tw.interpolate_property(self, \"position\", pos1, pos2, 0.6, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	
+	yield(get_tree().create_timer(0.6), \"timeout\")
+	if type == \"cone\": _cone(num)
+	if type == \"circle\": _circle(num)
+	if type == \"moveFirst\": 
+		#yield(get_tree().create_timer(1.2), \"timeout\")
+		$Particles2D2.emitting = true
+	AudioBank._flash()
+
+func _cone(amt):
+	cone.look_at(SoulPositionSingleton.soulPosition)
+	#cone.rotation += PI/4
+	tw.interpolate_property(cone, \"modulate:a\", 1.0, 0.0, 0.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(0.75), \"timeout\")
+	sprite.play(\"blast\")
+	sprite.scale *= 1.5
+	AudioBank._explode()
+	$Particles2D.emitting = false
+	for i in amt:
+		b = pellet.instance()
+		add_child(b)
+		b.scale = Vector2(0.6, 0.6)
+		var angle = rand_range(0.0, PI * 2)
+		var d = rand_range(20.0, 50.0)
+		tw.interpolate_property(b, \"global_position\", b.global_position, pointed.global_position + Vector2(cos(angle) * d, sin(angle) * d * 1.2), 2.0, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(0.6, false), \"timeout\")
+	tw.interpolate_property(self, \"modulate:a\", 1, 0, 0.6, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(0.3, false), \"timeout\")
+	queue_free()
+
+func _circle(amt):
+	tw.interpolate_property(circle, \"modulate:a\", 1.0, 0.0, 0.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(0.75, false), \"timeout\")
+	sprite.play(\"blast\")
+	sprite.scale *= 1.5
+	AudioBank._explode()
+	$Particles2D.emitting = false
+	area.rotation_degrees = rand_range(0.0, 360.0)
+	for i in amt:
+		b = pellet.instance()
+		area.add_child(b)
+		b.scale = Vector2(0.6, 0.6)
+		var angle = PI * 2 - (PI * 2 / (amt + rand_range(-0.5, 0.5))) * i
+		var x = rand_range(65, 80)
+		tw.interpolate_property(b, \"global_position\", b.global_position, b.global_position + Vector2(cos(angle) * x, sin(angle) * x), 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(0.6, false), \"timeout\")
+	tw.interpolate_property(self, \"modulate:a\", 1, 0, 0.6, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(0.33, false), \"timeout\")
+	queue_free()
+
+func _start_homingSet(point, distance, amt, atk, delay, delayDodge, speed, timeUntilUnHoming):
+	for i in amt:
+		var x = rand_range(0, 2*PI)
+		if atk[i] == true:
+			b = thorn.instance()
+			main.add_child(b)
+			b._spawn(self.global_position, speed, timeUntilUnHoming)
+		tw.interpolate_property(self, \"position\", self.position, point + Vector2(cos(x) * distance, sin(x) * distance), 0.6, Tween.TRANS_QUINT, Tween.EASE_OUT)
+		tw.start()
+		if atk[i] == true: yield(get_tree().create_timer(delay, false), \"timeout\")
+		else: yield(get_tree().create_timer(delayDodge), \"timeout\")
+	
+	var x = rand_range(0, 2*PI)
+	tw.interpolate_property(self, \"position\", self.position, point + Vector2(cos(x) * distance, sin(x) * distance), 0.6, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(delayDodge), \"timeout\")
+	_cone(4)
+"
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 1 )
+region = Rect2( 60, 0, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 1 )
+region = Rect2( 120, 0, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 1 )
+region = Rect2( 180, 0, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 60, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 1 )
+region = Rect2( 60, 60, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 1 )
+region = Rect2( 180, 60, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 120, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 1 )
+region = Rect2( 60, 120, 60, 60 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 2 )
+region = Rect2( 50, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 2 )
+region = Rect2( 100, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 50, 50, 50 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), null ],
+"loop": false,
+"name": "blast",
+"speed": 20.0
+}, {
+"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="SpriteFrames" id=13]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Gradient" id=23]
+offsets = PoolRealArray( 0.028777, 0.517986 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=24]
+gradient = SubResource( 23 )
+
+[sub_resource type="ParticlesMaterial" id=25]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 1.5
+color_ramp = SubResource( 24 )
+
+[sub_resource type="Curve" id=26]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.40764, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=27]
+curve = SubResource( 26 )
+
+[sub_resource type="ParticlesMaterial" id=28]
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 118.81
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 52.13
+scale = 4.0
+scale_random = 1.0
+scale_curve = SubResource( 27 )
+
+[node name="FloweyBulletExplode" type="Node2D"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 301, 162 )
+scale = Vector2( 1.5, 1.5 )
+script = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 12 )
+frame = 3
+playing = true
+
+[node name="Cone" type="AnimatedSprite" parent="AnimatedSprite"]
+modulate = Color( 1, 1, 1, 0 )
+show_behind_parent = true
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 13 )
+offset = Vector2( 25.7778, -0.11108 )
+
+[node name="refpose" type="Node2D" parent="AnimatedSprite/Cone"]
+position = Vector2( 66.2222, 0 )
+
+[node name="Circle" type="Sprite" parent="AnimatedSprite"]
+modulate = Color( 1, 1, 1, 0 )
+show_behind_parent = true
+texture = ExtResource( 3 )
+
+[node name="area" type="Node2D" parent="."]
+
+[node name="Particles2D" type="Particles2D" parent="."]
+show_behind_parent = true
+position = Vector2( 5.72205e-06, 0 )
+amount = 10
+lifetime = 0.3
+local_coords = false
+process_material = SubResource( 25 )
+texture = ExtResource( 5 )
+
+[node name="shift" type="AudioStreamPlayer" parent="."]
+
+[node name="Particles2D2" type="Particles2D" parent="."]
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+local_coords = false
+process_material = SubResource( 28 )

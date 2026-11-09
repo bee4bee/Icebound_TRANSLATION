@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/overworld/gate.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Sprite
+
+
+export var lineIndex = 1.0
+export var blitter = [
+	\"Зеркало, но без отражения.\",
+	\"Может быть, оно пригодится для ещё одной неизвестной цели...?\",
+]
+
+export var expr = [\"ch\", \"ch\"]
+export var exprFrame = [0, 2]
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 37.625, 15.75 )
+
+[node name="mirror" type="Sprite"]
+position = Vector2( -501, -671 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 1 )
+script = SubResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, 30.5 )
+shape = SubResource( 2 )

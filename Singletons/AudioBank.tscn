@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://music/soundFX/warning.ogg" type="AudioStream" id=1]
+[ext_resource path="res://music/soundFX/Flowey_bulletspawn.wav" type="AudioStream" id=2]
+[ext_resource path="res://music/soundFX/boom2.ogg" type="AudioStream" id=3]
+[ext_resource path="res://music/soundFX/powerspawn_low.ogg" type="AudioStream" id=4]
+[ext_resource path="res://music/soundFX/sworkspark_eyeflash.wav" type="AudioStream" id=5]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+func _warn(): 
+	$Warn.play()
+
+func _pelletSpawn(): 
+	$FloweyPelletSummon.play()
+
+func _explode():
+	$Explode.play()
+
+func _sparkSpawn():
+	$SparkSpawn.play()
+
+func _flash():
+	$Flash.play()
+"
+
+[node name="AudioBank" type="Node"]
+script = SubResource( 1 )
+
+[node name="Warn" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="Explode" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -10.0
+bus = "Effects"
+
+[node name="FloweyPelletSummon" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="SparkSpawn" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="Flash" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -6.0
+bus = "Effects"

@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationMonoWebRegular-Z5oq.ttf" type="DynamicFontData" id=1]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node2D
+
+onready var text = $RichTextLabel
+
+var node = Node2D.new()
+func _ready():
+	add_child(node)
+
+
+func _process(delta):
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		_break()
+		_move()
+
+func _break():
+	for i in text.get_total_character_count():
+		var label = text.duplicate()
+		node.add_child(label)
+		label.text = text.bbcode_text[i]
+		label.rect_position.x = 0 + i * text.get_font(\"normal_font\").size / 2
+
+func _move():
+	for i in 80:
+		for j in node.get_children():
+			j.rect_position.y += float(i) / 4
+		yield(get_tree().create_timer(0.04),\"timeout\")
+"
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+font_data = ExtResource( 1 )
+
+[node name="TextBreak" type="Node2D"]
+position = Vector2( 181, 123 )
+script = SubResource( 2 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_right = 199.0
+margin_bottom = 40.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "trol"
+text = "trol"

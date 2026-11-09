@@ -1,0 +1,204 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://sprites/Cutscenes/cutscening/ref.png" type="Texture" id=2]
+[ext_resource path="res://sprites/overworld/chione/chione_falldown1.png" type="Texture" id=3]
+[ext_resource path="res://sprites/Cutscenes/cutscening/panel2.png" type="Texture" id=4]
+[ext_resource path="res://sprites/overworld/chione/chione_falldown0.png" type="Texture" id=5]
+[ext_resource path="res://sprites/overworld/chione/landingright.png" type="Texture" id=6]
+[ext_resource path="res://sprites/Cutscenes/cutscening/2.png" type="Texture" id=7]
+[ext_resource path="res://sprites/Cutscenes/cutscening/1.png" type="Texture" id=8]
+[ext_resource path="res://sprites/Cutscenes/cutscening/4.png" type="Texture" id=10]
+[ext_resource path="res://determination-mono-web-font/DeterminationMonoWebRegular-Z5oq.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://music/chatter/SND_TXT2len.wav" type="AudioStream" id=12]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Node2D
+
+var txt = [
+	\"Monsterkind and Humanity had a heated war - the Monsters lost, and were sealed underground.\",
+	\"However, they were not planning to stay down for long.\",
+	\"Through artificial human SOULs, they attempted to break out before the seventh human fell...\",
+	\"...but their creation was the downfall of the Underground.\",
+	\"However, you already are familiar with this story, are you not?\",
+	\"...Let us get to the point.\"
+]
+
+onready var ib = $ibpanels
+onready var ut = $utpanels
+onready var label = $Label
+
+var tw = Tween.new()
+var texttw = Tween.new()
+
+var time = 0.0
+
+func _ready():
+	add_child(tw)
+	add_child(texttw)
+	
+
+func _stuff():
+	_interptext(0)
+	_showpanel(ut)
+	yield(get_tree().create_timer(time), \"timeout\")
+	_hidepanel(ut)
+	yield(get_tree().create_timer(1), \"timeout\")
+	ut.frame = 1
+	
+	_interptext(1)
+	_showpanel(ut)
+	yield(get_tree().create_timer(time), \"timeout\")
+	_hidepanel(ut)
+	yield(get_tree().create_timer(1), \"timeout\")
+	ut.frame = 2
+	
+	_interptext(2)
+	_showpanel(ib)
+	yield(get_tree().create_timer(time), \"timeout\")
+	_hidepanel(ib)
+	yield(get_tree().create_timer(1), \"timeout\")
+	ut.frame = 3
+	
+	_interptext(3)
+	yield(get_tree().create_timer(time), \"timeout\")
+	yield(get_tree().create_timer(1), \"timeout\")
+	
+	_interptext(4)
+	tw.interpolate_property($chione, \"modulate:a\", 0, 1, 2.5, Tween.TRANS_QUINT, Tween.EASE_IN)
+	tw.start()
+	yield(get_tree().create_timer(time), \"timeout\")
+	
+	_interptext(5)
+	$chione.frame = 1
+	PlayerData._shakeobj($chione)
+	yield(get_tree().create_timer(2), \"timeout\")
+	
+	$chione.frame = 2
+	PlayerData._shakeobj($chione)
+	yield(get_tree().create_timer(1), \"timeout\")
+	tw.interpolate_property($Camera, \"zoom\", Vector2(1, 1), Vector2(0.4, 0.4), 2, Tween.TRANS_QUINT, Tween.EASE_IN)
+	tw.start()
+	$Camera.darken_with_set_values(0, 1, 2)
+
+func _hidepanel(obj):
+	tw.interpolate_property(obj, \"modulate:a\", 1, 0, 1.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tw.start()
+
+func _showpanel(obj):
+	tw.interpolate_property(obj, \"modulate:a\", 0, 1, 1.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tw.start()
+
+func _interptext(nt):
+	label.percent_visible = 0.0
+	label.text = txt[nt]
+	time = 0.06 * len(label.text) + 3.0
+	texttw.interpolate_property(label, \"percent_visible\", 0, 1, 0.06 * len(label.text), Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	texttw.start()
+
+
+func _process(delta):
+	if Input.is_action_just_pressed(\"ui_accept\"): _stuff()
+	if texttw.is_active():
+		var pos = label.get_visible_characters()
+		if label.text.length() > pos and label.text[pos] != ' ':
+			$Blitter_Sound.play()
+			$Blitter_Sound.pitch_scale = rand_range(0.98, 1.02)
+"
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 10 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=4]
+size = 32
+font_data = ExtResource( 11 )
+
+[node name="addintro" type="Node2D"]
+script = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 320, 240 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+
+[node name="ibpanels" type="AnimatedSprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 317, 162 )
+scale = Vector2( 1.2, 1.2 )
+frames = SubResource( 1 )
+
+[node name="utpanels" type="AnimatedSprite" parent="."]
+position = Vector2( 320, 166 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 2 )
+
+[node name="chione" type="AnimatedSprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 304, 212 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -24.0
+margin_top = 276.0
+margin_right = 749.0
+margin_bottom = 504.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+margin_left = -36.0
+margin_top = -172.0
+margin_right = 737.0
+margin_bottom = 56.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+margin_left = -36.0
+margin_top = -171.0
+margin_right = 120.0
+margin_bottom = 473.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+margin_left = 520.0
+margin_top = -173.0
+margin_right = 676.0
+margin_bottom = 471.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 120.0
+margin_top = 304.0
+margin_right = 520.0
+margin_bottom = 453.0
+custom_fonts/font = SubResource( 4 )
+text = "erm"
+autowrap = true
+
+[node name="Camera" parent="." instance=ExtResource( 1 )]
+
+[node name="Blitter_Sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+volume_db = -4.0

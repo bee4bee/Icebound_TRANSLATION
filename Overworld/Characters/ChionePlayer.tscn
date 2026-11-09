@@ -1,0 +1,381 @@
+[gd_scene load_steps=84 format=2]
+
+[ext_resource path="res://sprites/overworld/chione/chione_down1.png" type="Texture" id=1]
+[ext_resource path="res://sprites/overworld/chione/chione_down2.png" type="Texture" id=2]
+[ext_resource path="res://sprites/overworld/chione/chione_down3.png" type="Texture" id=3]
+[ext_resource path="res://sprites/overworld/chione/chione_right2.png" type="Texture" id=4]
+[ext_resource path="res://sprites/overworld/chione/chione_left3.png" type="Texture" id=5]
+[ext_resource path="res://sprites/overworld/chione/chione_right1.png" type="Texture" id=6]
+[ext_resource path="res://sprites/overworld/chione/chione_left2.png" type="Texture" id=7]
+[ext_resource path="res://sprites/overworld/chione/chione_left1.png" type="Texture" id=8]
+[ext_resource path="res://sprites/overworld/chione/sitting.png" type="Texture" id=9]
+[ext_resource path="res://sprites/overworld/chione/chione_right3.png" type="Texture" id=10]
+[ext_resource path="res://sprites/overworld/chione/chione_up2.png" type="Texture" id=11]
+[ext_resource path="res://sprites/overworld/chione/chione_up1.png" type="Texture" id=12]
+[ext_resource path="res://sprites/overworld/chione/chione_up3.png" type="Texture" id=13]
+[ext_resource path="res://Overworld/Characters/ChionePlayer.gd" type="Script" id=14]
+[ext_resource path="res://sprites/misc/question.png" type="Texture" id=15]
+[ext_resource path="res://sprites/misc/exclamation.png" type="Texture" id=16]
+[ext_resource path="res://music/soundFX/check_minor.wav" type="AudioStream" id=17]
+[ext_resource path="res://sprites/overworld/chione/chione_shade_right.png" type="Texture" id=18]
+[ext_resource path="res://sprites/overworld/chione/sitting2.png" type="Texture" id=19]
+[ext_resource path="res://sprites/overworld/chione/run_d0.png" type="Texture" id=20]
+[ext_resource path="res://sprites/overworld/chione/run_r0.png" type="Texture" id=21]
+[ext_resource path="res://sprites/overworld/chione/run_u0.png" type="Texture" id=22]
+[ext_resource path="res://sprites/overworld/chione/run_d2.png" type="Texture" id=23]
+[ext_resource path="res://sprites/overworld/chione/run_l2.png" type="Texture" id=24]
+[ext_resource path="res://sprites/overworld/chione/run_r2.png" type="Texture" id=25]
+[ext_resource path="res://sprites/overworld/chione/run_d1.png" type="Texture" id=26]
+[ext_resource path="res://sprites/overworld/chione/run_r1.png" type="Texture" id=27]
+[ext_resource path="res://sprites/overworld/chione/run_u1.png" type="Texture" id=28]
+[ext_resource path="res://sprites/overworld/chione/run_l1.png" type="Texture" id=29]
+[ext_resource path="res://sprites/overworld/chione/run_u2.png" type="Texture" id=30]
+[ext_resource path="res://sprites/overworld/chione/run_l0.png" type="Texture" id=31]
+[ext_resource path="res://Overworld/Characters/PlayerStats.tscn" type="PackedScene" id=32]
+[ext_resource path="res://sprites/soul/spr_heartred_center_0.png" type="Texture" id=33]
+[ext_resource path="res://sprites/misc/light.png" type="Texture" id=34]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=35]
+[ext_resource path="res://music/soundFX/snd_damage.wav" type="AudioStream" id=36]
+[ext_resource path="res://sprites/overworld/chione/chione_falldown0.png" type="Texture" id=37]
+[ext_resource path="res://sprites/overworld/chione/chione_standlow0.png" type="Texture" id=38]
+[ext_resource path="res://sprites/overworld/chione/chione_falldown1.png" type="Texture" id=39]
+[ext_resource path="res://sprites/overworld/chione/chione_standlow1.png" type="Texture" id=40]
+[ext_resource path="res://music/soundFX/snd_grab.wav" type="AudioStream" id=41]
+[ext_resource path="res://music/soundFX/player_damage.wav" type="AudioStream" id=42]
+[ext_resource path="res://sprites/overworld/chione/slideleft0.png" type="Texture" id=43]
+[ext_resource path="res://Bullets/Arrow/arrow.png" type="Texture" id=44]
+[ext_resource path="res://sprites/overworld/chione/chioneslidefall.png" type="Texture" id=45]
+[ext_resource path="res://sprites/overworld/chione/chioneslidefall1.png" type="Texture" id=46]
+[ext_resource path="res://sprites/overworld/chione/chione_standlow2.png" type="Texture" id=47]
+[ext_resource path="res://sprites/overworld/chione/landing.png" type="Texture" id=48]
+[ext_resource path="res://sprites/overworld/chione/jumpfall anim.png" type="Texture" id=49]
+[ext_resource path="res://sprites/overworld/chione/slideleft1.png" type="Texture" id=50]
+[ext_resource path="res://sprites/overworld/chione/slideright0.png" type="Texture" id=51]
+[ext_resource path="res://sprites/overworld/chione/slideright1.png" type="Texture" id=52]
+[ext_resource path="res://sprites/overworld/chione/landingright.png" type="Texture" id=53]
+[ext_resource path="res://music/soundFX/snd_criticalswing.wav" type="AudioStream" id=54]
+[ext_resource path="res://music/soundFX/battle_initiate.wav" type="AudioStream" id=55]
+[ext_resource path="res://music/soundFX/player_atk.wav" type="AudioStream" id=56]
+[ext_resource path="res://sprites/overworld/chione/attackleft1.png" type="Texture" id=57]
+[ext_resource path="res://sprites/overworld/chione/attackright0.png" type="Texture" id=58]
+[ext_resource path="res://sprites/overworld/chione/attackright3.png" type="Texture" id=59]
+[ext_resource path="res://sprites/overworld/chione/attackright1.png" type="Texture" id=60]
+[ext_resource path="res://sprites/overworld/chione/attackright2.png" type="Texture" id=61]
+[ext_resource path="res://sprites/overworld/chione/attackright4.png" type="Texture" id=62]
+[ext_resource path="res://sprites/overworld/chione/attackleft0.png" type="Texture" id=63]
+[ext_resource path="res://sprites/overworld/chione/attackleft3.png" type="Texture" id=64]
+[ext_resource path="res://sprites/overworld/chione/attackleft2.png" type="Texture" id=65]
+[ext_resource path="res://sprites/overworld/chione/attackleft4.png" type="Texture" id=66]
+[ext_resource path="res://sprites/overworld/chione/surprisedleft.png" type="Texture" id=67]
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item;
+
+uniform float whitening;
+
+void fragment() {
+    vec4 texture_color = texture(TEXTURE, UV);
+    COLOR = vec4(mix(texture_color.rgb, vec3(1,1,1), whitening), texture_color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+shader_param/whitening = 0.0
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 49 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 49 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 49 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 49 )
+region = Rect2( 0, 64, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 63 ), ExtResource( 57 ), ExtResource( 65 ), ExtResource( 64 ), ExtResource( 66 ) ],
+"loop": false,
+"name": "AttackLeft",
+"speed": 12.0
+}, {
+"frames": [ ExtResource( 58 ), ExtResource( 60 ), ExtResource( 61 ), ExtResource( 59 ), ExtResource( 62 ) ],
+"loop": false,
+"name": "AttackRight",
+"speed": 12.0
+}, {
+"frames": [ ExtResource( 67 ) ],
+"loop": true,
+"name": "Emotion",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 43 ), ExtResource( 50 ) ],
+"loop": true,
+"name": "SlideLeft",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 48 ), ExtResource( 53 ) ],
+"loop": false,
+"name": "SlideRecover",
+"speed": 0.0
+}, {
+"frames": [ ExtResource( 51 ), ExtResource( 52 ) ],
+"loop": true,
+"name": "SlideRight",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "down",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 37 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 47 ), ExtResource( 48 ) ],
+"loop": false,
+"name": "falling",
+"speed": 0.0
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "idle",
+"speed": 12.0
+}, {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
+"loop": true,
+"name": "jumpfall",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 8 ) ],
+"loop": true,
+"name": "left",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 10 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "right",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 26 ), ExtResource( 20 ), ExtResource( 23 ), ExtResource( 20 ) ],
+"loop": true,
+"name": "runDown",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 31 ), ExtResource( 29 ), ExtResource( 24 ), ExtResource( 29 ) ],
+"loop": true,
+"name": "runLeft",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 21 ), ExtResource( 27 ), ExtResource( 25 ), ExtResource( 27 ) ],
+"loop": true,
+"name": "runRight",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 28 ), ExtResource( 22 ), ExtResource( 30 ), ExtResource( 22 ) ],
+"loop": true,
+"name": "runUp",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 9 ), ExtResource( 19 ) ],
+"loop": false,
+"name": "sit",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 45 ), ExtResource( 45 ), ExtResource( 46 ) ],
+"loop": true,
+"name": "slidefall",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 18 ) ],
+"loop": true,
+"name": "static_shade",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 12 ) ],
+"loop": true,
+"name": "up",
+"speed": 4.0
+} ]
+
+[sub_resource type="Curve" id=14]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -1.82854, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=15]
+curve = SubResource( 14 )
+
+[sub_resource type="ParticlesMaterial" id=16]
+flag_disable_z = true
+direction = Vector3( -2, -1, 0 )
+spread = 30.0
+gravity = Vector3( 0, 80, 0 )
+initial_velocity = 99.01
+initial_velocity_random = 0.95
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 31.68
+radial_accel_random = 1.0
+angle = 285.1
+angle_random = 1.0
+scale = 3.0
+scale_random = 1.0
+scale_curve = SubResource( 15 )
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 8.0
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 16 ), ExtResource( 15 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 17.0
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 18.0
+height = 0.0
+
+[sub_resource type="RectangleShape2D" id=17]
+extents = Vector2( 34, 37 )
+
+[sub_resource type="CanvasItemMaterial" id=13]
+light_mode = 1
+
+[node name="ChionePlayer" type="KinematicBody2D"]
+position = Vector2( 126, 86 )
+collision/safe_margin = 0.001
+script = ExtResource( 14 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = SubResource( 7 )
+position = Vector2( 0, 40 )
+scale = Vector2( 1.9, 1.9 )
+frames = SubResource( 1 )
+animation = "right"
+offset = Vector2( 0, -20 )
+
+[node name="Trail" type="Particles2D" parent="AnimatedSprite"]
+emitting = false
+one_shot = true
+explosiveness = 0.73
+local_coords = false
+process_material = SubResource( 16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 0, 30 )
+shape = SubResource( 4 )
+
+[node name="Reaction" type="AnimatedSprite" parent="."]
+position = Vector2( 28, -14 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 3 )
+frame = 1
+offset = Vector2( 1, -4 )
+
+[node name="reactSnd" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 17 )
+bus = "Effects"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, 22 )
+shape = SubResource( 5 )
+
+[node name="DamageArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+shape = SubResource( 8 )
+
+[node name="HitArea" type="Area2D" parent="." groups=["playerAttackArea"]]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2( 33.5625, -0.5 )
+shape = SubResource( 17 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -784.0
+margin_top = -453.0
+margin_right = 953.0
+margin_bottom = 774.0
+color = Color( 0, 0, 0, 0 )
+
+[node name="Soul" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 13 )
+position = Vector2( 0, 7 )
+texture = ExtResource( 33 )
+
+[node name="Light2D" type="Light2D" parent="Soul"]
+texture = ExtResource( 34 )
+texture_scale = 0.15
+color = Color( 1, 0, 0.258824, 1 )
+energy = 0.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource( 35 )]
+anchor_left = 0.5
+anchor_top = 0.81
+anchor_right = 0.5
+anchor_bottom = 0.81
+margin_left = -297.0
+margin_top = -288.8
+margin_right = -297.0
+margin_bottom = -288.8
+rect_scale = Vector2( 0.85, 0.8 )
+
+[node name="PlayerStats" parent="." instance=ExtResource( 32 )]
+
+[node name="Hurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 36 )
+volume_db = -5.0
+bus = "Effects"
+
+[node name="Fall" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 41 )
+volume_db = -4.0
+bus = "Effects"
+
+[node name="Soulhit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 42 )
+bus = "Effects"
+
+[node name="Slide" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 54 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="TransState" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 55 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="Attack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 56 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="arrow" type="Sprite" parent="."]
+visible = false
+rotation = -1.5708
+texture = ExtResource( 44 )
+offset = Vector2( 0.0994415, 100.405 )
+
+[node name="Node2D" type="Node2D" parent="arrow"]
+position = Vector2( -0.13578, 101.887 )
+
+[node name="SlideTimingValues" type="Position2D" parent="."]
+
+[connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
+[connection signal="area_exited" from="DamageArea" to="." method="_on_DamageArea_area_exited"]

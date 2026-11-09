@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Cutscenes/misc/Comp 1_3_1_2.ogv" type="VideoStream" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+onready var cam = $Camera
+var tw = Tween.new()
+
+func _ext():
+	add_child(tw)
+	yield(get_tree().create_timer(24.7), \"timeout\")
+	cam.darken_with_set_values(0.0, 1.0, 0.1)
+	yield(get_tree().create_timer(1), \"timeout\") # 26
+	cam.darken_with_set_values(1.0, 0.0, 3.0)
+	yield(get_tree().create_timer(6.7), \"timeout\") #32.7
+	cam.flash(1.5)
+	cam._cam_beat(0.1)
+	yield(get_tree().create_timer(8), \"timeout\") # 40.7
+	cam.flash(1.5)
+	cam._cam_beat(0.1)
+	yield(get_tree().create_timer(3.4), \"timeout\") # 44.1
+	cam.flash(1.5)
+	cam._cam_beat(0.1)
+	yield(get_tree().create_timer(7.9), \"timeout\") # 52
+	cam.darken_with_set_values(0.0, 0.6, 2.6)
+	cam._resize_camera(cam.position.x, cam.position.y + 250, 0.6, 0.6, 2.6)
+	yield(get_tree().create_timer(2.62), \"timeout\") # ~55
+	cam.flash(2.5)
+	cam.position.y -= 250
+	cam.zoom = Vector2(1, 1)
+	yield(get_tree().create_timer(7), \"timeout\") # 62
+	cam.darken_with_set_values(1.0, 0.0, 1.5)
+	tw.interpolate_property(cam, \"zoom\", Vector2(0.8, 0.8), cam.zoom, 1.0, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(2.8), \"timeout\") # 64.8
+	cam.flash(1)
+	yield(get_tree().create_timer(8.2), \"timeout\") # 73
+	cam.flash(1.5)
+	cam._cam_beat(0.1)
+	yield(get_tree().create_timer(5.2), \"timeout\") # 78.2
+	cam.flash(1.5)
+	cam._cam_beat(0.3)
+	yield(get_tree().create_timer(3.3), \"timeout\") # 81.5
+	cam.flash(1.5)
+	cam._cam_beat(0.1)
+	yield(get_tree().create_timer(3.5), \"timeout\") # 85
+	cam.flash(1.5)
+	cam._cam_beat(0.2)
+	yield(get_tree().create_timer(9.2), \"timeout\") # 94
+	cam.flash(2.5)
+
+func _process(delta):
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		$VideoPlayer.play()
+		_ext()
+"
+
+[node name="trailer" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="VideoPlayer" type="VideoPlayer" parent="."]
+margin_left = -1.0
+margin_top = 3.0
+margin_right = 1919.0
+margin_bottom = 1083.0
+stream = ExtResource( 2 )
+expand = false
+
+[node name="Camera" parent="." instance=ExtResource( 1 )]
+position = Vector2( 960, 540 )
+
+[node name="Sprite" parent="Camera" index="0"]
+visible = false
+
+[node name="ColorRect" parent="Camera" index="2"]
+margin_left = -1831.0
+margin_right = 2009.0
+margin_bottom = 687.0
+
+[node name="AreaNameplate" parent="Camera" index="5"]
+visible = false
+
+[editable path="Camera"]

@@ -1,0 +1,115 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://BattleBox/BattleBox.gd" type="Script" id=1]
+[ext_resource path="res://sprites/misc/box.png" type="Texture" id=2]
+[ext_resource path="res://determination-mono-web-font/DeterminationMonoWebRegular-Z5oq.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 2.50001, 107.64 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 5.49998, 176.216 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 206.053, 5 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 182.336, 5 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 28
+font_data = ExtResource( 3 )
+
+[node name="BattleBox" type="Control"]
+margin_left = 252.0
+margin_top = 240.0
+margin_right = 252.0
+margin_bottom = 240.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ArenaContainer" type="MarginContainer" parent="."]
+margin_right = 150.0
+margin_bottom = 150.0
+
+[node name="Arena" type="NinePatchRect" parent="ArenaContainer"]
+self_modulate = Color( 0.807843, 0.913725, 1, 1 )
+material = SubResource( 1 )
+margin_right = 150.0
+margin_bottom = 150.0
+rect_pivot_offset = Vector2( 142.5, 81.5 )
+texture = ExtResource( 2 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="ArenaContainer/Arena"]
+visible = false
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 146.0
+margin_bottom = 146.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Collisions" type="StaticBody2D" parent="ArenaContainer/Arena"]
+visible = false
+
+[node name="barrier_right" type="CollisionShape2D" parent="ArenaContainer/Arena/Collisions"]
+position = Vector2( 147.5, 18.5 )
+scale = Vector2( 1, 2.225 )
+shape = SubResource( 3 )
+
+[node name="barrier_left" type="CollisionShape2D" parent="ArenaContainer/Arena/Collisions"]
+position = Vector2( -0.500015, 98.5 )
+scale = Vector2( 1, 2.199 )
+shape = SubResource( 4 )
+
+[node name="barrier_bottom" type="CollisionShape2D" parent="ArenaContainer/Arena/Collisions"]
+position = Vector2( 85, 150 )
+scale = Vector2( 1.553, 1 )
+shape = SubResource( 5 )
+
+[node name="barrier_top" type="CollisionShape2D" parent="ArenaContainer/Arena/Collisions"]
+position = Vector2( 85, 0 )
+scale = Vector2( 1.755, 1 )
+shape = SubResource( 6 )
+
+[node name="TextContainer" type="MarginContainer" parent="ArenaContainer"]
+margin_right = 150.0
+margin_bottom = 150.0
+custom_constants/margin_top = 16
+custom_constants/margin_left = 18
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="ArenaContainer/TextContainer"]
+self_modulate = Color( 0.807843, 0.913725, 1, 1 )
+margin_left = 18.0
+margin_top = 16.0
+margin_right = 150.0
+margin_bottom = 150.0
+focus_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/normal_font = SubResource( 7 )
+scroll_active = false
+custom_effects = [ null ]
+
+[node name="Resize" type="Tween" parent="."]
+
+[node name="Positioning" type="Tween" parent="."]
+
+[node name="TextTween" type="Tween" parent="."]

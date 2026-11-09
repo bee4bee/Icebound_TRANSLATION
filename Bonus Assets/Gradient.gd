@@ -1,0 +1,16 @@
+extends Node2D
+
+
+
+
+
+var index = 0.0
+
+
+func _ready():
+	pass
+
+
+
+func _process(delta):
+	pass

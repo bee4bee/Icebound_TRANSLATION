@@ -1,0 +1,356 @@
+[gd_scene load_steps=49 format=2]
+
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/legs.png" type="Texture" id=1]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/torso.png" type="Texture" id=2]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/head0.png" type="Texture" id=3]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/armback.png" type="Texture" id=4]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/Sans_Flower.png" type="Texture" id=5]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/cape.png" type="Texture" id=6]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/armfront.png" type="Texture" id=7]
+[ext_resource path="res://Battle_Sprites.gd" type="Script" id=8]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/head1.png" type="Texture" id=9]
+[ext_resource path="res://sprites/Sprites_Battle/flowey_1/sheet_sink.png" type="Texture" id=10]
+[ext_resource path="res://Sans.gd" type="Script" id=11]
+[ext_resource path="res://Flowey.gd" type="Script" id=12]
+[ext_resource path="res://sprites/Sprites_Battle/flowey_1/sheet_rise.png" type="Texture" id=13]
+[ext_resource path="res://sprites/Sprites_Battle/flowey_1/head3.png" type="Texture" id=14]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/head2.png" type="Texture" id=17]
+[ext_resource path="res://sprites/Sprites_Battle/sans_1/sans1/armfront2 ig.png" type="Texture" id=18]
+[ext_resource path="res://sprites/Sprites_Battle/flowey_1/flowey_headnew0.png" type="Texture" id=25]
+[ext_resource path="res://sprites/Sprites_Battle/flowey_1/flowey_bodynew.png" type="Texture" id=26]
+
+[sub_resource type="ShaderMaterial" id=34]
+
+[sub_resource type="Shader" id=37]
+code = "shader_type canvas_item;
+
+// naming in UV system _x_y
+uniform vec2 offset_0_0 = vec2(0.0, 0.0);
+uniform vec2 offset_0_1 = vec2(0.0, 0.0);
+uniform vec2 offset_1_0 = vec2(0.0, 0.0);
+uniform vec2 offset_1_1 = vec2(0.0, 0.0);
+
+vec2 sample_point(vec2 point) {
+    // Corners for UV.y == 0
+    vec2 p_0_0 = vec2(0,0) - offset_0_0;
+    vec2 p_1_0 = vec2(1,0) - offset_1_0;
+    // Get point along line UV.y == 0
+    vec2 d_x_0 = p_0_0 + (p_1_0 - p_0_0) * point.x;
+
+    // Corners for UV.y == 1.0
+    vec2 p_0_1 = vec2(0, 1) - offset_0_1;
+    vec2 p_1_1 = vec2(1, 1) - offset_1_1;
+    // Get point along line UV.y == 1
+    vec2 d_x_1 = p_0_1 + (p_1_1 - p_0_1) * point.x;
+    // Get point for given UV.y
+    return d_x_0 + (d_x_1 - d_x_0) * point.y;
+}
+
+void fragment() {
+    //COLOR = vec4(UV.x, UV.y, .0, 1.0);
+    //COLOR = texture(TEXTURE, UV);
+    //COLOR = texture(TEXTURE, sample_point(UV));
+}
+
+uniform float speed = 5.0;
+uniform float frequency_y = 1.0;
+uniform float frequency_x = 0.4;
+uniform float amplitude_y = 15.0;
+uniform float amplitude_x = 3.0;
+uniform float inclination = 10.0;
+
+void vertex() {
+	VERTEX.y -= sin((UV.x - TIME * speed) * frequency_y) * amplitude_y;
+	VERTEX.x += cos((UV.y - TIME * speed) * frequency_x) * amplitude_x * UV.x;
+	VERTEX.x -= UV.y * inclination;
+	VERTEX += sample_point(UV);
+}"
+
+[sub_resource type="ShaderMaterial" id=18]
+shader = SubResource( 37 )
+shader_param/offset_0_0 = Vector2( 0, 0 )
+shader_param/offset_0_1 = Vector2( 10, 0 )
+shader_param/offset_1_0 = Vector2( 0, 0 )
+shader_param/offset_1_1 = Vector2( 7, 0 )
+shader_param/speed = 1.0
+shader_param/frequency_y = 3.0
+shader_param/frequency_x = 0.1
+shader_param/amplitude_y = 3.0
+shader_param/amplitude_x = 0.3
+shader_param/inclination = 0.0
+
+[sub_resource type="SpriteFrames" id=19]
+animations = [ {
+"frames": [ ExtResource( 4 ), null ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=25]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=26]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=20]
+animations = [ {
+"frames": [ ExtResource( 7 ), ExtResource( 18 ), null ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=22]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 9 ), ExtResource( 17 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Shader" id=17]
+code = "shader_type canvas_item;
+
+uniform float height = 2.4;
+uniform float speed = 10.0;
+uniform float frequency = 2.0;
+
+uniform vec2 topleft;
+uniform vec2 topright;
+uniform vec2 bottomleft;
+uniform vec2 bottomright;
+
+void vertex(){
+	VERTEX.x += sin((frequency * UV.x) + (TIME * speed)) * height;
+	if( UV.x <= 0.0 && UV.y <= 0.0) {
+		VERTEX+=topleft
+	}
+	if( UV.x >= 1.0 && UV.y <= 0.0) {
+		VERTEX+=topright
+	}
+	if( UV.x <= 0.0 && UV.y >= 1.0) {
+		VERTEX+=bottomleft
+	}
+	if( UV.x >= 1.0 && UV.y >= 1.0) {
+		VERTEX+=bottomright
+	}
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id=21]
+shader = SubResource( 17 )
+shader_param/height = 0.6
+shader_param/speed = 1.0
+shader_param/frequency = 2.0
+shader_param/topleft = null
+shader_param/topright = null
+shader_param/bottomleft = Vector2( -5, -2 )
+shader_param/bottomright = null
+
+[sub_resource type="SpriteFrames" id=23]
+animations = [ {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=28]
+animations = [ {
+"frames": [ ExtResource( 26 ) ],
+"loop": true,
+"name": "new",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=27]
+animations = [ {
+"frames": [ ExtResource( 25 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "new",
+"speed": 5.0
+} ]
+
+[sub_resource type="AtlasTexture" id=46]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=47]
+atlas = ExtResource( 13 )
+region = Rect2( 84, 0, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=48]
+atlas = ExtResource( 13 )
+region = Rect2( 168, 0, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=49]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 84, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=50]
+atlas = ExtResource( 13 )
+region = Rect2( 84, 84, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=51]
+atlas = ExtResource( 13 )
+region = Rect2( 168, 84, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=52]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 168, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=53]
+atlas = ExtResource( 13 )
+region = Rect2( 84, 168, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=54]
+atlas = ExtResource( 13 )
+region = Rect2( 168, 168, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 10 )
+region = Rect2( 84, 0, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 10 )
+region = Rect2( 168, 0, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=41]
+atlas = ExtResource( 10 )
+region = Rect2( 252, 0, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=42]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 84, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=43]
+atlas = ExtResource( 10 )
+region = Rect2( 84, 84, 84, 84 )
+
+[sub_resource type="AtlasTexture" id=44]
+atlas = ExtResource( 10 )
+region = Rect2( 168, 84, 84, 84 )
+
+[sub_resource type="SpriteFrames" id=45]
+animations = [ {
+"frames": [ SubResource( 46 ), SubResource( 47 ), SubResource( 48 ), SubResource( 49 ), SubResource( 50 ), SubResource( 51 ), SubResource( 52 ), SubResource( 53 ), SubResource( 54 ) ],
+"loop": false,
+"name": "rise",
+"speed": 14.0
+}, {
+"frames": [ SubResource( 38 ), SubResource( 39 ), SubResource( 40 ), SubResource( 41 ), SubResource( 42 ), SubResource( 43 ), SubResource( 44 ) ],
+"loop": false,
+"name": "sink",
+"speed": 16.0
+} ]
+
+[node name="Battle_Sprites" type="Node2D"]
+position = Vector2( -94, -6 )
+script = ExtResource( 8 )
+
+[node name="Sans" type="Node2D" parent="."]
+material = SubResource( 34 )
+position = Vector2( 47, 24 )
+scale = Vector2( 0.9, 0.9 )
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sans_Cape" type="Polygon2D" parent="Sans"]
+self_modulate = Color( 0.576471, 0.513726, 0.764706, 1 )
+material = SubResource( 18 )
+position = Vector2( 301.111, 94.4445 )
+scale = Vector2( 2.44, 2.45 )
+offset = Vector2( -0.5, 0 )
+texture = ExtResource( 6 )
+polygon = PoolVector2Array( -2.36887, 5.30611, 16.4381, 11.3379, 26.7295, 8.57142, 40.6639, 6.93877, 47.6311, 15.5102, 48.4508, 37.9592, 40.2541, 41.2245, 30.0993, 40.8163, 26.7295, 40.4082, 2.54916, 29.7959, 3.8147e-06, 30.4178, -7.69674, 10.2041 )
+uv = PoolVector2Array( 0, 0, 10, 0, 22.2136, 0, 50, 0, 50, 40, 35.4279, 40, 24.9273, 40, 10, 40, 6.04979, 40, 0, 40 )
+
+[node name="Sans_HandLeft" type="AnimatedSprite" parent="Sans"]
+self_modulate = Color( 0.807843, 0.913725, 1, 1 )
+position = Vector2( 290, 125 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 19 )
+centered = false
+offset = Vector2( -13, 0 )
+
+[node name="Sans_Legs" type="AnimatedSprite" parent="Sans"]
+self_modulate = Color( 0.807843, 0.913725, 1, 1 )
+position = Vector2( 313, 222 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 25 )
+centered = false
+offset = Vector2( -23.5, -27 )
+
+[node name="Sans_Torso" type="AnimatedSprite" parent="Sans"]
+self_modulate = Color( 0.807843, 0.913725, 1, 1 )
+position = Vector2( 318, 144 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 26 )
+
+[node name="Sans_HandRight" type="AnimatedSprite" parent="Sans"]
+self_modulate = Color( 0.807843, 0.913725, 1, 1 )
+position = Vector2( 344, 114 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 20 )
+centered = false
+
+[node name="Sans_Head" type="AnimatedSprite" parent="Sans"]
+self_modulate = Color( 0.807843, 0.913725, 1, 1 )
+position = Vector2( 310, 89 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 22 )
+
+[node name="Sans_Flower" type="AnimatedSprite" parent="Sans"]
+material = SubResource( 21 )
+position = Vector2( 285, 105 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 23 )
+
+[node name="Flowey" type="Node2D" parent="."]
+position = Vector2( 15, 21 )
+script = ExtResource( 12 )
+
+[node name="Flowey_Body" type="AnimatedSprite" parent="Flowey"]
+modulate = Color( 0.807843, 0.913725, 1, 1 )
+position = Vector2( 478, 195 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 28 )
+animation = "new"
+
+[node name="Flowey_Head" type="AnimatedSprite" parent="Flowey"]
+modulate = Color( 0.807843, 0.913725, 1, 1 )
+position = Vector2( 477, 177 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 27 )
+animation = "new"
+offset = Vector2( -0.5, -8 )
+
+[node name="Animations" type="AnimatedSprite" parent="Flowey"]
+visible = false
+modulate = Color( 0.807843, 0.913725, 1, 1 )
+position = Vector2( 482, 211 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 45 )
+animation = "sink"
+centered = false
+offset = Vector2( -42.5, -56 )
+
+[node name="Tween" type="Tween" parent="."]

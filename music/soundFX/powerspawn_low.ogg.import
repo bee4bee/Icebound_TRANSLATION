@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/powerspawn_low.ogg-3faf0047c7c6882421fb12428c24cb10.oggstr"
+
+[deps]
+
+source_file="res://music/soundFX/powerspawn_low.ogg"
+dest_files=[ "res://.import/powerspawn_low.ogg-3faf0047c7c6882421fb12428c24cb10.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

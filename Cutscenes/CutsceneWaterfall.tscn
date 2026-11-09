@@ -1,0 +1,401 @@
+[gd_scene load_steps=32 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://music/chatter/SND_TXT2.wav" type="AudioStream" id=2]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/paps.png" type="Texture" id=4]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/chione.png" type="Texture" id=5]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/frisk.png" type="Texture" id=6]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/bg.png" type="Texture" id=7]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/flowey.png" type="Texture" id=8]
+[ext_resource path="res://sprites/misc/snowflake_1.png" type="Texture" id=9]
+[ext_resource path="res://music/IntermissionTense.wav" type="AudioStream" id=10]
+[ext_resource path="res://sprites/Cutscenes/WaterfallPF/papyrus1.png" type="Texture" id=11]
+[ext_resource path="res://sprites/Cutscenes/WaterfallPF/papyrus2.png" type="Texture" id=12]
+[ext_resource path="res://sprites/Cutscenes/WaterfallPF/flowey1.png" type="Texture" id=13]
+[ext_resource path="res://sprites/Cutscenes/WaterfallPF/flowey2.png" type="Texture" id=14]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p2/pap.png" type="Texture" id=15]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p2/bg.png" type="Texture" id=16]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p2/flowey.png" type="Texture" id=17]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p2/frisk.png" type="Texture" id=18]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p2/chione.png" type="Texture" id=19]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p3/bg.png" type="Texture" id=20]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p3/2.png" type="Texture" id=21]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p3/3.png" type="Texture" id=22]
+[ext_resource path="res://sprites/Cutscenes/Waterfallroad/p3/1.png" type="Texture" id=23]
+[ext_resource path="res://Singletons/Pause.tscn" type="PackedScene" id=24]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+onready var blitter = $Blitter
+onready var cam = $Camera
+
+var tween = Tween.new()
+var tw = Tween.new()
+
+var index = 0.0
+var canSkip = true
+
+var dialogue = [
+	'Троица идёт в Водопадье, которое превратилось в безлюдную пустошь.',
+	'Сильные метели уносят остатки земли, которые когда-то кипели жизнью.',
+	\"По мере того как путники продвигаются вперед, позади них крадётся крошечный цветок...\",
+	'...',
+	\"Разросшиеся лозы преграждают им путь, пытаясь загнать всех в угол.\",
+	\"Всё пошло не по плану. Он разлучил троицу, но не так, как хотел...\",
+	\"...оставив восьмого Человека в одиночестве.\",
+	\"Когда цветок нападает, Папирус ловит приближающуюся лозу...\",
+	\"...вырывая её из земли, он потянул цветок за собой.\",
+	\"И лишь спустя несколько мгновений тот швырнул его на ребристую землю.\",
+	\"Папирус колдует топор, но цветок сбегает.\",
+	\"Восьмой Человек был вынужден сделать то же самое.\"
+]
+
+func _ready():
+	add_child(tween)
+	add_child(tw)
+	_scene_set()
+	$music.play()
+	
+
+func _process(delta):
+	#if Input.is_action_just_pressed(\"ui_accept\"): _scene_set()
+	if tween.is_active():
+		var pos = blitter.get_visible_characters()
+		
+		var getchar = blitter.text[blitter.visible_characters]
+		if getchar != ' ' or getchar != '.' or getchar != ',':
+			$chatter_fx.play()
+
+
+func _input(event):
+	if Input.is_action_just_pressed(\"cutsceneskip\"): 
+		set_process(false)
+		_skip()
+
+
+func _scene_set():
+	
+	for i in range(0, 12):
+		_create_text(dialogue[i])
+		match i:
+			0: _scene_0_4()
+			4: _scene_5_7()
+			7: _scene_8_10()
+			10: _scene_11_12()
+		yield(get_tree().create_timer(len(blitter.text) * 0.06 + 3.0, false), \"timeout\")
+	
+	_skip()
+	
+func _create_text(text):
+	blitter.text = text
+	blitter.percent_visible = 0.0
+	blitter.modulate.a = 1.0
+	tween.interpolate_property(
+		blitter, \"percent_visible\",
+		0.0, 1.0, len(text) * 0.06,
+		Tween.TRANS_LINEAR, Tween.EASE_OUT
+	)
+	tween.start()
+
+func _fade_scene(node):
+	tw.interpolate_property(
+		blitter, \"modulate:a\",
+		1.0, 0.0, 1.0,
+		Tween.TRANS_LINEAR, Tween.EASE_IN
+	)
+	tw.interpolate_property(
+		node, \"modulate:a\",
+		node.modulate.a, 0.0, 1.2,
+		Tween.TRANS_LINEAR, Tween.EASE_IN
+	)
+	tw.start()
+
+func _skip():
+	$Camera.darken_with_set_values(0.0, 1.0, 2.0)
+	tw.interpolate_property($chatter_fx, \"volume_db\", 0.0, -80.0, 2.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tw.interpolate_property($music, \"volume_db\", 0.0, -80.0, 2.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tw.start()
+	yield(get_tree().create_timer(2.2, false),\"timeout\")
+	get_tree().change_scene(\"res://Overworld/Rooms/WaterfallChamber1.tscn\")
+
+
+func _scene_0_4():
+	var bg = $\"Panel0-4/bg\"
+	var pap = $\"Panel0-4/pap\"
+	var chione = $\"Panel0-4/chione\"
+	var frisk = $\"Panel0-4/frisk\"
+	var flowey = $\"Panel0-4/flowey\"
+	var scene = $\"Panel0-4\"
+	var particle = $\"Panel0-4/Particles2D\"
+	if PlayerData.addParticles: particle.emitting = true
+	_tweenbase(bg, 35, 2.0)
+	yield(get_tree().create_timer(1.5, false),\"timeout\")
+	_tweenbase(pap, 35, 1.5)
+	yield(get_tree().create_timer(1.0, false),\"timeout\")
+	_tweenbase(chione, 35, 1.5)
+	yield(get_tree().create_timer(1.0, false),\"timeout\")
+	_tweenbase(frisk, 35, 1.5)
+	_tweenbase(particle, 0, 4.0)
+	yield(get_tree().create_timer(10.0, false),\"timeout\")
+	tw.interpolate_property(scene, \"position:x\", scene.position.x, 80, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+	tw.start()
+	yield(get_tree().create_timer(2.0, false),\"timeout\")
+	_tweenbase(flowey, -45, 1.5)
+	yield(get_tree().create_timer(4.0, false),\"timeout\")
+	tw.interpolate_property(scene, \"modulate:a\", 1.0, 0.0, 2.0, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tw.start()
+
+func _scene_5_7():
+	var pap = $\"Panel5-7/pap\"
+	var frisk = $\"Panel5-7/frisk\"
+	var chione = $\"Panel5-7/chione\"
+	var flowey = $\"Panel5-7/fl\"
+	var bg = $\"Panel5-7/bg\"
+	
+	_tweenbase(bg, 0, 1.5)
+	yield(get_tree().create_timer(0.3, false),\"timeout\")
+	_tweenbase(flowey, 20, 1.5)
+	yield(get_tree().create_timer(0.3, false),\"timeout\")
+	_tweenbase(frisk, -40, 1.5)
+	yield(get_tree().create_timer(0.3, false),\"timeout\")
+	_tweenbase(pap, -30, 1.5)
+	yield(get_tree().create_timer(0.3, false),\"timeout\")
+	_tweenbase(chione, 40, 1.5)
+	
+	yield(get_tree().create_timer(7.0, false),\"timeout\")
+	tw.interpolate_property($\"Panel5-7\", \"modulate:a\", 1.0, 0.0, 2.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+
+func _scene_8_10():
+	yield(get_tree().create_timer(2.0, false),\"timeout\")
+	var bg = $\"Panel8-10/Sprite\"
+	var one = $\"Panel8-10/1\"
+	var two = $\"Panel8-10/2\"
+	var three = $\"Panel8-10/3\"
+	_tweenbase(bg, 20, 2)
+	_tweenbase(one, -20, 2)
+	
+	yield(get_tree().create_timer(5.0, false),\"timeout\")
+	_tweenbase(two, 20, 1)
+	tw.interpolate_property(one, \"modulate:a\", 1, 0, 1, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(one, \"position:x\", one.position.x, one.position.x + 20, 1, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	
+	yield(get_tree().create_timer(4.0, false),\"timeout\")
+	_tweenbase(three, -20, 1)
+	tw.interpolate_property(two, \"modulate:a\", 1, 0, 1, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(two, \"position:x\", two.position.x, two.position.x + 20, 1, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	
+	yield(get_tree().create_timer(3.0, false),\"timeout\")
+	tw.interpolate_property($\"Panel8-10\", \"modulate:a\", 1, 0, 1.5, Tween.TRANS_QUINT, Tween.EASE_IN)
+	tw.start()
+
+func _scene_11_12():
+	var pap = $\"Panel11-12/pap\"
+	var flowey = $\"Panel11-12/flowey\"
+	_tweenbase(pap, 40, 1.5)
+	yield(get_tree().create_timer(1.0, false),\"timeout\")
+	_tweenbase(flowey, -40, 1.5)
+	yield(get_tree().create_timer(1.5, false),\"timeout\")
+	cam._flash_dark(0.4)
+	yield(get_tree().create_timer(0.4, false),\"timeout\")
+	cam._cam_beat(0.15)
+	cam.flash(1.5)
+	pap.frame = 1
+	flowey.frame = 1
+	yield(get_tree().create_timer(3.0, false),\"timeout\")
+	tw.interpolate_property($\"Panel11-12\", \"modulate:a\", 1.0, 0.0, 1.5, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	
+func _tweenbase(node, pos, time):
+	tw.interpolate_property(node, \"position:x\", node.position.x - pos, node.position.x, time, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.interpolate_property(node, \"modulate:a\", 0.0, 1.0, time, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+"
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 1 ), 0.0, -3.37248, 0, 0, Vector2( 1, 0 ), -1.51238, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 2
+emission_box_extents = Vector3( 600, 1, 1 )
+flag_disable_z = true
+spread = 0.0
+gravity = Vector3( -50, 50, 0 )
+initial_velocity = -60.0
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 4 )
+hue_variation = 0.03
+hue_variation_random = 1.0
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ ExtResource( 11 ), ExtResource( 12 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 13 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=8]
+size = 28
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[node name="CutsceneWaterfall" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="chatter_fx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -12.0
+bus = "Effects"
+
+[node name="Panel0-4" type="Node2D" parent="."]
+
+[node name="bg" type="Sprite" parent="Panel0-4"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 273, 239 )
+scale = Vector2( 2.6, 2.3 )
+texture = ExtResource( 7 )
+
+[node name="Particles2D" type="Particles2D" parent="Panel0-4"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 394, -48 )
+emitting = false
+amount = 200
+lifetime = 4.0
+preprocess = 10.0
+speed_scale = 1.5
+process_material = SubResource( 5 )
+texture = ExtResource( 9 )
+
+[node name="pap" type="Sprite" parent="Panel0-4"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 361, 271 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+
+[node name="chione" type="Sprite" parent="Panel0-4"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 363, 271 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+
+[node name="frisk" type="Sprite" parent="Panel0-4"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 357, 269 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
+
+[node name="flowey" type="Sprite" parent="Panel0-4"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 356, 250 )
+scale = Vector2( 2.2, 2.2 )
+texture = ExtResource( 8 )
+
+[node name="Panel5-7" type="Node2D" parent="."]
+
+[node name="bg" type="Sprite" parent="Panel5-7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 230 )
+scale = Vector2( 2.2, 2.2 )
+texture = ExtResource( 16 )
+
+[node name="frisk" type="Sprite" parent="Panel5-7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 18 )
+
+[node name="pap" type="Sprite" parent="Panel5-7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 15 )
+
+[node name="fl" type="Sprite" parent="Panel5-7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 17 )
+
+[node name="chione" type="Sprite" parent="Panel5-7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 19 )
+
+[node name="Panel8-10" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="Panel8-10"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 343, 232 )
+scale = Vector2( 2.1, 2.1 )
+texture = ExtResource( 20 )
+
+[node name="1" type="Sprite" parent="Panel8-10"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 343, 232 )
+scale = Vector2( 2.1, 2.1 )
+texture = ExtResource( 23 )
+
+[node name="2" type="Sprite" parent="Panel8-10"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 359, 232 )
+scale = Vector2( 2.1, 2.1 )
+texture = ExtResource( 21 )
+
+[node name="3" type="Sprite" parent="Panel8-10"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 343, 232 )
+scale = Vector2( 2.1, 2.1 )
+texture = ExtResource( 22 )
+
+[node name="Panel11-12" type="Node2D" parent="."]
+
+[node name="pap" type="AnimatedSprite" parent="Panel11-12"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 6 )
+
+[node name="flowey" type="AnimatedSprite" parent="Panel11-12"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 7 )
+
+[node name="Blitter" type="Label" parent="."]
+margin_left = 30.0
+margin_top = 20.0
+margin_right = 670.0
+margin_bottom = 160.0
+custom_fonts/font = SubResource( 8 )
+autowrap = true
+
+[node name="Camera" parent="." instance=ExtResource( 3 )]
+position = Vector2( 350, 240 )
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+bus = "Music"
+
+[node name="Pause" parent="." instance=ExtResource( 24 )]

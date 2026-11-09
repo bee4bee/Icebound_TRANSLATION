@@ -1,0 +1,427 @@
+[gd_scene load_steps=62 format=2]
+
+[ext_resource path="res://determination-mono-web-font/DeterminationSansWebRegular-369X.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Cutscenes/Intro_Story.gd" type="Script" id=2]
+[ext_resource path="res://music/chatter/SND_TXT2.wav" type="AudioStream" id=3]
+[ext_resource path="res://Camera/Camera.tscn" type="PackedScene" id=4]
+[ext_resource path="res://sprites/Cutscenes/panel0_asgore/asgore.png" type="Texture" id=5]
+[ext_resource path="res://sprites/Cutscenes/panel0_asgore/human.png" type="Texture" id=6]
+[ext_resource path="res://sprites/Cutscenes/panel0_asgore/bg.png" type="Texture" id=7]
+[ext_resource path="res://sprites/Cutscenes/panel1-2/alphys.png" type="Texture" id=8]
+[ext_resource path="res://sprites/Cutscenes/panel1-2/asgore.png" type="Texture" id=9]
+[ext_resource path="res://sprites/Cutscenes/panel1-2/bg.png" type="Texture" id=10]
+[ext_resource path="res://sprites/Cutscenes/panel1-2/gaster.png" type="Texture" id=11]
+[ext_resource path="res://sprites/soul/soulblank.png" type="Texture" id=12]
+[ext_resource path="res://music/soundFX/powerspawn.wav" type="AudioStream" id=13]
+[ext_resource path="res://music/soundFX/sworkspark_eyeflash.wav" type="AudioStream" id=14]
+[ext_resource path="res://sprites/misc/spr_planeexplosion_0.png" type="Texture" id=15]
+[ext_resource path="res://music/soundFX/boom2.ogg" type="AudioStream" id=16]
+[ext_resource path="res://sprites/soul/soulice.png" type="Texture" id=17]
+[ext_resource path="res://sprites/soul/soulflare.png" type="Texture" id=18]
+[ext_resource path="res://sprites/soul/soulnature.png" type="Texture" id=19]
+[ext_resource path="res://sprites/misc/light.png" type="Texture" id=20]
+[ext_resource path="res://music/OUAT.wav" type="AudioStream" id=21]
+[ext_resource path="res://sprites/Cutscenes/panelintro_strongermonsters/jevil from deltarune.png" type="Texture" id=22]
+[ext_resource path="res://sprites/Cutscenes/panelintro_strongermonsters/knight.png" type="Texture" id=23]
+[ext_resource path="res://sprites/Cutscenes/panelintro_strongermonsters/riverp.png" type="Texture" id=24]
+[ext_resource path="res://sprites/Cutscenes/panelintro_strongermonsters/bg.png" type="Texture" id=25]
+[ext_resource path="res://sprites/Cutscenes/panelintro_alphysdet/amalgamates.png" type="Texture" id=26]
+[ext_resource path="res://sprites/Cutscenes/panelintro_alphysdet/gaster.png" type="Texture" id=27]
+[ext_resource path="res://sprites/Cutscenes/panelintro_alphysdet/alpys.png" type="Texture" id=28]
+[ext_resource path="res://sprites/Cutscenes/panelintro_frisk/buttons.png" type="Texture" id=29]
+[ext_resource path="res://sprites/Cutscenes/panelintro_frisk/bg.png" type="Texture" id=30]
+[ext_resource path="res://sprites/Cutscenes/panelintro_frisk/frisk.png" type="Texture" id=31]
+[ext_resource path="res://sprites/Cutscenes/panelintro_rp2/rp2.png" type="Texture" id=32]
+[ext_resource path="res://sprites/Cutscenes/panelintro_rp2/rp1.png" type="Texture" id=33]
+[ext_resource path="res://sprites/Cutscenes/intro_end/chionefall.png" type="Texture" id=34]
+[ext_resource path="res://sprites/Cutscenes/intro_end/backgroundfall.png" type="Texture" id=35]
+[ext_resource path="res://sprites/Cutscenes/soulbg.png" type="Texture" id=36]
+
+[sub_resource type="SpriteFrames" id=24]
+animations = [ {
+"frames": [ ExtResource( 12 ), ExtResource( 17 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 1, 1, 1, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+
+[sub_resource type="Curve" id=2]
+max_value = 3.0
+_data = [ Vector2( 0, 1 ), 0.0, 4.89245, 0, 0, Vector2( 1, 2.93534 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 3 )
+color_ramp = SubResource( 6 )
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0, 0.483333, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="Curve" id=9]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.30516, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 9 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+emission_shape = 1
+emission_sphere_radius = 25.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+initial_velocity_random = 1.0
+orbit_velocity = 0.1
+orbit_velocity_random = 1.0
+scale_random = 1.0
+scale_curve = SubResource( 10 )
+color_ramp = SubResource( 8 )
+
+[sub_resource type="Gradient" id=15]
+offsets = PoolRealArray( 0, 0.0458333, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=16]
+gradient = SubResource( 15 )
+
+[sub_resource type="Curve" id=17]
+max_value = 2.0
+_data = [ Vector2( 0, 0.635776 ), 0.0, 2.18166, 0, 0, Vector2( 1, 1.25431 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=18]
+curve = SubResource( 17 )
+
+[sub_resource type="ParticlesMaterial" id=19]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale_curve = SubResource( 18 )
+color_ramp = SubResource( 16 )
+
+[sub_resource type="Curve" id=12]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.95668, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
+
+[sub_resource type="ParticlesMaterial" id=14]
+emission_shape = 1
+emission_sphere_radius = 8.0
+flag_disable_z = true
+gravity = Vector3( 0, -120, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 4.0
+scale_random = 1.0
+scale_curve = SubResource( 13 )
+color = Color( 1, 0.635294, 0.713726, 1 )
+hue_variation = 0.06
+hue_variation_random = 1.0
+
+[sub_resource type="Shader" id=20]
+code = "shader_type canvas_item;
+
+uniform sampler2D dissolve_texture : hint_albedo;
+uniform float dissolve_value : hint_range(0,1);
+
+void fragment(){
+    vec4 main_texture = texture(TEXTURE, UV);
+    vec4 noise_texture = texture(dissolve_texture, UV);
+    main_texture.a *= floor(dissolve_value + min(1, noise_texture.x));
+    COLOR = main_texture;
+}"
+
+[sub_resource type="OpenSimplexNoise" id=22]
+
+[sub_resource type="NoiseTexture" id=23]
+noise = SubResource( 22 )
+
+[sub_resource type="ShaderMaterial" id=21]
+shader = SubResource( 20 )
+shader_param/dissolve_value = 1.0
+shader_param/dissolve_texture = SubResource( 23 )
+
+[sub_resource type="SpriteFrames" id=25]
+animations = [ {
+"frames": [ ExtResource( 33 ), ExtResource( 32 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=26]
+size = 28
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[node name="Intro_Story" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="chatter_fx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -12.0
+bus = "Effects"
+
+[node name="Panels" type="Node2D" parent="."]
+
+[node name="Panel0" type="Node2D" parent="Panels"]
+
+[node name="Background" type="Sprite" parent="Panels/Panel0"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 334, 246 )
+scale = Vector2( 2.59167, 2.59167 )
+texture = ExtResource( 7 )
+
+[node name="Asgore" type="Sprite" parent="Panels/Panel0"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 280, 246 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+
+[node name="HumanKnight" type="Sprite" parent="Panels/Panel0"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 327, 245 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
+
+[node name="Panel1_2" type="Node2D" parent="Panels"]
+
+[node name="Background" type="Sprite" parent="Panels/Panel1_2"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 341, 239 )
+scale = Vector2( 2.30625, 2.09167 )
+texture = ExtResource( 10 )
+
+[node name="Asgore" type="Sprite" parent="Panels/Panel1_2"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 357, 258 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 9 )
+
+[node name="Alphys" type="Sprite" parent="Panels/Panel1_2"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 322, 255 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 8 )
+
+[node name="Gaster" type="Sprite" parent="Panels/Panel1_2"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 389, 257 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 11 )
+
+[node name="Panel3_7" type="Node2D" parent="Panels"]
+
+[node name="bg" type="Sprite" parent="Panels/Panel3_7"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 351, 257 )
+scale = Vector2( 5.5, 5.5 )
+texture = ExtResource( 36 )
+
+[node name="Soul" type="AnimatedSprite" parent="Panels/Panel3_7"]
+visible = false
+position = Vector2( 350, 266 )
+scale = Vector2( 2.5, 2.5 )
+frames = SubResource( 24 )
+
+[node name="Particles2D" type="Particles2D" parent="Panels/Panel3_7/Soul"]
+show_behind_parent = true
+emitting = false
+amount = 1
+lifetime = 2.0
+one_shot = true
+process_material = SubResource( 4 )
+texture = ExtResource( 12 )
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Panels/Panel3_7/Soul"]
+stream = ExtResource( 13 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Panels/Panel3_7/Soul"]
+stream = ExtResource( 14 )
+volume_db = -6.0
+bus = "Effects"
+
+[node name="emit" type="Particles2D" parent="Panels/Panel3_7/Soul"]
+emitting = false
+amount = 30
+lifetime = 3.0
+process_material = SubResource( 11 )
+
+[node name="Light2D" type="Light2D" parent="Panels/Panel3_7/Soul"]
+texture = ExtResource( 20 )
+texture_scale = 0.06
+color = Color( 0.827451, 0.92549, 1, 1 )
+energy = 0.71
+
+[node name="explosion" type="Particles2D" parent="Panels/Panel3_7"]
+modulate = Color( 0.784314, 0.67451, 0.694118, 1 )
+position = Vector2( 207, 229 )
+scale = Vector2( -2.5, 2.5 )
+emitting = false
+amount = 1
+lifetime = 2.0
+one_shot = true
+process_material = SubResource( 19 )
+texture = ExtResource( 15 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Panels/Panel3_7/explosion"]
+stream = ExtResource( 16 )
+volume_db = -4.0
+bus = "Effects"
+
+[node name="SoulLeft" type="Sprite" parent="Panels/Panel3_7"]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 275, 240 )
+scale = Vector2( 2.5, 2.5 )
+texture = ExtResource( 18 )
+
+[node name="Light2D2" type="Light2D" parent="Panels/Panel3_7/SoulLeft"]
+texture = ExtResource( 20 )
+texture_scale = 0.06
+color = Color( 1, 0.494118, 0.694118, 1 )
+energy = 0.71
+
+[node name="Particles2D" type="Particles2D" parent="Panels/Panel3_7/SoulLeft"]
+amount = 16
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 14 )
+
+[node name="SoulRight" type="Sprite" parent="Panels/Panel3_7"]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 21 )
+position = Vector2( 425, 240 )
+scale = Vector2( 2.5, 2.5 )
+texture = ExtResource( 19 )
+
+[node name="Light2D3" type="Light2D" parent="Panels/Panel3_7/SoulRight"]
+position = Vector2( -0.399994, -4.8 )
+texture = ExtResource( 20 )
+texture_scale = 0.06
+color = Color( 0.607843, 1, 0.745098, 1 )
+energy = 0.71
+
+[node name="Panel8_9" type="Node2D" parent="Panels"]
+
+[node name="Bg" type="Sprite" parent="Panels/Panel8_9"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 343, 242 )
+scale = Vector2( 2.2, 2.2 )
+texture = ExtResource( 25 )
+
+[node name="Magick" type="Sprite" parent="Panels/Panel8_9"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 340, 263 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 22 )
+
+[node name="Knight" type="Sprite" parent="Panels/Panel8_9"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 317, 244 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 23 )
+
+[node name="Riverp" type="Sprite" parent="Panels/Panel8_9"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 330, 247 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 24 )
+
+[node name="Panel10_11" type="Node2D" parent="Panels"]
+
+[node name="Amalgam" type="Sprite" parent="Panels/Panel10_11"]
+modulate = Color( 0.588235, 0.623529, 0.603922, 0 )
+position = Vector2( 353, 250 )
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 26 )
+
+[node name="Alphys" type="Sprite" parent="Panels/Panel10_11"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 266 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 28 )
+
+[node name="Gaster" type="Sprite" parent="Panels/Panel10_11"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 383, 267 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 27 )
+
+[node name="Panel12_13" type="Node2D" parent="Panels"]
+
+[node name="bg" type="Sprite" parent="Panels/Panel12_13"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 345, 242 )
+scale = Vector2( 2.2, 2.2 )
+texture = ExtResource( 30 )
+
+[node name="Frisk" type="Sprite" parent="Panels/Panel12_13"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 316, 269 )
+scale = Vector2( 1.7, 1.8 )
+texture = ExtResource( 31 )
+
+[node name="Light2D" type="Light2D" parent="Panels/Panel12_13"]
+position = Vector2( 308, 254 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 29 )
+color = Color( 1, 0.647059, 0.670588, 1 )
+energy = 0.0
+
+[node name="Panel14_15" type="Node2D" parent="Panels"]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Panels/Panel14_15"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 350, 240 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 25 )
+
+[node name="Panelrest" type="Node2D" parent="Panels"]
+
+[node name="bg" type="Sprite" parent="Panels/Panelrest"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 339, 242 )
+scale = Vector2( 2.2, 2.2 )
+texture = ExtResource( 35 )
+
+[node name="Chione" type="Sprite" parent="Panels/Panelrest"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 297, 209 )
+scale = Vector2( 1.6, 1.6 )
+texture = ExtResource( 34 )
+
+[node name="Blitter" type="Label" parent="."]
+margin_left = 30.0
+margin_top = 20.0
+margin_right = 670.0
+margin_bottom = 160.0
+custom_fonts/font = SubResource( 26 )
+autowrap = true
+
+[node name="Camera" parent="." instance=ExtResource( 4 )]
+position = Vector2( 350, 240 )
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 21 )
+volume_db = -40.0
+bus = "Music"

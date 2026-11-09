@@ -1,0 +1,94 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Bullets/Flytrap/fly1.png" type="Texture" id=1]
+[ext_resource path="res://Bullets/Flytrap/fly2.png" type="Texture" id=2]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Node2D
+
+var tw = Tween.new()
+
+onready var area = $AnimatedSprite/Area2D
+
+func _ready():
+	
+	add_child(tw)
+	
+	tw.interpolate_property(self, \"modulate:a\", 0, 1, 0.8, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	#tw.interpolate_property(self, \"position:x\", position.x, position.x + rand_range(-50, 50), 0.8, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	
+	yield(get_tree().create_timer(0.4, false), \"timeout\")
+	
+	area.monitorable = true
+	area.monitoring = true
+	
+	n = rand_range(-1, 1)
+	
+	yield(get_tree().create_timer(8.0, false), \"timeout\")
+	queue_free()
+
+var endpos = 0.0
+var canCancel = true
+var canSway = false
+var canmovedir = false
+export var rot = 0.0
+
+var n = 0.0
+
+func _process(delta):
+	if position.y >= endpos and canCancel:
+		canCancel = false
+		_cancelFunc()
+	
+	if canSway:
+		n += delta * 4
+		$AnimatedSprite.position.x += cos(n)
+	
+	if canmovedir:
+		var angle = rot - PI/2.0
+		var dir = Vector2(cos(angle), sin(angle))
+		position -= dir * (rand_range(160, 190) * delta)
+
+func _cancelFunc():
+	tw.interpolate_property(self, \"modulate:a\", 1, 0, 0.7, Tween.TRANS_QUINT, Tween.EASE_OUT)
+	tw.start()
+	
+	area.monitorable = false
+	area.monitoring = false
+	
+	yield(get_tree().create_timer(0.7, false), \"timeout\")
+	queue_free()
+"
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 8.0
+} ]
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 5.09902
+
+[node name="FlyBox" type="Node2D"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 194, 237 )
+scale = Vector2( 0.8, 0.8 )
+script = SubResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+playing = true
+
+[node name="Area2D" type="Area2D" parent="AnimatedSprite"]
+scale = Vector2( 1, 1 )
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite/Area2D"]
+position = Vector2( 0, 1 )
+shape = SubResource( 2 )
+
+[node name="Position2D" type="Position2D" parent="."]

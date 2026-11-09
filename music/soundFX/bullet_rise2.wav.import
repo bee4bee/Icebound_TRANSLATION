@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bullet_rise2.wav-6bf74cd2e8e0130b3b83c493377e3c4f.sample"
+
+[deps]
+
+source_file="res://music/soundFX/bullet_rise2.wav"
+dest_files=[ "res://.import/bullet_rise2.wav-6bf74cd2e8e0130b3b83c493377e3c4f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

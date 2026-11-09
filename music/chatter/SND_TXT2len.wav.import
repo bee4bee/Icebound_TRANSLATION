@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/SND_TXT2len.wav-5ceb665fe2d779012565147704eec08f.sample"
+
+[deps]
+
+source_file="res://music/chatter/SND_TXT2len.wav"
+dest_files=[ "res://.import/SND_TXT2len.wav-5ceb665fe2d779012565147704eec08f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
